@@ -367,53 +367,6 @@ function WorldScene:draw()
     if game.debug and game.debug_twiddles.show_blockmap then
         self:_draw_blockmap()
     end
-
-    --[[
-    love.graphics.push('all')
-
-    -- FIXME put this and the debug stuff on a separate "layer" which doesn't have to live here
-    love.graphics.draw(p8_spritesheet, love.graphics.newQuad(192, 128, 64, 64, p8_spritesheet:getDimensions()), 0, 0)
-    love.graphics.setScissor(16, 16, love.graphics.getWidth(), 32)
-    local name = love.graphics.newText(m5x7, self.player.inventory[self.player.inventory_cursor].display_name)
-    local dy = 32
-    if self.inventory_switch then
-        if self.inventory_switch.progress < 1 then
-            dy = math.floor(self.inventory_switch.progress * 32)
-            local sprite = game.sprites[self.inventory_switch.old_item.sprite_name]:instantiate()
-            sprite:draw_at(Vector(16, 16 - dy) + sprite.anchor)
-            love.graphics.draw(self.inventory_switch.new_name, 64, 32 - self.inventory_switch.new_name:getHeight() / 2 + 32 - dy)
-        else
-            love.graphics.setColor(255, 255, 255, self.inventory_switch.name_opacity * 255)
-            love.graphics.draw(self.inventory_switch.new_name, 64, 32 - self.inventory_switch.new_name:getHeight() / 2)
-            love.graphics.setColor(255, 255, 255)
-        end
-    end
-
-    local sprite = game.sprites[self.player.inventory[self.player.inventory_cursor].sprite_name]:instantiate()
-    sprite:draw_at(Vector(16, 16 + 32 - dy) + sprite.anchor)
-    love.graphics.pop()
-
-    love.graphics.push('all')
-    local sprite = game.sprites['keycap']:instantiate()
-    sprite:draw_at(Vector(36, 40))
-    love.graphics.setColor(52, 52, 52)
-    local keylen = m5x7:getWidth("E")
-    local line_height = m5x7:getHeight()
-    love.graphics.print("E", 36 + (32 - keylen) / 2, 40 + (32 - line_height) / 2)
-    if #self.player.inventory > 1 then
-        love.graphics.setColor(255, 255, 255)
-        sprite:draw_at(Vector(0, 40))
-        local keylen = m5x7:getWidth("Q")
-        love.graphics.setColor(52, 52, 52)
-        love.graphics.print("Q", 0 + (32 - keylen) / 2, 40 + (32 - line_height) / 2)
-    end
-    love.graphics.pop()
-    ]]
-
-
-    if self.reset_event then
-        love.graphics.printf("keep holding R to reset the room", 0, love.graphics.getHeight() - m5x7:getHeight() * 1.5, love.graphics.getWidth(), "center")
-    end
 end
 
 function WorldScene:_draw_actors(actors)
@@ -460,60 +413,6 @@ end
 
 function WorldScene:resize(w, h)
     self:_refresh_canvas()
-end
-
--- FIXME this is really /all/ game-specific
-function WorldScene:keypressed(key, scancode, isrepeat)
-    if isrepeat then
-        return
-    end
-
-    if scancode == 'q' then
-        -- Switch inventory items
-        if not self.inventory_switch or self.inventory_switch.progress == 1 then
-            local old_item = self.player.inventory[self.player.inventory_cursor]
-            self.player.inventory_cursor = self.player.inventory_cursor + 1
-            if self.player.inventory_cursor > #self.player.inventory then
-                self.player.inventory_cursor = 1
-            end
-            if self.inventory_switch then
-                self.inventory_switch.event:stop()
-            end
-            self.inventory_switch = {
-                old_item = old_item,
-                new_name = love.graphics.newText(m5x7, self.player.inventory[self.player.inventory_cursor].display_name),
-                progress = 0,
-                name_opacity = 1,
-            }
-            local event = self.fluct:to(self.inventory_switch, 0.33, { progress = 1 })
-                :ease('linear')
-                :after(0.33, { name_opacity = 0 })
-                :delay(1)
-                :oncomplete(function() self.inventory_switch = nil end)
-            self.inventory_switch.event = event
-        end
-    elseif scancode == 'r' then
-        local reset_timer = { value = 3 }
-        self.reset_event = self.fluct:to(reset_timer, 3, { value = 0 })
-            :oncomplete(function()
-                self.reset_event = nil
-                Gamestate.push(SceneFader(
-                    self, true, 0.5, {0, 0, 0},
-                    function()
-                        self:reload_map()
-                    end
-                ))
-            end)
-    end
-end
-
-function WorldScene:keyreleased(key, scancode)
-    if scancode == 'r' then
-        if self.reset_event then
-            self.reset_event:stop()
-            self.reset_event = nil
-        end
-    end
 end
 
 function WorldScene:mousepressed(x, y, button, istouch)
