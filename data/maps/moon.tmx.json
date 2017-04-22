@@ -1,0 +1,163 @@
+{ "height":16,
+ "layers":[
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":16,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":32,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":16,
+         "name":"Object Layer 1",
+         "objects":[
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":1,
+                 "name":"",
+                 "rotation":0,
+                 "type":"player start",
+                 "visible":true,
+                 "width":0,
+                 "x":516,
+                 "y":192
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":32,
+         "x":0,
+         "y":0
+        }],
+ "nextobjectid":2,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tileheight":32,
+ "tilesets":[
+        {
+         "columns":25,
+         "firstgid":1,
+         "image":"..\/..\/assets\/images\/pearl.png",
+         "imageheight":64,
+         "imagewidth":1600,
+         "margin":0,
+         "name":"pearl",
+         "spacing":0,
+         "tilecount":25,
+         "tileheight":64,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl\/stand"
+                },
+             "1":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl\/walk"
+                },
+             "10":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl\/jump"
+                },
+             "17":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl\/fall"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "1":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "10":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "17":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":24,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":16,
+                             "x":24,
+                             "y":24
+                            }, 
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":32,
+                             "y":48
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "1":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }]
+                }
+            },
+         "tilewidth":64
+        }],
+ "tilewidth":32,
+ "version":1,
+ "width":32
+}
