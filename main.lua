@@ -24,7 +24,7 @@ function love.load()
             }
             // Note that x and y are switched because we want the angle from
             // the vertical, not horizontal!
-            float angle = mod(rotation + atan(dx, dy), 6.28);
+            float angle = mod(atan(dx, dy) - rotation, 6.28);
 
             // FIXME scale to tex width, shift to center...?
             vec2 new_coords = vec2(
@@ -41,10 +41,12 @@ end
 function love.update(dt)
     -- FIXME this should probably be expressed in terms of distance around the circumference, not angle
     local walk_speed = 0.25
+    -- Moving left means the world rotates clockwise, which on a Cartesian
+    -- plane is negative
     if love.keyboard.isDown('left') then
-        angle = (angle + dt * walk_speed) % 1
-    elseif love.keyboard.isDown('right') then
         angle = (angle - dt * walk_speed) % 1
+    elseif love.keyboard.isDown('right') then
+        angle = (angle + dt * walk_speed) % 1
     end
 end
 
@@ -67,7 +69,7 @@ function love.draw()
     love.graphics.translate(w/2, h + radius - visible)
 
     local lexy_h = radius + 20
-    local lexy_rel_angle = angle * 6.28 - thing_angle
+    local lexy_rel_angle = thing_angle - angle * 6.28
     local lw, lh = thing_sprite:getDimensions()
     -- XXX i suspect the angles are all slightly backwards from what i think they should be...
     love.graphics.draw(thing_sprite, lexy_h * math.sin(lexy_rel_angle), lexy_h * -math.cos(lexy_rel_angle), lexy_rel_angle, 1, 1, lw/2, lh)
