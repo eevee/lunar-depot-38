@@ -136,6 +136,7 @@ function love.load(args)
         down = {'key:down', 'axis:lefty+', 'button:dpdown'},
         jump = {'key:space', 'button:a'},
         use = {'sc:e', 'button:x'},
+        shoot = {'sc:f', 'button:b'},
 
         accept = {'sc:e', 'sc:space', 'button:a'},
     }

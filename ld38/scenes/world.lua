@@ -1,12 +1,18 @@
 local WorldScene = require 'klinklang.scenes.world'
 local Vector = require 'vendor.hump.vector'
 
+local Pearl = require 'ld38.actors.pearl'
+
 local MoonWorldScene = WorldScene:extend{}
 
 local TAU = math.pi * 2
 
 function MoonWorldScene:init(...)
     MoonWorldScene.__super.init(self, ...)
+
+    -- WorldScene hardcodes the Player class, but only creates a player if one
+    -- doesn't already exist, so sneak this in here
+    self.player = Pearl(Vector(0, 0))
 
     local moon_sprite = love.graphics.newImage('moon.png')
     local w, h = love.graphics.getDimensions()
@@ -79,6 +85,10 @@ function MoonWorldScene:update_camera()
 end
 
 function MoonWorldScene:update(dt)
+    if game.input:down('shoot') then
+        self.player:decide_shoot()
+    end
+
     MoonWorldScene.__super.update(self, dt)
     self.turned = self.player.pos.x / self.map.width
 

@@ -8,8 +8,8 @@ local whammo_shapes = require 'klinklang.whammo.shapes'
 
 
 local Player = actors_base.SentientActor:extend{
-    name = 'pearl',
-    sprite_name = 'pearl',
+    name = 'player',
+    sprite_name = 'player',
     z = 1000,
     is_portable = true,
     can_carry = true,
@@ -19,10 +19,6 @@ local Player = actors_base.SentientActor:extend{
     is_player = true,
 
     inventory_cursor = 1,
-
-    -- Conscious movement decisions
-    decision_walk = 0,
-    decision_jump_mode = 0,
 }
 
 function Player:init(...)

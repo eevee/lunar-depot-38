@@ -72,6 +72,12 @@
                 {
                  "animation flipped":true,
                  "sprite name":"pearl\/fall"
+                },
+             "3":
+                {
+                 "animation flipped":true,
+                 "animation stops":true,
+                 "sprite name":"pearl\/shoot"
                 }
             },
          "tilepropertytypes":
@@ -94,6 +100,12 @@
              "17":
                 {
                  "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "3":
+                {
+                 "animation flipped":"bool",
+                 "animation stops":"bool",
                  "sprite name":"string"
                 }
             },
@@ -153,9 +165,161 @@
                          "duration":100,
                          "tileid":0
                         }]
+                },
+             "3":
+                {
+                 "animation":[
+                        {
+                         "duration":50,
+                         "tileid":3
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":4
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":5
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":6
+                        }]
+                },
+             "7":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
                 }
             },
          "tilewidth":64
+        }, 
+        {
+         "columns":12,
+         "firstgid":26,
+         "image":"..\/..\/assets\/images\/fishball.png",
+         "imageheight":36,
+         "imagewidth":432,
+         "margin":0,
+         "name":"fishball",
+         "spacing":0,
+         "tilecount":12,
+         "tileheight":36,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "animation flipped":true,
+                 "sprite name":"fishball\/default"
+                },
+             "3":
+                {
+                 "animation flipped":true,
+                 "animation stops":true,
+                 "sprite name":"fishball\/hit"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "3":
+                {
+                 "animation flipped":"bool",
+                 "animation stops":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }],
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":6,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":6,
+                             "x":12,
+                             "y":15
+                            }, 
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":15.5,
+                             "y":18
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "3":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":3
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":4
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":5
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":6
+                        }]
+                }
+            },
+         "tilewidth":36
         }],
  "tilewidth":32,
  "version":1,
