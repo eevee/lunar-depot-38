@@ -6,10 +6,11 @@ local tick = require 'vendor.tick'
 
 local ResourceManager = require 'klinklang.resources'
 local DebugScene = require 'klinklang.scenes.debug'
-local WorldScene = require 'klinklang.scenes.world'
 local SpriteSet = require 'klinklang.sprite'
 local tiledmap = require 'klinklang.tiledmap'
 local util = require 'klinklang.util'
+
+local MoonWorldScene = require 'ld38.scenes.world'
 
 
 game = {
@@ -49,6 +50,29 @@ game = {
         return math.ceil(love.graphics.getWidth() / self.scale), math.ceil(love.graphics.getHeight() / self.scale)
     end,
 }
+
+local BareActor = require('klinklang.actors.base').BareActor
+local Vector = require 'vendor.hump.vector'
+local whammo_shapes = require 'klinklang.whammo.shapes'
+
+local DummyActor = BareActor:extend{}
+
+function DummyActor:init(pos)
+    self.pos = pos
+    self:set_shape(whammo_shapes.Box(-8, -8, 16, 16))
+end
+
+function DummyActor:blocks()
+    return true
+end
+
+function DummyActor:draw()
+    local x0, y0, x1, y1 = self.shape:bbox()
+    love.graphics.push('all')
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.rectangle('fill', x0, y0, x1 - x0, y1 - y0)
+    love.graphics.pop()
+end
 
 
 --------------------------------------------------------------------------------
@@ -117,92 +141,49 @@ function love.load(args)
     }
 
     local map = resource_manager:load("data/maps/moon.tmx.json")
-    worldscene = WorldScene()
+    worldscene = MoonWorldScene()
     worldscene:load_map(map)
+    worldscene:add_actor(DummyActor(Vector(0, 128)))
+    worldscene:add_actor(DummyActor(Vector(64, 504)))
+    worldscene:add_actor(DummyActor(Vector(128, 480)))
 
     Gamestate.registerEvents()
     Gamestate.switch(worldscene)
 
     -- ld38 stuff
-    moon_sprite = love.graphics.newImage('moon.png')
     thing_sprite = love.graphics.newImage('testsprite.png')
     thing_angle = 6.28/4
     angle = 0
-
-    local mw, mh = moon_sprite:getDimensions()
-
-    polar_shader = love.graphics.newShader[[
-        extern float rotation;
-        extern float radius;
-        extern float visible;
-
-        vec4 effect(vec4 color, Image texture, vec2 tex_coords, vec2 screen_coords) {
-            // FIXME this should probably not be based purely on the screen coordinates...?  right?  but what does it even mean to move the moon elsewhere?
-            vec2 center = vec2(love_ScreenSize.x / 2.0, love_ScreenSize.y - visible + radius);
-            float dx = screen_coords.x - center.x;
-            float dy = screen_coords.y - center.y;
-
-            float dist = length(vec2(dx, dy));
-            if (dist > radius) {
-                return vec4(0.0, 0.0, 0.0, 0.0);
-            }
-            // Note that x and y are switched because we want the angle from
-            // the vertical, not horizontal!
-            float angle = mod(atan(dx, dy) - rotation, 6.28);
-
-            // FIXME scale to tex width, shift to center...?
-            vec2 new_coords = vec2(
-                angle / 6.28,
-                (radius - dist) / visible);
-
-            //return vec4(new_coords.x, new_coords.y, 0.0, 1.0);
-            vec4 tex_color = Texel(texture, new_coords);
-            return tex_color * color;
-        }
-    ]]
 end
 
+angle = 0
 function love.update(dt)
-    -- FIXME this should probably be expressed in terms of distance around the circumference, not angle
-    local walk_speed = 0.25
-    -- Moving left means the world rotates clockwise, which on a Cartesian
-    -- plane is negative
-    if love.keyboard.isDown('left') then
-        angle = (angle - dt * walk_speed) % 1
-    elseif love.keyboard.isDown('right') then
-        angle = (angle + dt * walk_speed) % 1
-    end
-
+    angle = worldscene.player.pos.x / worldscene.map.width
     tick.update(dt)
     game.input:update(dt)
 end
 
 function love.draw()
     local w, h = love.graphics.getDimensions()
-    local epsilon = 4
-    local visible = 128
-    local radius = (visible + epsilon) / 2 + w * w / (8 * (visible - epsilon))
-    local moon_r = radius
     love.graphics.clear()
 
-    local sw, sh = moon_sprite:getDimensions()
-    local moon_scale = visible / sh
-    polar_shader:send('rotation', angle * 6.28)
-    polar_shader:send('radius', radius)
-    polar_shader:send('visible', visible)
-    love.graphics.setShader(polar_shader)
-    love.graphics.draw(moon_sprite, 0, h - sh * moon_scale, 0, moon_scale, moon_scale)
-    love.graphics.setShader()
-    love.graphics.translate(w/2, h + radius - visible)
+    local radius = worldscene.moon.radius
+    --love.graphics.translate(w/2, h + worldscene.moon.radius - worldscene.moon.visible)
+    love.graphics.translate(w/2, worldscene.map.height - h + worldscene.moon.visible - worldscene.moon.epsilon)
 
+    love.graphics.translate(0, -worldscene.map.height + worldscene.moon.epsilon + 2 * (h - worldscene.moon.visible) + radius)
     local lexy_h = radius + 20
+    lexy_h = -20
+    lexy_h = worldscene.map.height - 20
     local lexy_rel_angle = thing_angle - angle * 6.28
-    local lw, lh = thing_sprite:getDimensions()
-    -- XXX i suspect the angles are all slightly backwards from what i think they should be...
-    love.graphics.draw(thing_sprite, lexy_h * math.sin(lexy_rel_angle), lexy_h * -math.cos(lexy_rel_angle), lexy_rel_angle, 1, 1, lw/2, lh)
+    local lexy_x = thing_angle * radius
+    love.graphics.push()
+    love.graphics.rotate(lexy_rel_angle)
+    love.graphics.translate(-lexy_x, -radius-worldscene.map.height)
+    love.graphics.draw(thing_sprite, lexy_x - 16, lexy_h-64)
+    love.graphics.pop()
 
     love.graphics.reset()
-    love.graphics.print(angle, 0, 0)
 end
 
 local _previous_size
