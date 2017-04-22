@@ -82,6 +82,20 @@ end
 -- General API stuff for controlling actors from outside
 function BareActor:move_to(position)
     self.pos = position
+    if self.shape then
+        self.shape:move_to(position:unpack())
+    end
+end
+
+function BareActor:set_shape(new_shape)
+    if self.shape then
+        worldscene.collider:remove(self.shape)
+    end
+    self.shape = new_shape
+    if self.shape then
+        worldscene.collider:add(self.shape, self)
+        self.shape:move_to(self.pos:unpack())
+    end
 end
 
 
@@ -118,6 +132,7 @@ local Actor = BareActor:extend{
 }
 
 function Actor:init(position)
+    -- FIXME should this be in BareActor:init?
     self.pos = position
 
     -- Table of weak references to other actors
@@ -161,24 +176,6 @@ function Actor:draw()
 end
 
 -- General API stuff for controlling actors from outside
-function Actor:move_to(position)
-    self.pos = position
-    if self.shape then
-        self.shape:move_to(position:unpack())
-    end
-end
-
-function Actor:set_shape(new_shape)
-    if self.shape then
-        worldscene.collider:remove(self.shape)
-    end
-    self.shape = new_shape
-    if self.shape then
-        worldscene.collider:add(self.shape, self)
-        self.shape:move_to(self.pos:unpack())
-    end
-end
-
 function Actor:set_sprite(sprite_name)
     local facing = self.sprite.facing
     self.sprite_name = sprite_name
