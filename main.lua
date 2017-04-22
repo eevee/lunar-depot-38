@@ -146,6 +146,8 @@ function love.load(args)
     worldscene:add_actor(DummyActor(Vector(0, 128)))
     worldscene:add_actor(DummyActor(Vector(64, 504)))
     worldscene:add_actor(DummyActor(Vector(128, 480)))
+    worldscene:add_actor(DummyActor(Vector(4096, 512)))
+    worldscene:add_actor(DummyActor(Vector(4096 - 32, 512 - 16)))
 
     Gamestate.registerEvents()
     Gamestate.switch(worldscene)

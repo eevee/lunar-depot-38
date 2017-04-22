@@ -1,4 +1,5 @@
 local WorldScene = require 'klinklang.scenes.world'
+local Vector = require 'vendor.hump.vector'
 
 local MoonWorldScene = WorldScene:extend{}
 
@@ -21,6 +22,8 @@ function MoonWorldScene:init(...)
         sprite = moon_sprite,
         scale = visible / sh,
     }
+    -- 0 to 1, indicating how far around the moon the player is
+    self.turned = 0
 
     -- Shader used for drawing the ground texture bent into a circle
     self.polar_shader = love.graphics.newShader[[
@@ -57,6 +60,16 @@ function MoonWorldScene:init(...)
     self.polar_shader:send('visible', visible)
 end
 
+function MoonWorldScene:load_map(map)
+    MoonWorldScene.__super.load_map(self, map)
+
+    -- Remove the barriers on the left and right
+    -- Slightly invasive, but, whatever
+    self.collider:remove(map.shapes.border[3])
+    self.collider:remove(map.shapes.border[4])
+    -- Add extra barriers extending beyond the left and right edges of the map
+end
+
 function MoonWorldScene:update_camera()
     if self.player then
         local w, h = love.graphics.getDimensions()
@@ -65,16 +78,31 @@ function MoonWorldScene:update_camera()
     end
 end
 
+function MoonWorldScene:update(dt)
+    MoonWorldScene.__super.update(self, dt)
+    self.turned = self.player.pos.x / self.map.width
+
+    -- If any actors left the map, teleport them around to the other side
+    local wrap = Vector(self.map.width, 0)
+    for _, actor in ipairs(self.actors) do
+        if actor.pos.x < 0 then
+            actor:move_to(actor.pos + wrap)
+        elseif actor.pos.x > self.map.width then
+            actor:move_to(actor.pos - wrap)
+        end
+    end
+end
+
 function MoonWorldScene:draw()
     local w, h = love.graphics.getDimensions()
-    self.polar_shader:send('rotation', angle * 6.28)
+    self.polar_shader:send('rotation', self.turned * TAU)
     love.graphics.setShader(self.polar_shader)
     love.graphics.draw(self.moon.sprite, 0, h - self.moon.sprite:getHeight() * self.moon.scale, 0, self.moon.scale, self.moon.scale)
     love.graphics.setShader()
 
     MoonWorldScene.__super.draw(self)
 
-    love.graphics.print(angle, 0, 0)
+    love.graphics.print(self.turned, 0, 0)
 end
 
 function MoonWorldScene:_draw_actors(actors)
