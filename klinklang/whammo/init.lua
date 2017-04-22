@@ -53,9 +53,19 @@ end
 function Collider:slide(shape, attempted, pass_callback)
     local hits = {}
     local collisions = {}
-    local neighbors = self.blockmap:neighbors(shape, attempted:unpack())
-    for neighbor in pairs(neighbors) do
-        local collision = shape:slide_towards(neighbor, attempted)
+    local xxx_wrap = 4096
+    local neighbors = self.blockmap:neighbors(shape, attempted.x, attempted.y, xxx_wrap)
+    for neighbor, wrapped in pairs(neighbors) do
+        local candidate = neighbor
+        if wrapped ~= 0 then
+            candidate = neighbor:clone()
+            if wrapped > 0 then
+                candidate:move(-xxx_wrap, 0)
+            else
+                candidate:move(xxx_wrap, 0)
+            end
+        end
+        local collision = shape:slide_towards(candidate, attempted)
         if collision then
             --print(("< got move %f = %s, touchtype %d, clock %s"):format(collision.amount, collision.movement, collision.touchtype, collision.clock))
             collision.shape = neighbor

@@ -79,7 +79,7 @@ function Blockmap:update(obj)
     self:add(obj)
 end
 
-function Blockmap:neighbors(obj, dx, dy)
+function Blockmap:neighbors(obj, dx, dy, wrap)
     local x0, y0, x1, y1 = obj:extended_bbox(dx, dy)
 
     -- Pad by a tiny bit so we can detect, e.g., two objects touching exactly
@@ -88,16 +88,27 @@ function Blockmap:neighbors(obj, dx, dy)
     local a1, b1 = self:to_block_units(x1 + self.quantum, y1 + self.quantum)
     local ret = {}
     for a = a0, a1 do
-        for b = b0, b1 do
-            -- Get the block manually, to avoid creating one if not necessary
-            local column = self.blocks[a]
-            local block
-            if column then
-                block = column[b]
+        local wrapped = 0
+        if wrap then
+            local new_a = a % (wrap / self.blocksize)
+            if new_a > a then
+                wrapped = 1
+            elseif new_a < a then
+                wrapped = -1
             end
-            if block then
-                for neighbor in pairs(block) do
-                    ret[neighbor] = true
+            a = new_a
+        end
+        -- Get the block manually, to avoid creating one if not necessary
+        local column = self.blocks[a]
+        if column then
+            for b = b0, b1 do
+                local block = column[b]
+                if block then
+                    for neighbor in pairs(block) do
+                        if ret[neighbor] == nil or ret[neighbor] ~= 0 then
+                            ret[neighbor] = wrapped
+                        end
+                    end
                 end
             end
         end
