@@ -55,10 +55,8 @@ function love.draw()
     local radius = (visible + epsilon) / 2 + w * w / (8 * (visible - epsilon))
     local moon_r = radius
     love.graphics.clear()
-    --love.graphics.translate(w/2, h + moon_r * 3/4)
 
     local sw, sh = moon_sprite:getDimensions()
-    --love.graphics.draw(moon_sprite, 0, 0, angle, moon_r * 2 / sw, moon_r * 2 / sh, sw/2, sh/2)
     local moon_scale = visible / sh
     polar_shader:send('rotation', angle * 6.28)
     polar_shader:send('radius', radius)
@@ -66,12 +64,15 @@ function love.draw()
     love.graphics.setShader(polar_shader)
     love.graphics.draw(moon_sprite, 0, h - sh * moon_scale, 0, moon_scale, moon_scale)
     love.graphics.setShader()
+    love.graphics.translate(w/2, h + radius - visible)
 
-    local lexy_h = moon_r + 20
-    local lexy_rel_angle = angle - thing_angle
+    local lexy_h = radius + 20
+    local lexy_rel_angle = angle * 6.28 - thing_angle
     local lw, lh = thing_sprite:getDimensions()
-    love.graphics.draw(thing_sprite, lexy_h * math.cos(lexy_rel_angle), lexy_h * math.sin(lexy_rel_angle), angle, 1, 1, lw/2, lh)
+    -- XXX i suspect the angles are all slightly backwards from what i think they should be...
+    love.graphics.draw(thing_sprite, lexy_h * math.sin(lexy_rel_angle), lexy_h * -math.cos(lexy_rel_angle), lexy_rel_angle, 1, 1, lw/2, lh)
 
+    love.graphics.reset()
     love.graphics.print(angle, 0, 0)
 end
 
