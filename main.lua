@@ -151,41 +151,14 @@ function love.load(args)
 
     Gamestate.registerEvents()
     Gamestate.switch(worldscene)
-
-    -- ld38 stuff
-    thing_sprite = love.graphics.newImage('testsprite.png')
-    thing_angle = 6.28/4
-    angle = 0
 end
 
-angle = 0
 function love.update(dt)
-    angle = worldscene.player.pos.x / worldscene.map.width
     tick.update(dt)
     game.input:update(dt)
 end
 
 function love.draw()
-    local w, h = love.graphics.getDimensions()
-    love.graphics.clear()
-
-    local radius = worldscene.moon.radius
-    --love.graphics.translate(w/2, h + worldscene.moon.radius - worldscene.moon.visible)
-    love.graphics.translate(w/2, worldscene.map.height - h + worldscene.moon.visible - worldscene.moon.epsilon)
-
-    love.graphics.translate(0, -worldscene.map.height + worldscene.moon.epsilon + 2 * (h - worldscene.moon.visible) + radius)
-    local lexy_h = radius + 20
-    lexy_h = -20
-    lexy_h = worldscene.map.height - 20
-    local lexy_rel_angle = thing_angle - angle * 6.28
-    local lexy_x = thing_angle * radius
-    love.graphics.push()
-    love.graphics.rotate(lexy_rel_angle)
-    love.graphics.translate(-lexy_x, -radius-worldscene.map.height)
-    love.graphics.draw(thing_sprite, lexy_x - 16, lexy_h-64)
-    love.graphics.pop()
-
-    love.graphics.reset()
 end
 
 local _previous_size
