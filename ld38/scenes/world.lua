@@ -228,21 +228,8 @@ function MoonWorldScene:init(...)
     self.angel_count = 0
 end
 
-function MoonWorldScene:_schedule_angel_spawn()
-    self.tick:delay(function()
-        if math.random() < 0.25 then
-            local x = math.random(0, self.map.width)
-            self:add_actor(actors_angels.EyeAngel2(Vector(x, 256)))
-        end
-        self:_schedule_angel_spawn()
-    end, 5)
-end
-
 function MoonWorldScene:load_map(map)
     MoonWorldScene.__super.load_map(self, map)
-
-    -- FIXME should really cancel the old tick, if any, but doesn't matter for this game yet
-    self:_schedule_angel_spawn()
 
     -- Remove the barriers on the left and right
     -- Slightly invasive, but, whatever

@@ -1124,6 +1124,18 @@
                  "width":37,
                  "x":3110,
                  "y":445
+                }, 
+                {
+                 "gid":256,
+                 "height":68,
+                 "id":35,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":150,
+                 "x":686,
+                 "y":146
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1132,7 +1144,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":35,
+ "nextobjectid":36,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,
@@ -1473,6 +1485,14 @@
                  "animation flipped":true,
                  "sprite name":"fishball\/default"
                 },
+             "12":
+                {
+                 "sprite name":"spaceship smoke\/1"
+                },
+             "13":
+                {
+                 "sprite name":"spaceship smoke\/2"
+                },
              "16":
                 {
                  "animation flipped":true,
@@ -1519,6 +1539,14 @@
              "0":
                 {
                  "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "12":
+                {
+                 "sprite name":"string"
+                },
+             "13":
+                {
                  "sprite name":"string"
                 },
              "16":
@@ -1607,6 +1635,34 @@
                              "width":0,
                              "x":15.5,
                              "y":18
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "12":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":18,
+                             "y":19
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -3041,6 +3097,86 @@
                 }
             },
          "tilewidth":37
+        }, 
+        {
+         "columns":2,
+         "firstgid":256,
+         "image":"..\/..\/assets\/images\/spaceship.png",
+         "imageheight":68,
+         "imagewidth":300,
+         "margin":0,
+         "name":"spaceship",
+         "spacing":0,
+         "tilecount":2,
+         "tileheight":68,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "actor":"spaceship",
+                 "sprite name":"spaceship\/default"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "actor":"string",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }],
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":84,
+                             "y":35
+                            }, 
+                            {
+                             "height":55,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":118,
+                             "x":24,
+                             "y":7
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                }
+            },
+         "tilewidth":150
         }],
  "tilewidth":32,
  "version":1,

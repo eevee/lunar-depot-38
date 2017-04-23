@@ -160,6 +160,81 @@ local RadioAngel3 = BaseAngel:extend{
 }
 
 
+local SpaceshipSmoke = actors_base.Actor:extend{
+    name = 'spaceship smoke',
+    sprite_name = 'spaceship smoke',
+
+    z = 1,  -- in front of angels
+    opacity = 1,
+}
+
+function SpaceshipSmoke:init(...)
+    SpaceshipSmoke.__super.init(self, ...)
+
+    self.sprite:set_pose("" .. math.random(1, 2))
+    self.velocity = Vector(-16, 0)
+    self.acceleration = Vector(-16, 0)
+
+    worldscene.fluct:to(self, 1, { opacity = 0 })
+    :oncomplete(function()
+        worldscene:remove_actor(self)
+    end)
+end
+
+function SpaceshipSmoke:update(dt)
+    self.velocity = self.velocity + self.acceleration * dt
+    self.pos = self.pos + self.velocity * dt
+
+    SpaceshipSmoke.__super.update(self, dt)
+end
+
+function SpaceshipSmoke:draw()
+    love.graphics.push('all')
+    love.graphics.setColor(255, 255, 255, 255 * self.opacity)
+    SpaceshipSmoke.__super.draw(self)
+    love.graphics.pop()
+end
+
+
+local Spaceship = actors_base.MobileActor:extend{
+    name = 'spaceship',
+    sprite_name = 'spaceship',
+
+    z = 1,  -- in front of angels
+    gravity_multiplier = 0,
+}
+
+function Spaceship:init(...)
+    Spaceship.__super.init(self, ...)
+
+    self.velocity = Vector(256, 0)
+    self:_schedule_angel_spawn()
+    self:_schedule_exhaust()
+end
+
+function Spaceship:blocks()
+    return false
+end
+
+function Spaceship:_schedule_angel_spawn()
+    worldscene.tick:delay(function()
+        if math.random() < 0.25 then
+            local x = math.random(0, worldscene.map.width)
+            worldscene:add_actor(EyeAngel2(self.pos:clone()))
+        end
+        self:_schedule_angel_spawn()
+    end, 5)
+end
+
+function Spaceship:_schedule_exhaust()
+    worldscene.tick:delay(function()
+        worldscene:add_actor(SpaceshipSmoke(self.pos + Vector(math.random(-8, 0), math.random(-16, 16))))
+        self:_schedule_exhaust()
+    end, 0.125)
+end
+
+
+
 return {
     EyeAngel1 = EyeAngel1,
     EyeAngel2 = EyeAngel2,
