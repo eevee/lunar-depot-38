@@ -1088,6 +1088,42 @@
                  "width":0,
                  "x":2320,
                  "y":428
+                }, 
+                {
+                 "gid":217,
+                 "height":128,
+                 "id":32,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":96,
+                 "x":866,
+                 "y":424
+                }, 
+                {
+                 "gid":218,
+                 "height":52,
+                 "id":33,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":70,
+                 "x":3092,
+                 "y":410
+                }, 
+                {
+                 "gid":255,
+                 "height":47,
+                 "id":34,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":37,
+                 "x":3110,
+                 "y":445
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1096,7 +1132,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":32,
+ "nextobjectid":35,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,
@@ -1601,13 +1637,13 @@
                              "y":8
                             }, 
                             {
-                             "height":12,
+                             "height":9,
                              "id":2,
                              "name":"",
                              "rotation":0,
                              "type":"",
                              "visible":true,
-                             "width":9,
+                             "width":8,
                              "x":11,
                              "y":7
                             }],
@@ -1635,7 +1671,19 @@
                      "draworder":"index",
                      "height":0,
                      "name":"",
-                     "objects":[],
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":16,
+                             "y":17
+                            }],
                      "opacity":1,
                      "type":"objectgroup",
                      "visible":true,
@@ -1797,6 +1845,11 @@
                  "animation stops":true,
                  "sprite name":"eye angel 1\/flinch"
                 },
+             "4":
+                {
+                 "animation stops":true,
+                 "sprite name":"eye angel 1\/attack"
+                },
              "8":
                 {
                  "sprite name":"eye angel 1\/walk"
@@ -1813,6 +1866,11 @@
                  "sprite name":"string"
                 },
              "11":
+                {
+                 "animation stops":"bool",
+                 "sprite name":"string"
+                },
+             "4":
                 {
                  "animation stops":"bool",
                  "sprite name":"string"
@@ -1875,6 +1933,22 @@
                          "tileid":12
                         }]
                 },
+             "4":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":4
+                        }, 
+                        {
+                         "duration":150,
+                         "tileid":5
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":6
+                        }]
+                },
              "8":
                 {
                  "animation":[
@@ -1920,9 +1994,18 @@
                  "animation stops":true,
                  "sprite name":"eye angel 2\/flinch"
                 },
+             "17":
+                {
+                 "animation stops":true,
+                 "sprite name":"eye angel 2\/attack"
+                },
              "5":
                 {
                  "sprite name":"eye angel 2\/walk"
+                },
+             "7":
+                {
+                 "sprite name":"eye angel 2\/jump"
                 }
             },
          "tilepropertytypes":
@@ -1940,7 +2023,16 @@
                  "animation stops":"bool",
                  "sprite name":"string"
                 },
+             "17":
+                {
+                 "animation stops":"bool",
+                 "sprite name":"string"
+                },
              "5":
+                {
+                 "sprite name":"string"
+                },
+             "7":
                 {
                  "sprite name":"string"
                 }
@@ -2018,6 +2110,22 @@
                          "tileid":15
                         }]
                 },
+             "17":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":17
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":18
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":19
+                        }]
+                },
              "5":
                 {
                  "animation":[
@@ -2066,9 +2174,18 @@
                 {
                  "sprite name":"eye angel 3\/stand"
                 },
+             "1":
+                {
+                 "animation stops":true,
+                 "sprite name":"eye angel 3\/attack"
+                },
              "13":
                 {
                  "sprite name":"eye angel 3\/walk"
+                },
+             "19":
+                {
+                 "sprite name":"eye angel 3\/jump"
                 },
              "21":
                 {
@@ -2086,7 +2203,16 @@
                 {
                  "sprite name":"string"
                 },
+             "1":
+                {
+                 "animation stops":"bool",
+                 "sprite name":"string"
+                },
              "13":
+                {
+                 "sprite name":"string"
+                },
+             "19":
                 {
                  "sprite name":"string"
                 },
@@ -2141,6 +2267,26 @@
                      "y":0
                     }
                 },
+             "1":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":3
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":4
+                        }]
+                },
              "13":
                 {
                  "animation":[
@@ -2163,6 +2309,18 @@
                         {
                          "duration":100,
                          "tileid":13
+                        }]
+                },
+             "19":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":19
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":20
                         }]
                 },
              "27":
@@ -2209,6 +2367,15 @@
              "4":
                 {
                  "sprite name":"eye angel 4\/flinch"
+                },
+             "8":
+                {
+                 "sprite name":"eye angel 4\/jump"
+                },
+             "9":
+                {
+                 "animation stops":true,
+                 "sprite name":"eye angel 4\/attack"
                 }
             },
          "tilepropertytypes":
@@ -2228,6 +2395,15 @@
                 },
              "4":
                 {
+                 "sprite name":"string"
+                },
+             "8":
+                {
+                 "sprite name":"string"
+                },
+             "9":
+                {
+                 "animation stops":"bool",
                  "sprite name":"string"
                 }
             },
@@ -2337,6 +2513,30 @@
                          "duration":100,
                          "tileid":7
                         }]
+                },
+             "9":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":8
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":9
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":10
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":11
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":12
+                        }]
                 }
             },
          "tilewidth":80
@@ -2364,6 +2564,17 @@
                  "animation flipped":true,
                  "sprite name":"radio angel 3\/walk"
                 },
+             "13":
+                {
+                 "animation flipped":true,
+                 "sprite name":"radio angel 3\/attack"
+                },
+             "21":
+                {
+                 "animation flipped":true,
+                 "animation stops":true,
+                 "sprite name":"radio angel 3\/jump"
+                },
              "30":
                 {
                  "animation flipped":true,
@@ -2386,6 +2597,17 @@
              "1":
                 {
                  "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "13":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "21":
+                {
+                 "animation flipped":"bool",
+                 "animation stops":"bool",
                  "sprite name":"string"
                 },
              "30":
@@ -2457,6 +2679,22 @@
                          "tileid":0
                         }]
                 },
+             "21":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":21
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":22
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":23
+                        }]
+                },
              "30":
                 {
                  "animation":[
@@ -2499,6 +2737,308 @@
                 }
             },
          "tilewidth":127
+        }, 
+        {
+         "columns":6,
+         "firstgid":212,
+         "image":"..\/..\/assets\/images\/doorsprite.png",
+         "imageheight":128,
+         "imagewidth":576,
+         "margin":0,
+         "name":"doorsprite",
+         "spacing":0,
+         "tilecount":6,
+         "tileheight":128,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "sprite name":"door planks\/0"
+                },
+             "1":
+                {
+                 "sprite name":"door planks\/1"
+                },
+             "2":
+                {
+                 "sprite name":"door planks\/2"
+                },
+             "3":
+                {
+                 "sprite name":"door planks\/3"
+                },
+             "4":
+                {
+                 "sprite name":"door planks\/4"
+                },
+             "5":
+                {
+                 "actor":"door planks",
+                 "sprite name":"door planks\/5"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "sprite name":"string"
+                },
+             "1":
+                {
+                 "sprite name":"string"
+                },
+             "2":
+                {
+                 "sprite name":"string"
+                },
+             "3":
+                {
+                 "sprite name":"string"
+                },
+             "4":
+                {
+                 "sprite name":"string"
+                },
+             "5":
+                {
+                 "actor":"string",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":48,
+                             "y":112
+                            }, 
+                            {
+                             "height":120,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":88,
+                             "x":4,
+                             "y":4
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                }
+            },
+         "tilewidth":96
+        }, 
+        {
+         "columns":37,
+         "firstgid":218,
+         "image":"..\/..\/assets\/images\/speckle.png",
+         "imageheight":52,
+         "imagewidth":2590,
+         "margin":0,
+         "name":"speckle",
+         "spacing":0,
+         "tilecount":37,
+         "tileheight":52,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "actor":"speckle",
+                 "animation flipped":true,
+                 "sprite name":"speckle\/paint"
+                },
+             "4":
+                {
+                 "animation flipped":true,
+                 "sprite name":"speckle\/annoyed"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "actor":"string",
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "4":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "animation":[
+                        {
+                         "duration":500,
+                         "tileid":0
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":3
+                        }],
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":36,
+                             "y":49
+                            }, 
+                            {
+                             "height":50,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":68,
+                             "x":1,
+                             "y":1
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "4":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":4
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":5
+                        }]
+                }
+            },
+         "tilewidth":70
+        }, 
+        {
+         "columns":1,
+         "firstgid":255,
+         "image":"..\/..\/assets\/images\/ladder.png",
+         "imageheight":47,
+         "imagewidth":37,
+         "margin":0,
+         "name":"ladder",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":47,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "actor":"ladder",
+                 "sprite name":"ladder\/default"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "actor":"string",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":20,
+                             "y":42
+                            }, 
+                            {
+                             "height":35,
+                             "id":2,
+                             "name":"",
+                             "properties":
+                                {
+                                 "one-way platform":true
+                                },
+                             "propertytypes":
+                                {
+                                 "one-way platform":"bool"
+                                },
+                             "rotation":0,
+                             "type":"collision",
+                             "visible":true,
+                             "width":20,
+                             "x":8,
+                             "y":7
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                }
+            },
+         "tilewidth":37
         }],
  "tilewidth":32,
  "version":1,

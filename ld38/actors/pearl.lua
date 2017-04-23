@@ -12,7 +12,7 @@ local FishBall = actors_base.MobileActor:extend{
     gravity_multiplier = 0,
 
     is_projectile = true,
-    is_swimming_away = false,
+    destroyed_state = 0,
 }
 
 function FishBall:init(facing_left, ...)
@@ -31,6 +31,10 @@ function FishBall:blocks()
 end
 
 function FishBall:on_collide_with(actor, collision)
+    if self.destroyed_state == 1 then
+        return true
+    end
+
     if actor and (actor.is_projectile or actor.is_player) then
         return true
     end
@@ -44,24 +48,40 @@ function FishBall:on_collide_with(actor, collision)
     end
 
     -- If we already popped, then just vanish the fish
-    if self.is_swimming_away then
+    if self.destroyed_state == 2 then
         worldscene:remove_actor(self)
+        return true
     end
 
     -- Deal with hitting something
     if actor and actor.damage then
         actor:damage(1, 'stun', self)
     end
-    self.velocity.x = 0
-    self.velocity.y = 0
-    self.sprite:set_pose('hit', function()
-        self.sprite:set_pose('swim away')
-        self.is_swimming_away = true
-        self.velocity.y = -192
-    end)
+    self:_pop()
     return false
 end
 
+function FishBall:_pop()
+    if self.destroyed_state ~= 0 then
+        return
+    end
+    self.velocity.x = 0
+    self.velocity.y = 0
+    self.destroyed_state = 1
+    self.sprite:set_pose('hit', function()
+        self.sprite:set_pose('swim away')
+        self.velocity.y = -192
+        self.destroyed_state = 2
+    end)
+end
+
+function FishBall:update(dt)
+    FishBall.__super.update(self, dt)
+
+    if self.destroyed_state == 0 and self.timer > 10 then
+        self:_pop()
+    end
+end
 
 -- Splash from a paint bucket
 local PaintSplatter = actors_base.MobileActor:extend{
@@ -69,12 +89,27 @@ local PaintSplatter = actors_base.MobileActor:extend{
     sprite_name = 'paint splatter',
 
     is_projectile = true,
+    destroyed_state = 0,
+
+    -- chosen to match the rainbow lake
+    PAINT_COLORS = {
+        {255, 58, 141},
+        {154, 134, 255},
+        {60, 201, 228},
+        {46, 244, 195},
+        {181, 255, 170},
+        {234, 255, 170},
+        {255, 213, 170},
+        {246, 139, 137},
+    },
+    PAINT_COLOR_INDEX = 1,
+    color = nil,
 }
 
 function PaintSplatter:init(shooter, ...)
     PaintSplatter.__super.init(self, ...)
 
-    local dv = Vector(32, 0)
+    local dv = Vector(32, -32)
     if shooter.facing_left then
         dv.x = -dv.x
     end
@@ -83,6 +118,12 @@ function PaintSplatter:init(shooter, ...)
     if self.velocity.x < 0 then
         self.sprite:set_facing_right(false)
     end
+
+    self.color = PaintSplatter.PAINT_COLORS[PaintSplatter.PAINT_COLOR_INDEX]
+    PaintSplatter.PAINT_COLOR_INDEX = PaintSplatter.PAINT_COLOR_INDEX + 1
+    if PaintSplatter.PAINT_COLOR_INDEX > #PaintSplatter.PAINT_COLORS then
+        PaintSplatter.PAINT_COLOR_INDEX = 1
+    end
 end
 
 function PaintSplatter:blocks()
@@ -90,6 +131,10 @@ function PaintSplatter:blocks()
 end
 
 function PaintSplatter:on_collide_with(actor, collision)
+    if self.destroyed_state == 2 then
+        return
+    end
+
     if actor and (actor.is_projectile or actor.is_player) then
         return true
     end
@@ -103,17 +148,40 @@ function PaintSplatter:on_collide_with(actor, collision)
     end
 
     -- Deal with hitting something
-    -- FIXME this doesn't end collision, so it can hit multiple things at once
+    -- FIXME this doesn't end collision, so it can hit multiple things at once!
+    -- same problem with angels, really.  hmm.
     if actor and actor.damage then
         actor:damage(1000, 'paint', self)
+        self.destroyed_state = 2
+    else
+        -- If we hit geometry, let us keep colliding in case we also hit an
+        -- angel this tic
+        self.destroyed_state = 1
     end
     self.velocity.x = 0
     self.velocity.y = 0
     self.gravity_multiplier = 0
+    -- FIXME maybe i want to remove it from collision?  noblockmap?
     self.sprite:set_pose('hit', function()
         worldscene:remove_actor(self)
     end)
     return false
+end
+
+function PaintSplatter:update(dt)
+    PaintSplatter.__super.update(self, dt)
+
+    -- Only become completely destroyed at the end of an update
+    if self.destroyed_state == 1 then
+        self.destroyed_state = 2
+    end
+end
+
+function PaintSplatter:draw()
+    love.graphics.push('all')
+    love.graphics.setColor(self.color)
+    PaintSplatter.__super.draw(self)
+    love.graphics.pop()
 end
 
 
@@ -149,6 +217,10 @@ function Pearl:decide_shoot()
 end
 
 function Pearl:switch_weapons()
+    if self.decision_shoot > 0 then
+        return
+    end
+
     if self.current_weapon == 'gun' then
         self.current_weapon = 'bucket'
     else
