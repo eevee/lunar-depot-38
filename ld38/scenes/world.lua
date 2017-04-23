@@ -1,6 +1,7 @@
 local WorldScene = require 'klinklang.scenes.world'
 local Vector = require 'vendor.hump.vector'
 
+local actors_angels = require 'ld38.actors.angels'
 local Pearl = require 'ld38.actors.pearl'
 
 local MoonWorldScene = WorldScene:extend{}
@@ -52,12 +53,9 @@ function MoonWorldScene:init(...)
             // the vertical, not horizontal!
             float angle = mod(rotation + atan(dx, -dy), 6.283);
 
-            // FIXME scale to tex width, shift to center...?
             vec2 new_coords = vec2(
                 angle / 6.283,
                 (radius - dist) / visible);
-
-            //return vec4(new_coords.x, new_coords.y, 0.0, 1.0);
             vec4 tex_color = Texel(texture, new_coords);
             return tex_color * color;
         }
@@ -65,16 +63,62 @@ function MoonWorldScene:init(...)
     self.polar_shader:send('rotation', 0)
     self.polar_shader:send('radius', radius)
     self.polar_shader:send('visible', visible)
+
+    -- Shader used for desaturating the world depending on the number of angels
+    self.desaturation_shader = love.graphics.newShader[[
+        extern float amount;  // 0 to 1
+
+        vec4 effect(vec4 color, Image texture, vec2 tex_coords, vec2 screen_coords) {
+            vec4 tex_color = Texel(texture, tex_coords);
+            float gray = (tex_color.r + tex_color.g + tex_color.b) / 3;
+            vec3 desaturated = mix(tex_color.rgb, vec3(gray), amount);
+            return vec4(desaturated, tex_color.a) * color;
+        }
+    ]]
+
+    self.angel_count = 0
+end
+
+function MoonWorldScene:_schedule_angel_spawn()
+    self.tick:delay(function()
+        if math.random() < 0.25 then
+            local x = math.random(0, self.map.width)
+            self:add_actor(actors_angels.EyeAngel2(Vector(x, 256)))
+        end
+        self:_schedule_angel_spawn()
+    end, 5)
 end
 
 function MoonWorldScene:load_map(map)
     MoonWorldScene.__super.load_map(self, map)
+
+    -- FIXME should really cancel the old tick, if any, but doesn't matter for this game yet
+    self:_schedule_angel_spawn()
 
     -- Remove the barriers on the left and right
     -- Slightly invasive, but, whatever
     self.collider:remove(map.shapes.border[3])
     self.collider:remove(map.shapes.border[4])
     -- Add extra barriers extending beyond the left and right edges of the map
+end
+
+function MoonWorldScene:add_actor(actor)
+    if actor.is_angel then
+        self.angel_count = self.angel_count + 1
+        self.desaturation_shader:send('amount', self.angel_count / (self.angel_count + 9))
+        print(self.angel_count, self.angel_count / (self.angel_count + 9))
+    end
+
+    MoonWorldScene.__super.add_actor(self, actor)
+end
+
+function MoonWorldScene:remove_actor(actor)
+    if actor.is_angel then
+        self.angel_count = self.angel_count - 1
+        self.desaturation_shader:send('amount', self.angel_count / (self.angel_count + 9))
+    end
+
+    MoonWorldScene.__super.remove_actor(self, actor)
 end
 
 function MoonWorldScene:update_camera()
@@ -105,7 +149,9 @@ function MoonWorldScene:update(dt)
 end
 
 function MoonWorldScene:draw()
-    local w, h = love.graphics.getDimensions()
+    local w, h = self.canvas:getDimensions()
+    love.graphics.setCanvas(self.canvas)
+    love.graphics.clear()
     love.graphics.push('all')
     love.graphics.setColor(74, 72, 98)
     love.graphics.rectangle('fill', 0, 0, w, h)
@@ -115,10 +161,22 @@ function MoonWorldScene:draw()
     love.graphics.setShader(self.polar_shader)
     love.graphics.draw(self.moon.sprite, 0, h - self.moon.sprite:getHeight() * self.moon.scale, 0, self.moon.scale, self.moon.scale)
     love.graphics.setShader()
+    love.graphics.setCanvas()
+
+    -- Draw the background to the screen separately, since WorldScene:draw will
+    -- clear it (boo)
+    self:_draw_final_canvas()
 
     MoonWorldScene.__super.draw(self)
 
     love.graphics.print(self.turned, 0, 0)
+    love.graphics.print(love.timer.getFPS(), 0, 16)
+end
+
+function MoonWorldScene:_draw_final_canvas()
+    love.graphics.setShader(self.desaturation_shader)
+    MoonWorldScene.__super._draw_final_canvas(self)
+    love.graphics.setShader()
 end
 
 function MoonWorldScene:_draw_actors(actors)
