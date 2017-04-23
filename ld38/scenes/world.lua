@@ -64,6 +64,155 @@ function MoonWorldScene:init(...)
     self.polar_shader:send('radius', radius)
     self.polar_shader:send('visible', visible)
 
+    -- Shader used for drawing the ground texture bent into a circle
+    self.polar_background_shader = love.graphics.newShader[[
+        extern float rotation;
+        extern float radius;
+        extern float visible;
+        extern float surface;
+
+        // Background layers
+        // base sky -- this is the texture passed in
+        extern Image gradient_base;     // lighten
+        extern Image top_sky;           // normal
+        extern Image top_sky2;          // normal
+        extern Image sky_exclusion;     // exclusion
+        extern Image big_stars;         // soft light
+        extern Image stars;             // hard light
+
+        // Parallax distance (compounded for each layer)
+        extern float parallax;
+
+        vec4 blend_normal(vec4 bottom, vec4 top) {
+            if (top.a == 0.0) {
+                return bottom;
+            }
+            if (bottom.a == 0.0) {
+                return top;
+            }
+
+            float alpha = bottom.a + top.a - bottom.a * top.a;
+            return vec4(mix(bottom.rgb, top.rgb, top.a / alpha), alpha);
+        }
+
+        float blend_soft_light_channel(float bottom, float top) {
+            if (top <= 0.5) {
+                return bottom - (1.0 * 2.0 * top) * bottom * (1.0 - bottom);
+            }
+            else {
+                float d;
+                if (bottom <= 0.25) {
+                    d = ((16.0 * bottom - 12.0) * bottom + 4.0) * bottom;
+                }
+                else {
+                    d = sqrt(bottom);
+                }
+
+                return bottom + (2.0 * top - 1.0) * (d - bottom);
+            }
+        }
+        vec4 blend_soft_light(vec4 bottom, vec4 top) {
+            vec4 blended_top = vec4(
+                blend_soft_light_channel(bottom.r, top.r),
+                blend_soft_light_channel(bottom.g, top.g),
+                blend_soft_light_channel(bottom.b, top.b),
+                top.a);
+            return blend_normal(bottom, blended_top);
+        }
+
+        float blend_hard_light_channel(float bottom, float top) {
+            if (top < 0.5) {
+                top = top * 2.0;
+                return bottom * top;
+            }
+            else {
+                top = top * 2.0 - 1.0;
+                return bottom + top - bottom * top;
+            }
+        }
+        vec4 blend_hard_light(vec4 bottom, vec4 top) {
+            vec4 blended_top = vec4(
+                blend_hard_light_channel(bottom.r, top.r),
+                blend_hard_light_channel(bottom.g, top.g),
+                blend_hard_light_channel(bottom.b, top.b),
+                top.a);
+            return blend_normal(bottom, blended_top);
+        }
+
+        vec4 effect(vec4 color, Image texture, vec2 tex_coords, vec2 screen_coords) {
+            // FIXME this should probably not be based purely on the screen coordinates...?  right?  but what does it even mean to move the moon elsewhere?
+            vec2 center = vec2(love_ScreenSize.x / 2.0, love_ScreenSize.y - visible + radius);
+            float dx = screen_coords.x - center.x;
+            float dy = screen_coords.y - center.y;
+
+            float dist = length(vec2(dx, dy));
+            // Note that x and y are switched because we want the angle from
+            // the vertical, not horizontal!
+            float angle = rotation + atan(dx, -dy);
+
+            vec2 new_coords = vec2(
+                angle / 6.283,
+                1.0 - (dist - (radius - visible)) / love_ScreenSize.y);
+            if (dist > (radius - surface)) {
+                vec2 orig_coords = vec2(rotation / 6.283 + (screen_coords.x / love_ScreenSize.x - 0.5) * 800.0 / 4096.0, screen_coords.y / love_ScreenSize.y);
+                float q = (dist - (radius - surface)) / (love_ScreenSize.y - (visible - surface));
+                new_coords = mix(new_coords, orig_coords, mix(0.75, 1.0, q));
+            }
+            //return vec4(new_coords.x, new_coords.x, new_coords.x, 1.0);
+            new_coords = mod(new_coords, 1.0);
+            vec4 pixel = Texel(texture, new_coords);
+
+            vec4 next_pixel;
+            float alpha;
+            // gradient_base -- lighten
+            new_coords.x = mod(new_coords.x - parallax, 1.0);
+            next_pixel = Texel(gradient_base, new_coords);
+            next_pixel = vec4(max(pixel.rgb, next_pixel.rgb), next_pixel.a);
+            pixel = blend_normal(pixel, next_pixel);
+
+            // top_sky -- normal
+            new_coords.x = mod(new_coords.x - parallax, 1.0);
+            next_pixel = Texel(top_sky, new_coords);
+            pixel = blend_normal(pixel, next_pixel);
+
+            // top_sky2 -- normal
+            new_coords.x = mod(new_coords.x - parallax, 1.0);
+            next_pixel = Texel(top_sky2, new_coords);
+            pixel = blend_normal(pixel, next_pixel);
+
+            // sky_exclusion -- exclusion (difference squared)
+            // doesn't get parallax since it's just a solid color, no texture
+            next_pixel = Texel(sky_exclusion, new_coords);
+            next_pixel = vec4(pixel.rgb + next_pixel.rgb - 2 * pixel.rgb * next_pixel.rgb, next_pixel.a);
+            pixel = blend_normal(pixel, next_pixel);
+
+            // big_stars -- soft light
+            new_coords.x = mod(new_coords.x - parallax, 1.0);
+            next_pixel = Texel(big_stars, new_coords);
+            pixel = blend_soft_light(pixel, next_pixel);
+
+            // stars -- hard light
+            new_coords.x = mod(new_coords.x - parallax, 1.0);
+            next_pixel = Texel(stars, new_coords);
+            pixel = blend_hard_light(pixel, next_pixel);
+
+            return pixel * color;
+        }
+    ]]
+    self.polar_background_shader:send('rotation', 0)
+    self.polar_background_shader:send('radius', radius)
+    self.polar_background_shader:send('visible', visible)
+    self.polar_background_shader:send('surface', self.moon.surface)
+    self.background_image_base = love.graphics.newImage('assets/images/background-base.png')
+    self.polar_background_shader:send('gradient_base', love.graphics.newImage('assets/images/background-gradient-base.png'))
+    self.polar_background_shader:send('top_sky', love.graphics.newImage('assets/images/background-top-sky.png'))
+    self.polar_background_shader:send('top_sky2', love.graphics.newImage('assets/images/background-top-sky2.png'))
+    self.polar_background_shader:send('sky_exclusion', love.graphics.newImage('assets/images/background-sky-exclusion.png'))
+    self.polar_background_shader:send('big_stars', love.graphics.newImage('assets/images/background-big-stars.png'))
+    self.polar_background_shader:send('stars', love.graphics.newImage('assets/images/background-stars.png'))
+    self.parallax = 0
+    self.polar_background_shader:send('parallax', self.parallax)
+
     -- Shader used for desaturating the world depending on the number of angels
     self.desaturation_shader = love.graphics.newShader[[
         extern float amount;  // 0 to 1
@@ -137,6 +286,9 @@ function MoonWorldScene:update(dt)
     MoonWorldScene.__super.update(self, dt)
     self.turned = self.player.pos.x / self.map.width
 
+    self.parallax = (self.parallax + dt / 2048) % 1
+    self.polar_background_shader:send('parallax', self.parallax)
+
     -- If any actors left the map, teleport them around to the other side
     local wrap = Vector(self.map.width, 0)
     for _, actor in ipairs(self.actors) do
@@ -152,11 +304,12 @@ function MoonWorldScene:draw()
     local w, h = self.canvas:getDimensions()
     love.graphics.setCanvas(self.canvas)
     love.graphics.clear()
-    love.graphics.push('all')
-    love.graphics.setColor(74, 72, 98)
-    love.graphics.rectangle('fill', 0, 0, w, h)
-    love.graphics.pop()
 
+    -- Draw complicated ass fucking background
+    self.polar_background_shader:send('rotation', self.turned * TAU)
+    love.graphics.setShader(self.polar_background_shader)
+    love.graphics.draw(self.background_image_base, 0, 0)
+    -- And moon ground thing
     self.polar_shader:send('rotation', self.turned * TAU)
     love.graphics.setShader(self.polar_shader)
     love.graphics.draw(self.moon.sprite, 0, h - self.moon.sprite:getHeight() * self.moon.scale, 0, self.moon.scale, self.moon.scale)
