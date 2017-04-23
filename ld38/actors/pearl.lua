@@ -16,7 +16,7 @@ function FishBall:init(facing_left, ...)
 
     self.facing_left = facing_left
     self.sprite:set_facing_right(not facing_left)
-    self.velocity = Vector(256, 0)
+    self.velocity = Vector(384, 0)
     if facing_left then
         self.velocity.x = -self.velocity.x
     end
@@ -27,16 +27,20 @@ function FishBall:blocks()
 end
 
 -- FIXME can't collide with other pellets or pearl
-function FishBall:on_collide_with(actor, collision)
-    if actor and actor:isa(FishBall) then
+function FishBall:on_collide_with(actor, ...)
+    if actor and (actor:isa(FishBall) or actor.is_player) then
         return true
     end
 
-    local passable = FishBall.__super.on_collide_with(self, actor, collision)
+    local passable = FishBall.__super.on_collide_with(self, actor, ...)
     if passable then
         return true
     end
 
+    -- Deal with hitting something
+    if actor and actor.damage then
+        actor:damage(1, 'stun', self)
+    end
     self.velocity.x = 0
     self.velocity.y = 0
     self.sprite:set_pose('hit', function()
@@ -49,7 +53,7 @@ end
 local Pearl = Player:extend{
     --name = 'pearl',
     sprite_name = 'pearl',
-    jumpvel = actors_base.get_jump_velocity(96),
+    jumpvel = actors_base.get_jump_velocity(128),
     max_slope = Vector(2, -1),
 
     decision_shoot = 0,

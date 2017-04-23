@@ -6,6 +6,7 @@ local actors_base = require 'klinklang.actors.base'
 local BaseAngel = actors_base.SentientActor:extend{
     max_slope = Vector(16, -1),
 
+    is_angel = true,
     is_critter = true,
 }
 
@@ -15,12 +16,33 @@ function BaseAngel:init(...)
     self:decide_walk(1)
 end
 
+function BaseAngel:blocks()
+    if self.is_locked then
+        return false
+    end
+
+    return true
+end
+
 function BaseAngel:on_collide_with(actor, ...)
     if actor and actor.is_critter then
         return true
     end
 
     return BaseAngel.__super.on_collide_with(self, actor, ...)
+end
+
+function BaseAngel:damage(amount, kind, source)
+    if self.is_locked then
+        return
+    end
+
+    self.is_locked = true
+    self.sprite:set_pose('flinch')
+    worldscene.tick:delay(function()
+        self.is_locked = false
+        self:decide_walk(1)
+    end, 5)
 end
 
 
