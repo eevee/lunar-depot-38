@@ -261,10 +261,10 @@ end
 
 function WorldScene:draw()
     local w, h = game:getDimensions()
-    love.graphics.setCanvas(self.canvas)
-    love.graphics.clear()
 
     love.graphics.push('all')
+    love.graphics.setCanvas(self.canvas)
+    love.graphics.clear()
     love.graphics.translate(-self.camera.x, -self.camera.y)
 
     -- TODO later this can expand into drawing all the layers automatically
@@ -361,12 +361,15 @@ function WorldScene:draw()
 
     love.graphics.pop()
 
-    love.graphics.setCanvas()
-    love.graphics.draw(self.canvas, 0, 0, 0, self.scale, self.scale)
+    self:_draw_final_canvas()
 
     if game.debug and game.debug_twiddles.show_blockmap then
         self:_draw_blockmap()
     end
+end
+
+function WorldScene:_draw_final_canvas()
+    love.graphics.draw(self.canvas, 0, 0, 0, self.scale, self.scale)
 end
 
 function WorldScene:_draw_actors(actors)
