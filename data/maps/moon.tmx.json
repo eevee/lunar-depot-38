@@ -1104,11 +1104,11 @@
         {
          "columns":25,
          "firstgid":1,
-         "image":"..\/..\/assets\/images\/pearl.png",
+         "image":"..\/..\/assets\/images\/pearl-gun.png",
          "imageheight":64,
          "imagewidth":1600,
          "margin":0,
-         "name":"pearl",
+         "name":"pearl-gun",
          "spacing":0,
          "tilecount":25,
          "tileheight":64,
@@ -1117,28 +1117,28 @@
              "0":
                 {
                  "animation flipped":true,
-                 "sprite name":"pearl\/stand"
+                 "sprite name":"pearl: gun\/stand"
                 },
              "1":
                 {
                  "animation flipped":true,
-                 "sprite name":"pearl\/walk"
+                 "sprite name":"pearl: gun\/walk"
                 },
-             "10":
+             "12":
                 {
                  "animation flipped":true,
-                 "sprite name":"pearl\/jump"
+                 "sprite name":"pearl: gun\/jump"
                 },
              "17":
                 {
                  "animation flipped":true,
-                 "sprite name":"pearl\/fall"
+                 "sprite name":"pearl: gun\/fall"
                 },
              "3":
                 {
                  "animation flipped":true,
                  "animation stops":true,
-                 "sprite name":"pearl\/shoot"
+                 "sprite name":"pearl: gun\/shoot"
                 }
             },
          "tilepropertytypes":
@@ -1153,7 +1153,7 @@
                  "animation flipped":"bool",
                  "sprite name":"string"
                 },
-             "10":
+             "12":
                 {
                  "animation flipped":"bool",
                  "sprite name":"string"
@@ -1231,19 +1231,15 @@
                 {
                  "animation":[
                         {
-                         "duration":50,
-                         "tileid":3
-                        }, 
-                        {
-                         "duration":50,
+                         "duration":100,
                          "tileid":4
                         }, 
                         {
-                         "duration":50,
+                         "duration":75,
                          "tileid":5
                         }, 
                         {
-                         "duration":50,
+                         "duration":75,
                          "tileid":6
                         }]
                 },
@@ -1267,15 +1263,172 @@
          "tilewidth":64
         }, 
         {
-         "columns":12,
+         "columns":25,
          "firstgid":26,
+         "image":"..\/..\/assets\/images\/pearl-bucket.png",
+         "imageheight":64,
+         "imagewidth":1600,
+         "margin":0,
+         "name":"pearl-bucket",
+         "spacing":0,
+         "tilecount":25,
+         "tileheight":64,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl: bucket\/stand"
+                },
+             "1":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl: bucket\/walk"
+                },
+             "12":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl: bucket\/jump"
+                },
+             "17":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl: bucket\/fall"
+                },
+             "3":
+                {
+                 "animation flipped":true,
+                 "animation stops":true,
+                 "sprite name":"pearl: bucket\/shoot"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "1":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "12":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "17":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "3":
+                {
+                 "animation flipped":"bool",
+                 "animation stops":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":24,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":16,
+                             "x":24,
+                             "y":24
+                            }, 
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":32,
+                             "y":48
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "1":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }]
+                },
+             "3":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":4
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":5
+                        }]
+                },
+             "7":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                }
+            },
+         "tilewidth":64
+        }, 
+        {
+         "columns":16,
+         "firstgid":51,
          "image":"..\/..\/assets\/images\/fishball.png",
-         "imageheight":36,
-         "imagewidth":432,
+         "imageheight":72,
+         "imagewidth":576,
          "margin":0,
          "name":"fishball",
          "spacing":0,
-         "tilecount":12,
+         "tilecount":32,
          "tileheight":36,
          "tileproperties":
             {
@@ -1283,6 +1436,34 @@
                 {
                  "animation flipped":true,
                  "sprite name":"fishball\/default"
+                },
+             "16":
+                {
+                 "animation flipped":true,
+                 "sprite name":"paint splatter\/default"
+                },
+             "17":
+                {
+                 "animation flipped":true,
+                 "animation stops":true,
+                 "sprite name":"paint splatter\/hit"
+                },
+             "19":
+                {
+                 "animation flipped":true,
+                 "animation stops":true,
+                 "sprite name":"fishball big\/hit"
+                },
+             "23":
+                {
+                 "animation flipped":true,
+                 "animation loops to":2,
+                 "sprite name":"fishball big\/swim away"
+                },
+             "28":
+                {
+                 "animation flipped":true,
+                 "sprite name":"fishball big\/default"
                 },
              "3":
                 {
@@ -1300,6 +1481,34 @@
          "tilepropertytypes":
             {
              "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "16":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "17":
+                {
+                 "animation flipped":"bool",
+                 "animation stops":"bool",
+                 "sprite name":"string"
+                },
+             "19":
+                {
+                 "animation flipped":"bool",
+                 "animation stops":"bool",
+                 "sprite name":"string"
+                },
+             "23":
+                {
+                 "animation flipped":"bool",
+                 "animation loops to":"int",
+                 "sprite name":"string"
+                },
+             "28":
                 {
                  "animation flipped":"bool",
                  "sprite name":"string"
@@ -1371,6 +1580,150 @@
                      "y":0
                     }
                 },
+             "16":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":19,
+                             "y":8
+                            }, 
+                            {
+                             "height":12,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":9,
+                             "x":11,
+                             "y":7
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "17":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":17
+                        }, 
+                        {
+                         "duration":500,
+                         "tileid":18
+                        }],
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "19":
+                {
+                 "animation":[
+                        {
+                         "duration":50,
+                         "tileid":19
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":20
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":21
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":22
+                        }],
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":12,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":12,
+                             "x":12,
+                             "y":13
+                            }, 
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":18,
+                             "y":19
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "23":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":23
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":24
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":25
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":26
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":27
+                        }]
+                },
              "3":
                 {
                  "animation":[
@@ -1420,7 +1773,7 @@
         }, 
         {
          "columns":14,
-         "firstgid":38,
+         "firstgid":83,
          "image":"..\/..\/assets\/images\/eyeangel1.png",
          "imageheight":80,
          "imagewidth":1120,
@@ -1543,7 +1896,7 @@
         }, 
         {
          "columns":20,
-         "firstgid":52,
+         "firstgid":97,
          "image":"..\/..\/assets\/images\/eyeangel2.png",
          "imageheight":92,
          "imagewidth":1840,
@@ -1698,7 +2051,7 @@
         }, 
         {
          "columns":31,
-         "firstgid":72,
+         "firstgid":117,
          "image":"..\/..\/assets\/images\/eyeangel3.png",
          "imageheight":120,
          "imagewidth":3720,
@@ -1829,7 +2182,7 @@
         }, 
         {
          "columns":19,
-         "firstgid":103,
+         "firstgid":148,
          "image":"..\/..\/assets\/images\/eyeangel4.png",
          "imageheight":160,
          "imagewidth":1520,
@@ -1990,7 +2343,7 @@
         }, 
         {
          "columns":45,
-         "firstgid":122,
+         "firstgid":167,
          "image":"..\/..\/assets\/images\/radioangelno3.png",
          "imageheight":142,
          "imagewidth":5715,

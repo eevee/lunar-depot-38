@@ -282,6 +282,9 @@ function MoonWorldScene:update(dt)
     if game.input:down('shoot') then
         self.player:decide_shoot()
     end
+    if game.input:pressed('switch_weapon') then
+        self.player:switch_weapons()
+    end
 
     MoonWorldScene.__super.update(self, dt)
     self.turned = self.player.pos.x / self.map.width

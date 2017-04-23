@@ -33,16 +33,27 @@ function BaseAngel:on_collide_with(actor, ...)
 end
 
 function BaseAngel:damage(amount, kind, source)
-    if self.is_locked then
-        return
-    end
+    if kind == 'stun' then
+        if self.is_locked then
+            -- Already stunned
+            return
+        end
 
-    self.is_locked = true
-    self.sprite:set_pose('flinch')
-    worldscene.tick:delay(function()
-        self.is_locked = false
-        self:decide_walk(1)
-    end, 5)
+        self.is_locked = true
+        self.sprite:set_pose('flinch')
+        worldscene.tick:delay(function()
+            self.is_locked = false
+            self:decide_walk(1)
+        end, 5)
+    elseif kind == 'paint' then
+        if not self.is_locked then
+            -- No effect if not stunned
+            return
+        end
+
+        -- Destroy us
+        worldscene:remove_actor(self)
+    end
 end
 
 

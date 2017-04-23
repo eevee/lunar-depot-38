@@ -137,6 +137,7 @@ function love.load(args)
         jump = {'key:space', 'button:a'},
         use = {'sc:e', 'button:x'},
         shoot = {'sc:f', 'button:b'},
+        switch_weapon = {'sc:q', 'button:y'},
 
         accept = {'sc:e', 'sc:space', 'button:a'},
     }
