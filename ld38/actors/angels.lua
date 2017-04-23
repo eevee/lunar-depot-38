@@ -3,14 +3,22 @@ local Vector = require 'vendor.hump.vector'
 local actors_base = require 'klinklang.actors.base'
 
 
-local function _modular_distance(a, b, base)
+local function modular_distance(a, b, base)
     local d = b - a
     if d > base / 2 then
-        d = d + base
-    elseif d < -base / 2 then
         d = d - base
+    elseif d < -base / 2 then
+        d = d + base
     end
     return d
+end
+
+local function play_positional_sound(sound, source)
+    sound = sound:clone()
+    local player_pos = worldscene.player.pos
+    local dx = modular_distance(source.pos.x, player_pos.x, worldscene.map.width)
+    sound:setVolume(0.25 + 0.5 * (1 - math.abs(dx) / (worldscene.map.width / 2)))
+    sound:play()
 end
 
 local BaseAngel = actors_base.SentientActor:extend{
@@ -31,7 +39,7 @@ function BaseAngel:init(...)
     local mw = worldscene.map.width
     for _, actor in ipairs(worldscene.actors) do
         if actor.is_angel_target then
-            local dx = _modular_distance(self.pos.x, actor.pos.x, mw)
+            local dx = modular_distance(self.pos.x, actor.pos.x, mw)
             if math.abs(dx) < nearest_target_x then
                 nearest_target_x = math.abs(dx)
                 self.ptrs.target = actor
@@ -72,6 +80,7 @@ function BaseAngel:on_collide_with(actor, ...)
                 self.state = 'chase'
             end, 0.5)
         end)
+        play_positional_sound(game.resource_manager:get('assets/sfx/angelhit1.ogg'), self)
     end
 
     return BaseAngel.__super.on_collide_with(self, actor, ...)
@@ -104,6 +113,7 @@ function BaseAngel:damage(amount, kind, source)
         -- Destroy us
         self.is_dead = true
         worldscene:remove_actor(self)
+        play_positional_sound(game.resource_manager:get('assets/sfx/angedestroyed.ogg'), self)
     end
 end
 
@@ -156,4 +166,7 @@ return {
     EyeAngel3 = EyeAngel3,
     EyeAngel4 = EyeAngel4,
     RadioAngel3 = RadioAngel3,
+
+    modular_distance = modular_distance,
+    play_positional_sound = play_positional_sound,
 }

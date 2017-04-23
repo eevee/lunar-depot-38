@@ -3,6 +3,8 @@ local Vector = require 'vendor.hump.vector'
 local actors_base = require 'klinklang.actors.base'
 local Player = require 'klinklang.actors.player'
 
+local actors_angels = require 'ld38.actors.angels'
+
 
 -- Fish bubble projectile
 local FishBall = actors_base.MobileActor:extend{
@@ -24,6 +26,9 @@ function FishBall:init(facing_left, ...)
     if facing_left then
         self.velocity.x = -self.velocity.x
     end
+
+    actors_angels.play_positional_sound(
+        game.resource_manager:get('assets/sfx/fishball1.ogg'), self)
 end
 
 function FishBall:blocks()
@@ -73,6 +78,8 @@ function FishBall:_pop()
         self.velocity.y = -192
         self.destroyed_state = 2
     end)
+    actors_angels.play_positional_sound(
+        game.resource_manager:get('assets/sfx/fishballhit.ogg'), self)
 end
 
 function FishBall:update(dt)
@@ -165,6 +172,8 @@ function PaintSplatter:on_collide_with(actor, collision)
     self.sprite:set_pose('hit', function()
         worldscene:remove_actor(self)
     end)
+    actors_angels.play_positional_sound(
+        game.resource_manager:get(("assets/sfx/splash%d.ogg"):format(math.random(1, 5))), self)
     return false
 end
 

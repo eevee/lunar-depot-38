@@ -102,7 +102,7 @@ function love.load(args)
     game.resource_manager = resource_manager
 
     -- Eagerly load all sound effects, which we will surely be needing
-    for path in util.find_files{'assets/sounds'} do
+    for path in util.find_files{'assets/sfx'} do
         resource_manager:load(path)
     end
 

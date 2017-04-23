@@ -2366,6 +2366,7 @@
                 },
              "4":
                 {
+                 "animation stops":true,
                  "sprite name":"eye angel 4\/flinch"
                 },
              "8":
@@ -2395,6 +2396,7 @@
                 },
              "4":
                 {
+                 "animation stops":"bool",
                  "sprite name":"string"
                 },
              "8":
