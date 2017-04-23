@@ -1098,7 +1098,7 @@
                  "type":"",
                  "visible":true,
                  "width":96,
-                 "x":866,
+                 "x":858,
                  "y":424
                 }, 
                 {
@@ -1144,7 +1144,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":36,
+ "nextobjectid":37,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,
@@ -1901,6 +1901,10 @@
                  "animation stops":true,
                  "sprite name":"eye angel 1\/flinch"
                 },
+             "13":
+                {
+                 "sprite name":"eye angel 1\/jump"
+                },
              "4":
                 {
                  "animation stops":true,
@@ -1924,6 +1928,10 @@
              "11":
                 {
                  "animation stops":"bool",
+                 "sprite name":"string"
+                },
+             "13":
+                {
                  "sprite name":"string"
                 },
              "4":

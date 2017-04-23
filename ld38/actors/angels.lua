@@ -77,7 +77,10 @@ function BaseAngel:on_collide_with(actor, ...)
             self.state = 'idle'
             self.sprite:set_pose('stand')
             worldscene.tick:delay(function()
-                self.state = 'chase'
+                -- FIXME ugh this is a clusterfuck; don't want to do this if we were stunned in this window
+                if not self.locked then
+                    self.state = 'chase'
+                end
             end, 0.5)
         end)
         play_positional_sound(game.resource_manager:get('assets/sfx/angelhit1.ogg'), self)

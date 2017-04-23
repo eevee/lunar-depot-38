@@ -44,12 +44,15 @@ function FishBall:on_collide_with(actor, collision)
         return true
     end
 
-    -- Treat overlaps as collisions, in case we spawned inside something
-    if collision.touchtype >= 0 then
-        local passable = FishBall.__super.on_collide_with(self, actor, collision)
-        if passable then
-            return true
-        end
+    -- Turn overlaps into collisions before consulting super; if we spawned
+    -- inside something then we should hit it immediately, not ignore it
+    if collision.touchtype < 0 then
+        collision.touchtype = 1
+    end
+
+    local passable = FishBall.__super.on_collide_with(self, actor, collision)
+    if passable then
+        return true
     end
 
     -- If we already popped, then just vanish the fish
