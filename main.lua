@@ -144,11 +144,8 @@ function love.load(args)
     local map = resource_manager:load("data/maps/moon.tmx.json")
     worldscene = MoonWorldScene()
     worldscene:load_map(map)
-    worldscene:add_actor(DummyActor(Vector(0, 128)))
-    worldscene:add_actor(DummyActor(Vector(64, 504)))
-    worldscene:add_actor(DummyActor(Vector(128, 480)))
-    worldscene:add_actor(DummyActor(Vector(4096, 512)))
-    worldscene:add_actor(DummyActor(Vector(4096 - 32, 512 - 16)))
+    local EyeAngel2 = (require 'ld38.actors.angels').EyeAngel2
+    worldscene:add_actor(EyeAngel2(Vector(128, 256)))
 
     Gamestate.registerEvents()
     Gamestate.switch(worldscene)

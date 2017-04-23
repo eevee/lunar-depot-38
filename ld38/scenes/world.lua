@@ -14,11 +14,11 @@ function MoonWorldScene:init(...)
     -- doesn't already exist, so sneak this in here
     self.player = Pearl(Vector(0, 0))
 
-    local moon_sprite = love.graphics.newImage('moon.png')
+    local moon_sprite = love.graphics.newImage('assets/images/catmoon.png')
     local w, h = love.graphics.getDimensions()
     local sw, sh = moon_sprite:getDimensions()
-    local epsilon = 4
-    local visible = 128
+    local epsilon = 128 * 2 * 1.5
+    local visible = 256 * 2
     local radius = (visible + epsilon) / 2 + w * w / (8 * (visible - epsilon))
     self.moon = {
         epsilon = epsilon,
@@ -27,6 +27,7 @@ function MoonWorldScene:init(...)
         circumference = radius * TAU,
         sprite = moon_sprite,
         scale = visible / sh,
+        surface = 224 * 2,
     }
     -- 0 to 1, indicating how far around the moon the player is
     self.turned = 0
@@ -49,11 +50,11 @@ function MoonWorldScene:init(...)
             }
             // Note that x and y are switched because we want the angle from
             // the vertical, not horizontal!
-            float angle = mod(atan(dx, dy) - rotation, 6.28);
+            float angle = mod(rotation + atan(dx, -dy), 6.283);
 
             // FIXME scale to tex width, shift to center...?
             vec2 new_coords = vec2(
-                angle / 6.28,
+                angle / 6.283,
                 (radius - dist) / visible);
 
             //return vec4(new_coords.x, new_coords.y, 0.0, 1.0);
@@ -80,7 +81,7 @@ function MoonWorldScene:update_camera()
     if self.player then
         local w, h = love.graphics.getDimensions()
         self.camera.x = self.player.pos.x - w / 2
-        self.camera.y = self.map.height - h + self.moon.visible - self.moon.epsilon
+        self.camera.y = self.map.height - h + self.moon.visible - self.moon.surface
     end
 end
 
@@ -105,6 +106,11 @@ end
 
 function MoonWorldScene:draw()
     local w, h = love.graphics.getDimensions()
+    love.graphics.push('all')
+    love.graphics.setColor(74, 72, 98)
+    love.graphics.rectangle('fill', 0, 0, w, h)
+    love.graphics.pop()
+
     self.polar_shader:send('rotation', self.turned * TAU)
     love.graphics.setShader(self.polar_shader)
     love.graphics.draw(self.moon.sprite, 0, h - self.moon.sprite:getHeight() * self.moon.scale, 0, self.moon.scale, self.moon.scale)
@@ -144,7 +150,7 @@ function MoonWorldScene:_draw_actors(actors)
         -- It also assumes the actor's y is the distance from the center, but
         -- it's actually the distance from the top of the map, so adjust for
         -- that to put the bottom of the map on the surface.
-        love.graphics.translate(-actor.pos.x, -self.map.height - self.moon.radius + self.moon.epsilon)
+        love.graphics.translate(-actor.pos.x, -self.map.height - self.moon.radius + self.moon.surface)
         actor:draw()
         love.graphics.pop()
     end
