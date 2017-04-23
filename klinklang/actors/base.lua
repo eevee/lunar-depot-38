@@ -193,7 +193,7 @@ local TILE_SIZE = 32
 
 -- TODO these are a property of the world and should go on the world object
 -- once one exists
-local gravity = Vector(0, 768)
+local gravity = Vector(0, 256)
 local terminal_velocity = 1536
 
 local function _is_vector_almost_zero(v)

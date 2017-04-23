@@ -16,7 +16,7 @@ function FishBall:init(facing_left, ...)
 
     self.facing_left = facing_left
     self.sprite:set_facing_right(not facing_left)
-    self.velocity = Vector(128, 0)
+    self.velocity = Vector(256, 0)
     if facing_left then
         self.velocity.x = -self.velocity.x
     end
@@ -32,6 +32,11 @@ function FishBall:on_collide_with(actor, collision)
         return true
     end
 
+    local passable = FishBall.__super.on_collide_with(self, actor, collision)
+    if passable then
+        return true
+    end
+
     self.velocity.x = 0
     self.velocity.y = 0
     self.sprite:set_pose('hit', function()
@@ -44,6 +49,8 @@ end
 local Pearl = Player:extend{
     --name = 'pearl',
     sprite_name = 'pearl',
+    jumpvel = actors_base.get_jump_velocity(96),
+    max_slope = Vector(2, -1),
 
     decision_shoot = 0,
 }
