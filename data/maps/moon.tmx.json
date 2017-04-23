@@ -1289,6 +1289,12 @@
                  "animation flipped":true,
                  "animation stops":true,
                  "sprite name":"fishball\/hit"
+                },
+             "7":
+                {
+                 "animation flipped":true,
+                 "animation loops to":2,
+                 "sprite name":"fishball\/swim away"
                 }
             },
          "tilepropertytypes":
@@ -1303,6 +1309,12 @@
                  "animation flipped":"bool",
                  "animation stops":"bool",
                  "sprite name":"string"
+                },
+             "7":
+                {
+                 "animation flipped":"bool",
+                 "animation loops to":"int",
+                 "sprite name":"string"
                 }
             },
          "tiles":
@@ -1311,7 +1323,7 @@
                 {
                  "animation":[
                         {
-                         "duration":100,
+                         "duration":150,
                          "tileid":0
                         }, 
                         {
@@ -1377,6 +1389,30 @@
                         {
                          "duration":50,
                          "tileid":6
+                        }]
+                },
+             "7":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":7
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":8
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":9
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":10
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":11
                         }]
                 }
             },

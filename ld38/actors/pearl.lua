@@ -9,6 +9,8 @@ local FishBall = actors_base.MobileActor:extend{
     sprite_name = 'fishball',
 
     gravity_multiplier = 0,
+
+    is_swimming_away = false,
 }
 
 function FishBall:init(facing_left, ...)
@@ -26,7 +28,6 @@ function FishBall:blocks()
     return false
 end
 
--- FIXME can't collide with other pellets or pearl
 function FishBall:on_collide_with(actor, ...)
     if actor and (actor:isa(FishBall) or actor.is_player) then
         return true
@@ -37,6 +38,11 @@ function FishBall:on_collide_with(actor, ...)
         return true
     end
 
+    -- If we already popped, then just vanish the fish
+    if self.is_swimming_away then
+        worldscene:remove_actor(self)
+    end
+
     -- Deal with hitting something
     if actor and actor.damage then
         actor:damage(1, 'stun', self)
@@ -44,7 +50,9 @@ function FishBall:on_collide_with(actor, ...)
     self.velocity.x = 0
     self.velocity.y = 0
     self.sprite:set_pose('hit', function()
-        worldscene:remove_actor(self)
+        self.sprite:set_pose('swim away')
+        self.is_swimming_away = true
+        self.velocity.y = -192
     end)
     return false
 end
@@ -84,7 +92,7 @@ function Pearl:update_pose()
         self.decision_shoot = 2
         self.sprite:set_pose('shoot', function()
             self.decision_shoot = 0
-            local d = Vector(24, -8)
+            local d = Vector(16, -8)
             if self.facing_left then
                 d.x = -d.x
             end
