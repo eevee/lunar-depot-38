@@ -53,8 +53,18 @@ local Pearl = Player:extend{
     max_slope = Vector(2, -1),
 
     decision_shoot = 0,
+
+    is_critter = true,
 }
 
+
+function Pearl:on_collide_with(actor, ...)
+    if actor and actor.is_critter then
+        return true
+    end
+
+    return Pearl.__super.on_collide_with(self, actor, ...)
+end
 
 -- Decide to shoot.  TODO unfinished, doesn't apply to everyone, may come with
 -- directions, etc etc...  this is something that direly needs to be

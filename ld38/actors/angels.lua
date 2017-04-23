@@ -3,19 +3,57 @@ local Vector = require 'vendor.hump.vector'
 local actors_base = require 'klinklang.actors.base'
 
 
-local EyeAngel2 = actors_base.SentientActor:extend{
-    name = 'eye angel 2',
-    sprite_name = 'eye angel 2',
+local BaseAngel = actors_base.SentientActor:extend{
     max_slope = Vector(16, -1),
+
+    is_critter = true,
 }
 
-function EyeAngel2:init(...)
-    EyeAngel2.__super.init(self, ...)
+function BaseAngel:init(...)
+    BaseAngel.__super.init(self, ...)
 
     self:decide_walk(1)
 end
 
+function BaseAngel:on_collide_with(actor, ...)
+    if actor and actor.is_critter then
+        return true
+    end
+
+    return BaseAngel.__super.on_collide_with(self, actor, ...)
+end
+
+
+local EyeAngel1 = BaseAngel:extend{
+    name = 'eye angel 1',
+    sprite_name = 'eye angel 1',
+}
+
+local EyeAngel2 = BaseAngel:extend{
+    name = 'eye angel 2',
+    sprite_name = 'eye angel 2',
+}
+
+local EyeAngel3 = BaseAngel:extend{
+    name = 'eye angel 3',
+    sprite_name = 'eye angel 3',
+}
+
+local EyeAngel4 = BaseAngel:extend{
+    name = 'eye angel 4',
+    sprite_name = 'eye angel 4',
+}
+
+local RadioAngel3 = BaseAngel:extend{
+    name = 'radio angel 3',
+    sprite_name = 'radio angel 3',
+}
+
 
 return {
+    EyeAngel1 = EyeAngel1,
     EyeAngel2 = EyeAngel2,
+    EyeAngel3 = EyeAngel3,
+    EyeAngel4 = EyeAngel4,
+    RadioAngel3 = RadioAngel3,
 }
