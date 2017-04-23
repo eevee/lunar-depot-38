@@ -513,7 +513,11 @@ function MultiShape:add_subshape(subshape)
 end
 
 function MultiShape:clone()
-    return MultiShape(unpack(self.subshapes))
+    local subshapes = {}
+    for i, subshape in ipairs(self.subshapes) do
+        subshapes[i] = subshape:clone()
+    end
+    return MultiShape(unpack(subshapes))
 end
 
 function MultiShape:bbox()
