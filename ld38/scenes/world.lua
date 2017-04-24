@@ -8,6 +8,8 @@ local MoonWorldScene = WorldScene:extend{}
 
 local TAU = math.pi * 2
 
+local ANGEL_PROPORTION_SPEED = 0.125
+
 function MoonWorldScene:init(...)
     MoonWorldScene.__super.init(self, ...)
 
@@ -214,6 +216,7 @@ function MoonWorldScene:init(...)
     self.polar_background_shader:send('parallax', self.parallax)
 
     -- Shader used for desaturating the world depending on the number of angels
+    self.angel_texture = love.graphics.newImage('assets/images/angeltexture.png')
     self.desaturation_shader = love.graphics.newShader[[
         extern float amount;  // 0 to 1
 
@@ -226,6 +229,7 @@ function MoonWorldScene:init(...)
     ]]
 
     self.angel_count = 0
+    self.angel_proportion = 0
 end
 
 function MoonWorldScene:load_map(map)
@@ -238,11 +242,28 @@ function MoonWorldScene:load_map(map)
     -- Add extra barriers extending beyond the left and right edges of the map
 end
 
+function MoonWorldScene:_update_angel_count(delta)
+    self.angel_count = self.angel_count + delta
+    if self.angel_proportion_timer then
+        self.angel_proportion_timer:stop()
+        self.angel_proportion_timer = nil
+    end
+    local new_proportion = self.angel_count / (self.angel_count + 9)
+    local t = math.abs(new_proportion - self.angel_proportion) / ANGEL_PROPORTION_SPEED
+    self.angel_proportion_timer = self.fluct
+        :to(self, t, { angel_proportion = new_proportion })
+        :ease('linear')
+        :onupdate(function()
+            self.desaturation_shader:send('amount', self.angel_proportion)
+        end)
+        :oncomplete(function()
+            self.angel_proportion_timer = nil
+        end)
+end
+
 function MoonWorldScene:add_actor(actor)
     if actor.is_angel then
-        self.angel_count = self.angel_count + 1
-        self.desaturation_shader:send('amount', self.angel_count / (self.angel_count + 9))
-        print(self.angel_count, self.angel_count / (self.angel_count + 9))
+        self:_update_angel_count(1)
     end
 
     MoonWorldScene.__super.add_actor(self, actor)
@@ -250,8 +271,7 @@ end
 
 function MoonWorldScene:remove_actor(actor)
     if actor.is_angel then
-        self.angel_count = self.angel_count - 1
-        self.desaturation_shader:send('amount', self.angel_count / (self.angel_count + 9))
+        self:_update_angel_count(-1)
     end
 
     MoonWorldScene.__super.remove_actor(self, actor)
@@ -320,6 +340,9 @@ function MoonWorldScene:_draw_final_canvas()
     love.graphics.setShader(self.desaturation_shader)
     MoonWorldScene.__super._draw_final_canvas(self)
     love.graphics.setShader()
+    love.graphics.setColor(255, 255, 255, 255 * 0.125 * self.angel_proportion)
+    love.graphics.draw(self.angel_texture, 0, 0)
+    love.graphics.setColor(255, 255, 255)
 end
 
 function MoonWorldScene:_draw_actors(actors)
