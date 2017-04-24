@@ -15,13 +15,7 @@ local AndrePainting = actors_base.Actor:extend{
     stage = 0,
     progress = 0,
 }
-
 -- NOTE: speckle assigns itself to self.ptrs.painter
-function AndrePainting:init(...)
-    AndrePainting.__super.init(self, ...)
-
-    self.sprite:set_pose('5-5')
-end
 
 function AndrePainting:damage(amount, kind, source)
     if kind == 'angel' then
@@ -59,8 +53,16 @@ end
 local Speckle = actors_base.Actor:extend{
     name = 'speckle',
     sprite_name = 'speckle',
-
+    dialogue_position = 'right',
+    dialogue_color = {0, 0, 0},
+    dialogue_shadow = {192, 192, 192},
+    dialogue_sprites = {
+        { name = 'base', sprite_name = 'speckle portrait' },
+        { name = 'eyes', sprite_name = 'speckle portrait - eyes', default = false },
+    },
     z = -1000,
+    is_usable = true,
+
     annoyance_timer = 0,
 }
 
@@ -86,6 +88,31 @@ function Speckle:on_enter()
         self.ptrs.painting = painting
         painting.ptrs.painter = self
     end, 0)
+end
+
+function Speckle:on_use(activator)
+    local convo = {
+        {
+            jump = 'annoyed',
+            condition = function() return self.annoyance_timer > 0 end,
+        },
+        {
+            "Paint paint paint.",
+            speaker = 'speckle',
+        },
+        { bail = true },
+
+        { label = 'annoyed' },
+        {
+            "I cannot work under these conditions!",
+            pose = { eyes = 'annoyed' },
+            speaker = 'speckle',
+        },
+    }
+    Gamestate.push(DialogueScene({
+        purrl = activator,
+        speckle = self,
+    }, convo))
 end
 
 function Speckle:annoy()
