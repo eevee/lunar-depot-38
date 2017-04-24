@@ -107,6 +107,18 @@ local BigFishBall = FishBall:extend{
 }
 
 
+-- chosen to match the rainbow lake
+local PAINT_COLORS = {
+    {255, 58, 141},
+    {154, 134, 255},
+    {60, 201, 228},
+    {46, 244, 195},
+    {181, 255, 170},
+    {234, 255, 170},
+    {255, 213, 170},
+    {246, 139, 137},
+}
+
 -- Splash from a paint bucket
 local PaintSplatter = actors_base.MobileActor:extend{
     name = 'paint splatter',
@@ -115,18 +127,7 @@ local PaintSplatter = actors_base.MobileActor:extend{
     is_projectile = true,
     destroyed_state = 0,
 
-    -- chosen to match the rainbow lake
-    PAINT_COLORS = {
-        {255, 58, 141},
-        {154, 134, 255},
-        {60, 201, 228},
-        {46, 244, 195},
-        {181, 255, 170},
-        {234, 255, 170},
-        {255, 213, 170},
-        {246, 139, 137},
-    },
-    PAINT_COLOR_INDEX = 1,
+    PAINT_INDEX = 1,
     color = nil,
 }
 
@@ -143,10 +144,10 @@ function PaintSplatter:init(shooter, ...)
         self.sprite:set_facing_right(false)
     end
 
-    self.color = PaintSplatter.PAINT_COLORS[PaintSplatter.PAINT_COLOR_INDEX]
-    PaintSplatter.PAINT_COLOR_INDEX = PaintSplatter.PAINT_COLOR_INDEX + 1
-    if PaintSplatter.PAINT_COLOR_INDEX > #PaintSplatter.PAINT_COLORS then
-        PaintSplatter.PAINT_COLOR_INDEX = 1
+    self.color = PAINT_COLORS[PaintSplatter.PAINT_INDEX]
+    PaintSplatter.PAINT_INDEX = PaintSplatter.PAINT_INDEX + 1
+    if PaintSplatter.PAINT_INDEX > #PAINT_COLORS then
+        PaintSplatter.PAINT_INDEX = 1
     end
 end
 
@@ -212,6 +213,81 @@ function PaintSplatter:draw()
 end
 
 
+local PaintSpray = actors_base.MobileActor:extend{
+    name = 'spraypaint',
+    sprite_name = 'spraypaint',
+
+    -- TODO this should be immune to /all/ outside forces
+    gravity_multiplier = 0,
+
+    dt = 0,
+    damage_rate = 1,
+    paint_current = 1,
+    paint_next = 2,
+    paint_progress = 0,
+}
+
+function PaintSpray:init(...)
+    PaintSpray.__super.init(self, ...)
+
+    self.paint_current = math.random(1, #PAINT_COLORS)
+    self.paint_next = self.paint_current % #PAINT_COLORS + 1
+end
+
+function PaintSpray:on_enter()
+    self.sfx = game.resource_manager:get('assets/sfx/sprayloop.ogg'):clone()
+    self.sfx:setLooping(true)
+    self.sfx:play()
+end
+
+function PaintSpray:on_leave()
+    self.sfx:stop()
+end
+
+function PaintSpray:blocks()
+    return false
+end
+
+function PaintSpray:update(dt)
+    self.dt = dt
+
+    self.paint_progress = self.paint_progress + dt
+    while self.paint_progress > 1 do
+        self.paint_progress = self.paint_progress - 1
+        self.paint_current = self.paint_current % #PAINT_COLORS + 1
+        self.paint_next = self.paint_current % #PAINT_COLORS + 1
+    end
+
+    PaintSpray.__super.update(self, dt)
+end
+
+function PaintSpray:draw()
+    love.graphics.push('all')
+    local color0 = PAINT_COLORS[self.paint_current]
+    local color1 = PAINT_COLORS[self.paint_next]
+    love.graphics.setColor(
+        color0[1] + (color1[1] - color0[1]) * self.paint_progress,
+        color0[2] + (color1[2] - color0[2]) * self.paint_progress,
+        color0[3] + (color1[3] - color0[3]) * self.paint_progress)
+    PaintSpray.__super.draw(self)
+    love.graphics.pop()
+end
+
+function PaintSpray:on_collide_with(actor, collision)
+    if actor and actor.damage and not actor.is_player then
+        actor:damage(self.damage_rate * self.dt, 'paint', self)
+    end
+    return true
+end
+
+
+local BigPaintSpray = PaintSpray:extend{
+    name = 'spraypaint big',
+    sprite_name = 'spraypaint big',
+
+    damage_rate = 2,
+}
+
 
 local Pearl = Player:extend{
     --name = 'pearl',
@@ -245,6 +321,7 @@ local Pearl = Player:extend{
     is_critter = true,
     fish_weapon = 'gun',
     paint_weapon = 'bucket',
+    spraypaint_anchor = Vector(13, -7),
 }
 
 
@@ -268,34 +345,69 @@ function Pearl:decide_shoot_paint()
 end
 
 function Pearl:update(dt)
-    if self.decision_shoot and not self.is_shooting then
-        self.is_shooting = self.decision_shoot
-        local weapon = self.decision_shoot
+    local weapon = self.decision_shoot
+    self.decision_shoot = nil
+    if weapon and not self.is_shooting then
         if weapon == 'gun' or weapon == 'big gun' then
             self:set_sprite('pearl: gun')
-        else
+        elseif weapon == 'bucket' then
             self:set_sprite('pearl: bucket')
+        else
+            self:set_sprite('pearl: spraypaint')
         end
-        self.sprite:set_pose('shoot', function()
-            self.is_shooting = false
-            local d = Vector(16, -8)
-            if self.facing_left then
-                d.x = -d.x
+
+        if weapon == 'gun' or weapon == 'big gun' or weapon == 'bucket' then
+            self.is_shooting = weapon
+            self.sprite:set_pose('shoot', function()
+                self.is_shooting = nil
+                local d = Vector(16, -8)
+                if self.facing_left then
+                    d.x = -d.x
+                end
+                local Projectile
+                if weapon == 'gun' then
+                    Projectile = FishBall
+                elseif weapon == 'big gun' then
+                    Projectile = BigFishBall
+                elseif weapon == 'bucket' then
+                    Projectile = PaintSplatter
+                end
+                worldscene:add_actor(Projectile(self, self.pos + d))
+            end)
+        else
+            local Spraypaint
+            if weapon == 'spraypaint' then
+                Spraypaint = PaintSpray
+            elseif weapon == 'big spraypaint' then
+                Spraypaint = BigPaintSpray
             end
-            local Projectile
-            if weapon == 'gun' then
-                Projectile = FishBall
-            elseif weapon == 'big gun' then
-                Projectile = BigFishBall
-            elseif weapon == 'bucket' then
-                Projectile = PaintSplatter
+            if not self.ptrs.spraypaint or not self.ptrs.spraypaint:isa(Spraypaint) then
+                if self.ptrs.spraypaint then
+                    worldscene:remove_actor(self.ptrs.spraypaint)
+                end
+                local spraypaint = Spraypaint(self.pos)
+                worldscene:add_actor(spraypaint)
+                self.ptrs.spraypaint = spraypaint
             end
-            worldscene:add_actor(Projectile(self, self.pos + d))
-        end)
+        end
     end
-    self.decision_shoot = nil
 
     Pearl.__super.update(self, dt)
+
+    -- Do this after the main update so it sticks to our new position
+    if self.ptrs.spraypaint then
+        if weapon == 'spraypaint' or weapon == 'big spraypaint' then
+            local anchor = self.spraypaint_anchor
+            if self.facing_left then
+                anchor = Vector(-anchor.x, anchor.y)
+            end
+            self.ptrs.spraypaint:move_to(self.pos + anchor)
+            self.ptrs.spraypaint.sprite:set_facing_right(not self.facing_left)
+        else
+            worldscene:remove_actor(self.ptrs.spraypaint)
+            self.ptrs.spraypaint = nil
+        end
+    end
 end
 
 function Pearl:update_pose()

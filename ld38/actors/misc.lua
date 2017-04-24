@@ -321,9 +321,11 @@ function Anise:on_use(activator)
         {
             speaker = 'anise',
             menu = {
+                { 'big gun', "Bigger fish gun (20 CP)", condition = function() return activator.fish_weapon == 'gun' end },
+                { 'spraypaint', "Spraypaint", condition = function() return activator.paint_weapon == 'bucket' end },
+                { 'big spraypaint', "Bigger spraypaint", condition = function() return activator.paint_weapon == 'spraypaint' end },
                 { 'dummy', "Floor kibble - Increase max HP (5 CP)" },
                 { 'dummy', "Mesh bag - INT +2, CHR +4 (10 CP)" },
-                { 'big gun', "Bigger fish gun (20 CP)", condition = function() return activator.fish_weapon == 'gun' end },
                 { 'bye', "Never mind" },
             }
         },
@@ -365,6 +367,22 @@ function Anise:on_use(activator)
             "NO REFUNDS!  AOWWWRR!!",
             speaker = 'anise',
             pose = 'o_o',
+        },
+        { bail = true },
+
+        {
+            label = 'spraypaint',
+            execute = function()
+                activator.paint_weapon = 'spraypaint'
+            end,
+        },
+        { bail = true },
+
+        {
+            label = 'big spraypaint',
+            execute = function()
+                activator.paint_weapon = 'big spraypaint'
+            end,
         },
         { bail = true },
 

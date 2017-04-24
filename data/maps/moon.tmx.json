@@ -1090,7 +1090,7 @@
                  "y":428
                 }, 
                 {
-                 "gid":247,
+                 "gid":272,
                  "height":128,
                  "id":32,
                  "name":"",
@@ -1102,7 +1102,7 @@
                  "y":424
                 }, 
                 {
-                 "gid":248,
+                 "gid":273,
                  "height":52,
                  "id":33,
                  "name":"",
@@ -1114,7 +1114,7 @@
                  "y":410
                 }, 
                 {
-                 "gid":285,
+                 "gid":310,
                  "height":47,
                  "id":34,
                  "name":"",
@@ -1126,7 +1126,7 @@
                  "y":445
                 }, 
                 {
-                 "gid":286,
+                 "gid":311,
                  "height":68,
                  "id":35,
                  "name":"",
@@ -1138,7 +1138,7 @@
                  "y":146
                 }, 
                 {
-                 "gid":317,
+                 "gid":342,
                  "height":80,
                  "id":38,
                  "name":"",
@@ -1150,7 +1150,7 @@
                  "y":398
                 }, 
                 {
-                 "gid":318,
+                 "gid":343,
                  "height":64,
                  "id":40,
                  "name":"",
@@ -1181,7 +1181,7 @@
                  "y":425
                 }, 
                 {
-                 "gid":367,
+                 "gid":392,
                  "height":32,
                  "id":42,
                  "name":"",
@@ -1523,8 +1523,141 @@
          "tilewidth":64
         }, 
         {
-         "columns":16,
+         "columns":25,
          "firstgid":51,
+         "image":"..\/..\/assets\/images\/pearl-spraypaint.png",
+         "imageheight":64,
+         "imagewidth":1600,
+         "margin":0,
+         "name":"pearl-spraypaint",
+         "spacing":0,
+         "tilecount":25,
+         "tileheight":64,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl: spraypaint\/stand"
+                },
+             "1":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl: spraypaint\/walk"
+                },
+             "12":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl: spraypaint\/jump"
+                },
+             "17":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl: spraypaint\/fall"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "1":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "12":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "17":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":24,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":16,
+                             "x":24,
+                             "y":24
+                            }, 
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":32,
+                             "y":48
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "1":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }]
+                },
+             "7":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                }
+            },
+         "tilewidth":64
+        }, 
+        {
+         "columns":16,
+         "firstgid":76,
          "image":"..\/..\/assets\/images\/fishball.png",
          "imageheight":72,
          "imagewidth":576,
@@ -1932,7 +2065,7 @@
         }, 
         {
          "columns":19,
-         "firstgid":83,
+         "firstgid":108,
          "image":"..\/..\/assets\/images\/eyeangel1.png",
          "imageheight":80,
          "imagewidth":1520,
@@ -2119,7 +2252,7 @@
         }, 
         {
          "columns":26,
-         "firstgid":102,
+         "firstgid":127,
          "image":"..\/..\/assets\/images\/eyeangel2.png",
          "imageheight":92,
          "imagewidth":2392,
@@ -2342,7 +2475,7 @@
         }, 
         {
          "columns":38,
-         "firstgid":128,
+         "firstgid":153,
          "image":"..\/..\/assets\/images\/eyeangel3.png",
          "imageheight":120,
          "imagewidth":4560,
@@ -2565,7 +2698,7 @@
         }, 
         {
          "columns":27,
-         "firstgid":166,
+         "firstgid":191,
          "image":"..\/..\/assets\/images\/eyeangel4.png",
          "imageheight":160,
          "imagewidth":2160,
@@ -2812,7 +2945,7 @@
         }, 
         {
          "columns":49,
-         "firstgid":193,
+         "firstgid":218,
          "image":"..\/..\/assets\/images\/radioangelno3.png",
          "imageheight":142,
          "imagewidth":6223,
@@ -3091,7 +3224,7 @@
         }, 
         {
          "columns":6,
-         "firstgid":242,
+         "firstgid":267,
          "image":"..\/..\/assets\/images\/doorsprite.png",
          "imageheight":128,
          "imagewidth":576,
@@ -3202,7 +3335,7 @@
         }, 
         {
          "columns":37,
-         "firstgid":248,
+         "firstgid":273,
          "image":"..\/..\/assets\/images\/speckle.png",
          "imageheight":52,
          "imagewidth":2590,
@@ -3314,7 +3447,7 @@
         }, 
         {
          "columns":1,
-         "firstgid":285,
+         "firstgid":310,
          "image":"..\/..\/assets\/images\/ladder.png",
          "imageheight":47,
          "imagewidth":37,
@@ -3393,7 +3526,7 @@
         }, 
         {
          "columns":2,
-         "firstgid":286,
+         "firstgid":311,
          "image":"..\/..\/assets\/images\/spaceship.png",
          "imageheight":68,
          "imagewidth":300,
@@ -3473,7 +3606,7 @@
         }, 
         {
          "columns":6,
-         "firstgid":288,
+         "firstgid":313,
          "image":"..\/..\/assets\/images\/andrepainting.png",
          "imageheight":400,
          "imagewidth":768,
@@ -3776,7 +3909,7 @@
         }, 
         {
          "columns":11,
-         "firstgid":318,
+         "firstgid":343,
          "image":"..\/..\/assets\/images\/anise.png",
          "imageheight":64,
          "imagewidth":704,
@@ -3864,7 +3997,7 @@
         }, 
         {
          "columns":4,
-         "firstgid":329,
+         "firstgid":354,
          "image":"..\/..\/assets\/images\/aniseportrait.png",
          "imageheight":320,
          "imagewidth":320,
@@ -4020,7 +4153,7 @@
         }, 
         {
          "columns":4,
-         "firstgid":345,
+         "firstgid":370,
          "image":"..\/..\/assets\/images\/pearlportrait.png",
          "imageheight":240,
          "imagewidth":320,
@@ -4140,7 +4273,7 @@
         }, 
         {
          "columns":3,
-         "firstgid":357,
+         "firstgid":382,
          "image":"..\/..\/assets\/images\/speckleportrait.png",
          "imageheight":160,
          "imagewidth":240,
@@ -4208,7 +4341,7 @@
         }, 
         {
          "columns":4,
-         "firstgid":363,
+         "firstgid":388,
          "image":"..\/..\/assets\/images\/marbleportrait.png",
          "imageheight":80,
          "imagewidth":320,
@@ -4270,7 +4403,7 @@
         }, 
         {
          "columns":3,
-         "firstgid":367,
+         "firstgid":392,
          "image":"..\/..\/assets\/images\/marble.png",
          "imageheight":32,
          "imagewidth":75,
@@ -4340,6 +4473,152 @@
                 }
             },
          "tilewidth":25
+        }, 
+        {
+         "columns":3,
+         "firstgid":395,
+         "image":"..\/..\/assets\/images\/spraypaint.png",
+         "imageheight":120,
+         "imagewidth":240,
+         "margin":0,
+         "name":"spraypaint",
+         "spacing":0,
+         "tilecount":6,
+         "tileheight":60,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "animation flipped":true,
+                 "sprite name":"spraypaint big\/default"
+                },
+             "3":
+                {
+                 "animation flipped":true,
+                 "sprite name":"spraypaint\/default"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "3":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }],
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":65,
+                             "y":34
+                            }, 
+                            {
+                             "height":55,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":55,
+                             "x":10,
+                             "y":3
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "3":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":3
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":4
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":5
+                        }],
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":65,
+                             "y":34
+                            }, 
+                            {
+                             "height":29,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":35,
+                             "x":30,
+                             "y":17
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                }
+            },
+         "tilewidth":80
         }],
  "tilewidth":32,
  "version":1,
