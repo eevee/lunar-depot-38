@@ -11,6 +11,7 @@ local SpriteSet = require 'klinklang.sprite'
 local tiledmap = require 'klinklang.tiledmap'
 local util = require 'klinklang.util'
 
+local IntroScene = require 'ld38.scenes.intro'
 local MoonWorldScene = require 'ld38.scenes.world'
 local TransitionScene = require 'ld38.scenes.transition'
 
@@ -178,6 +179,7 @@ function love.load(args)
 
     Gamestate.registerEvents()
     Gamestate.switch(worldscene)
+    Gamestate.push(IntroScene())
 end
 
 function love.update(dt)

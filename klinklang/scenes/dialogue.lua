@@ -159,11 +159,12 @@ local DialogueScene = BaseScene:extend{
 
 -- TODO as with DeadScene, it would be nice if i could formally eat keyboard input
 -- FIXME document the shape of speakers/script, once we know what it is
-function DialogueScene:init(speakers, script)
+function DialogueScene:init(speakers, script, ld38_bottom_hack)
     BaseScene.init(self)
 
     self.wrapped = nil
     self.tick = tick.group()
+    self.ld38_bottom_hack = ld38_bottom_hack
 
     -- FIXME unhardcode some more of this, adjust it on resize
     local w, h = game:getDimensions()
@@ -677,9 +678,11 @@ function DialogueScene:draw()
 
     love.graphics.push('all')
     love.graphics.scale(game.scale, game.scale)
+    --[[
     love.graphics.setColor(0, 0, 0, 64)
     love.graphics.rectangle('fill', 0, 0, game:getDimensions())
     love.graphics.setColor(255, 255, 255)
+    ]]
 
     -- Draw the dialogue box, which is slightly complicated because it involves
     -- drawing the ends and then repeating the middle bit to fit the screen
@@ -710,6 +713,9 @@ function DialogueScene:draw()
     local boxwidth = 720
     local boxheight = 160
     local boxtop = 40
+    if self.ld38_bottom_hack then
+        boxtop = h - boxheight - 40
+    end
     local boxleft = 40
     local avatar_size = 160
     love.graphics.draw(background, boxleft - 8, boxtop - 8)

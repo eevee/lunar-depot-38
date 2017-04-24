@@ -212,8 +212,8 @@ local Pearl = Player:extend{
         'assets/sfx/pearl4.ogg',
         'assets/sfx/pearl5.ogg',
     },
-    dialogue_color = {64, 129, 135},
-    dialogue_shadow = {155, 192, 174},
+    dialogue_color = {58, 52, 114},
+    dialogue_shadow = {139, 134, 165},
     dialogue_sprites = {
         { name = 'base', sprite_name = 'pearl portrait', while_talking = { default = 'talking' } },
         { name = 'eyes', sprite_name = 'pearl portrait - eyes', default = false },

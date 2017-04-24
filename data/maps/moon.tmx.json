@@ -27,8 +27,8 @@
                  "type":"player start",
                  "visible":true,
                  "width":0,
-                 "x":516,
-                 "y":192
+                 "x":3744,
+                 "y":436
                 }, 
                 {
                  "height":12,
@@ -3716,7 +3716,17 @@
                  "animation flipped":true,
                  "sprite name":"anise portrait - eyes\/^_^"
                 },
+             "14":
+                {
+                 "animation flipped":true,
+                 "sprite name":"anise portrait\/mysterious"
+                },
              "4":
+                {
+                 "animation flipped":true,
+                 "sprite name":"anise portrait - mouth\/default"
+                },
+             "5":
                 {
                  "animation flipped":true,
                  "sprite name":"anise portrait - mouth\/talking"
@@ -3744,7 +3754,17 @@
                  "animation flipped":"bool",
                  "sprite name":"string"
                 },
+             "14":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
              "4":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "5":
                 {
                  "animation flipped":"bool",
                  "sprite name":"string"
@@ -3777,7 +3797,7 @@
                          "tileid":3
                         }]
                 },
-             "4":
+             "5":
                 {
                  "animation":[
                         {
@@ -3793,7 +3813,7 @@
                          "tileid":6
                         }, 
                         {
-                         "duration":150,
+                         "duration":100,
                          "tileid":7
                         }, 
                         {

@@ -259,8 +259,12 @@ local Anise = actors_base.Actor:extend{
     dialogue_sprites = {
         { name = 'base', sprite_name = 'anise portrait' },
         { name = 'eyes', sprite_name = 'anise portrait - eyes', default = false },
-        { name = 'mouth', sprite_name = 'anise portrait - mouth', default = false, while_talking = { [false] = 'talking' } },
+        { name = 'mouth', sprite_name = 'anise portrait - mouth', while_talking = { default = 'talking' } },
         { name = 'tail', sprite_name = 'anise portrait - tail' },
+        mysterious = { base = 'mysterious', eyes = false, mouth = false, tail = false },
+        default = { base = 'default', eyes = false, mouth = 'default', tail = 'wiggle' },
+        o_o = { eyes = 'o_o' },
+        ['^_^'] = { eyes = '^_^' },
     },
 
     is_usable = true,
@@ -340,3 +344,10 @@ function Anise:on_use(activator)
         anise = self,
     }, convo))
 end
+
+
+return {
+    Anise = Anise,
+    Speckle = Speckle,
+    Marble = Marble,
+}
