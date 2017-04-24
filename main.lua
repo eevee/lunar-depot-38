@@ -12,6 +12,7 @@ local tiledmap = require 'klinklang.tiledmap'
 local util = require 'klinklang.util'
 
 local MoonWorldScene = require 'ld38.scenes.world'
+local TransitionScene = require 'ld38.scenes.transition'
 
 
 game = {
@@ -23,6 +24,25 @@ game = {
     speckle_annoyance_duration = 5,
     angel_attack_frequency = 1,
     total_door_health = 500,
+
+    wave = 1,
+    wave_begun = false,
+    wave_begin = function(self)
+        self.wave_begun = true
+        Gamestate.push(TransitionScene(("Wave %d"):format(self.wave)))
+    end,
+    wave_complete = function(self)
+        self.wave_begun = false
+        self.wave = self.wave + 1
+        Gamestate.push(TransitionScene(("Wave %d complete"):format(self.wave)))
+
+        -- TODO janky, would be REALLY NICE to emit an event here
+        for _, actor in ipairs(worldscene.actors) do
+            if actor.name == 'door planks' then
+                actor.health = self.total_door_health
+            end
+        end
+    end,
 
     input = nil,
 
@@ -127,6 +147,7 @@ function love.load(args)
     --m5x7:setLineHeight(0.75)  -- TODO figure this out for sure
     love.graphics.setFont(m5x7)
     m5x7small = love.graphics.newFont('assets/fonts/glip.ttf', 16)
+    glipfontbig = love.graphics.newFont('assets/fonts/glip.ttf', 72)
 
     love.joystick.loadGamepadMappings("vendor/gamecontrollerdb.txt")
 
@@ -154,12 +175,6 @@ function love.load(args)
     local map = resource_manager:load("data/maps/moon.tmx.json")
     worldscene = MoonWorldScene()
     worldscene:load_map(map)
-    local actors_angels = require 'ld38.actors.angels'
-    worldscene:add_actor(actors_angels.EyeAngel1(Vector(128, 256)))
-    worldscene:add_actor(actors_angels.EyeAngel2(Vector(384, 256)))
-    worldscene:add_actor(actors_angels.EyeAngel3(Vector(640, 256)))
-    worldscene:add_actor(actors_angels.EyeAngel4(Vector(896, 256)))
-    worldscene:add_actor(actors_angels.RadioAngel3(Vector(1152, 256)))
 
     Gamestate.registerEvents()
     Gamestate.switch(worldscene)

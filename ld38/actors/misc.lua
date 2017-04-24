@@ -35,7 +35,11 @@ function AndrePainting:paint(dt)
     self.stage = math.floor(self.progress / (game.time_to_finish_painting / 5))
     self.sprite:set_pose(("%d-%d"):format(self.wave, self.stage))
     if self.stage == 5 then
-        print("you win!!")
+        -- FIXME this would be nice to have happen at the beginning of a wave or something
+        self.wave = self.wave + 1
+        self.stage = 0
+        self.progress = 0
+        game:wave_complete()
     end
 end
 
@@ -102,7 +106,7 @@ function Speckle:update(dt)
         if self.annoyance_timer <= 0 then
             self.sprite:set_pose('paint')
         end
-    else
+    elseif game.wave_begun then
         self.ptrs.painting:paint(dt)
     end
 
@@ -151,6 +155,69 @@ function DoorPlanks:damage(amount, kind, source)
 end
 
 
+local Marble = actors_base.Actor:extend{
+    name = 'marble',
+    sprite_name = 'marble',
+    dialogue_position = 'right',
+    --dialogue_chatter_sound = 'assets/sounds/chatter-lop.ogg',
+    dialogue_color = {0, 0, 0},
+    dialogue_shadow = {192, 192, 192},
+    dialogue_sprites = {
+        { name = 'base', sprite_name = 'marble portrait', while_talking = { default = 'talking' } },
+    },
+
+    is_usable = true,
+}
+
+function Marble:init(...)
+    Marble.__super.init(self, ...)
+
+    self.sprite:set_facing_right(false)
+end
+
+function Marble:on_use(activator)
+    local convo = {
+        {
+            jump = 'midwave',
+            condition = function() return game.wave_begun end,
+        },
+        {
+            "Ready?",
+            speaker = 'marble',
+        },
+        {
+            speaker = 'purrl',
+            menu = {
+                { 'yes', "Mew bet!" },
+                { 'no', "Mewoh no!" },
+            }
+        },
+
+        { label = 'yes' },
+        { execute = function()
+            -- FIXME this is because switching states within dialogue is janky,
+            -- so just do it as soon as we return to the world; this will make
+            -- the world advance by one frame though
+            worldscene.tick:delay(function()
+                game:wave_begin()
+            end, 0)
+        end },
+        { label = 'no' },
+        { bail = true },
+
+        { label = 'midwave' },
+        {
+            "I can't fix the door now!  It's not safe!",
+            speaker = 'marble',
+        },
+    }
+    Gamestate.push(DialogueScene({
+        purrl = activator,
+        marble = self,
+    }, convo))
+end
+
+
 local Anise = actors_base.Actor:extend{
     name = 'anise',
     sprite_name = 'anise',
@@ -178,11 +245,11 @@ function Anise:on_use(activator)
         },
         {
             "Mewwo!  I know who you are!",
-            speaker = 'pearl',
+            speaker = 'purrl',
             pose = '>_<',
         },
         {
-            speaker = 'pearl',
+            speaker = 'purrl',
             pose = 'default',
         },
         {
@@ -192,7 +259,7 @@ function Anise:on_use(activator)
         },
         {
             "Mewwow!",
-            speaker = 'pearl',
+            speaker = 'purrl',
         },
         {
             "Yeah!!  Look at all this stuff I found just lying around on the floor too!!",
@@ -215,7 +282,7 @@ function Anise:on_use(activator)
         },
         {
             "Mewoh no!  I don't have any space cash...",
-            speaker = 'pearl',
+            speaker = 'purrl',
         },
         {
             "Oh well too bad!!  I'll have to keep all this amazing stuff to myself!!",
@@ -223,14 +290,14 @@ function Anise:on_use(activator)
         },
         {
             "Mewwwaaauuughh!",
-            speaker = 'pearl',
+            speaker = 'purrl',
         },
         { bail = true },
 
         { label = 'bye' },
         {
             "I have to go shoot aliens with fish now.",
-            speaker = 'pearl',
+            speaker = 'purrl',
         },
         {
             "Oh good luck!!  Come by if you need anything!!!!",
@@ -239,7 +306,7 @@ function Anise:on_use(activator)
         { bail = true },
     }
     Gamestate.push(DialogueScene({
-        pearl = activator,
+        purrl = activator,
         anise = self,
     }, convo))
 end

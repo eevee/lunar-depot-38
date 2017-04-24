@@ -253,7 +253,7 @@ end
 
 function Spaceship:_schedule_angel_spawn()
     worldscene.tick:delay(function()
-        if math.random() < 0.25 then
+        if game.wave_begun and math.random() < 0.25 then
             local Angel = ANGELS[math.random(1, #ANGELS)]
             local x = math.random(0, worldscene.map.width)
             worldscene:add_actor(Angel(self.pos:clone()))

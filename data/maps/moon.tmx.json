@@ -1179,6 +1179,18 @@
                  "width":78,
                  "x":1294,
                  "y":425
+                }, 
+                {
+                 "gid":337,
+                 "height":32,
+                 "id":42,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":25,
+                 "x":922,
+                 "y":429
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1187,7 +1199,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":42,
+ "nextobjectid":43,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,
@@ -3093,15 +3105,15 @@
                              "y":49
                             }, 
                             {
-                             "height":50,
+                             "height":62,
                              "id":2,
                              "name":"",
                              "rotation":0,
                              "type":"",
                              "visible":true,
-                             "width":68,
-                             "x":1,
-                             "y":1
+                             "width":53,
+                             "x":6,
+                             "y":9
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -3931,6 +3943,209 @@
                 }
             },
          "tilewidth":80
+        }, 
+        {
+         "columns":3,
+         "firstgid":327,
+         "image":"..\/..\/assets\/images\/speckleportrait.png",
+         "imageheight":160,
+         "imagewidth":240,
+         "margin":0,
+         "name":"speckleportrait",
+         "spacing":0,
+         "tilecount":6,
+         "tileheight":80,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "animation flipped":true,
+                 "sprite name":"speckle portrait\/default"
+                },
+             "1":
+                {
+                 "animation flipped":true,
+                 "sprite name":"speckle portrait\/talking"
+                },
+             "3":
+                {
+                 "animation flipped":true,
+                 "sprite name":"speckle portrait - eyes\/annoyed"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "1":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "3":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "1":
+                {
+                 "animation":[
+                        {
+                         "duration":150,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":75,
+                         "tileid":0
+                        }]
+                }
+            },
+         "tilewidth":80
+        }, 
+        {
+         "columns":4,
+         "firstgid":333,
+         "image":"..\/..\/assets\/images\/marbleportrait.png",
+         "imageheight":80,
+         "imagewidth":320,
+         "margin":0,
+         "name":"marbleportrait",
+         "spacing":0,
+         "tilecount":4,
+         "tileheight":80,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "animation flipped":true,
+                 "sprite name":"marble portrait\/default"
+                },
+             "1":
+                {
+                 "animation flipped":true,
+                 "sprite name":"marble portrait\/talking"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "1":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "1":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":3
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }]
+                }
+            },
+         "tilewidth":80
+        }, 
+        {
+         "columns":3,
+         "firstgid":337,
+         "image":"..\/..\/assets\/images\/marble.png",
+         "imageheight":32,
+         "imagewidth":75,
+         "margin":0,
+         "name":"marble",
+         "spacing":0,
+         "tilecount":3,
+         "tileheight":32,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "actor":"marble",
+                 "animation flipped":true,
+                 "sprite name":"marble\/stand"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "actor":"string",
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":13,
+                             "y":32
+                            }, 
+                            {
+                             "height":24,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":25,
+                             "x":0,
+                             "y":8
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                }
+            },
+         "tilewidth":25
         }],
  "tilewidth":32,
  "version":1,

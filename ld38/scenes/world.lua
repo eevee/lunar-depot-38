@@ -1,14 +1,16 @@
-local WorldScene = require 'klinklang.scenes.world'
+local Gamestate = require 'vendor.hump.gamestate'
 local Vector = require 'vendor.hump.vector'
+
+local WorldScene = require 'klinklang.scenes.world'
 
 local actors_angels = require 'ld38.actors.angels'
 local Pearl = require 'ld38.actors.pearl'
 
-local MoonWorldScene = WorldScene:extend{}
-
 local TAU = math.pi * 2
 
 local ANGEL_PROPORTION_SPEED = 0.125
+
+local MoonWorldScene = WorldScene:extend{}
 
 function MoonWorldScene:init(...)
     MoonWorldScene.__super.init(self, ...)
@@ -239,7 +241,6 @@ function MoonWorldScene:load_map(map)
     -- Slightly invasive, but, whatever
     self.collider:remove(map.shapes.border[3])
     self.collider:remove(map.shapes.border[4])
-    -- Add extra barriers extending beyond the left and right edges of the map
 end
 
 function MoonWorldScene:_update_angel_count(delta)
