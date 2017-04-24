@@ -26,6 +26,7 @@ local BaseAngel = actors_base.SentientActor:extend{
 
     is_angel = true,
     is_critter = true,
+    attack_sfx_path = nil,
     -- chase: trying to move towards its target
     -- aimless: running around with no particular target
     -- attack: currently hitting the door
@@ -95,7 +96,7 @@ function BaseAngel:on_collide_with(actor, ...)
                 end
             end, 0.5)
         end)
-        play_positional_sound(game.resource_manager:get('assets/sfx/angelhit1.ogg'), self)
+        play_positional_sound(game.resource_manager:get(self.attack_sfx_path), self)
     end
 
     return BaseAngel.__super.on_collide_with(self, actor, ...)
@@ -153,26 +154,36 @@ end
 local EyeAngel1 = BaseAngel:extend{
     name = 'eye angel 1',
     sprite_name = 'eye angel 1',
+
+    attack_sfx_path = 'assets/sfx/angelhit1.ogg',
 }
 
 local EyeAngel2 = BaseAngel:extend{
     name = 'eye angel 2',
     sprite_name = 'eye angel 2',
+
+    attack_sfx_path = 'assets/sfx/angelhit2.ogg',
 }
 
 local EyeAngel3 = BaseAngel:extend{
     name = 'eye angel 3',
     sprite_name = 'eye angel 3',
+
+    attack_sfx_path = 'assets/sfx/angelhit3.ogg',
 }
 
 local EyeAngel4 = BaseAngel:extend{
     name = 'eye angel 4',
     sprite_name = 'eye angel 4',
+
+    attack_sfx_path = 'assets/sfx/angelhit4.ogg',
 }
 
 local RadioAngel3 = BaseAngel:extend{
     name = 'radio angel 3',
     sprite_name = 'radio angel 3',
+
+    attack_sfx_path = 'assets/sfx/angelhit5.ogg',
 }
 
 
@@ -212,6 +223,14 @@ function SpaceshipSmoke:draw()
 end
 
 
+local ANGELS = {
+    EyeAngel1,
+    EyeAngel2,
+    EyeAngel3,
+    EyeAngel4,
+    RadioAngel3,
+}
+
 local Spaceship = actors_base.MobileActor:extend{
     name = 'spaceship',
     sprite_name = 'spaceship',
@@ -235,8 +254,9 @@ end
 function Spaceship:_schedule_angel_spawn()
     worldscene.tick:delay(function()
         if math.random() < 0.25 then
+            local Angel = ANGELS[math.random(1, #ANGELS)]
             local x = math.random(0, worldscene.map.width)
-            worldscene:add_actor(EyeAngel2(self.pos:clone()))
+            worldscene:add_actor(Angel(self.pos:clone()))
         end
         self:_schedule_angel_spawn()
     end, 5)
