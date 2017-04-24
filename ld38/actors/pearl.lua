@@ -205,6 +205,13 @@ local Pearl = Player:extend{
     jumpvel = actors_base.get_jump_velocity(128),
     max_slope = Vector(2, -1),
     dialogue_position = 'left',
+    dialogue_chatter_sound = {
+        'assets/sfx/pearl1.ogg',
+        'assets/sfx/pearl2.ogg',
+        'assets/sfx/pearl3.ogg',
+        'assets/sfx/pearl4.ogg',
+        'assets/sfx/pearl5.ogg',
+    },
     dialogue_color = {64, 129, 135},
     dialogue_shadow = {155, 192, 174},
     dialogue_sprites = {

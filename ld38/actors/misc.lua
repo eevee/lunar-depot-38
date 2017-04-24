@@ -249,7 +249,10 @@ local Anise = actors_base.Actor:extend{
     name = 'anise',
     sprite_name = 'anise',
     dialogue_position = 'right',
-    --dialogue_chatter_sound = 'assets/sounds/chatter-lop.ogg',
+    dialogue_chatter_sound = {
+        'assets/sfx/anise1.ogg',
+        'assets/sfx/anise2.ogg',
+    },
     --dialogue_background = 'assets/images/dialoguebox-lop.png',
     dialogue_color = {34, 32, 52},
     dialogue_shadow = {137, 137, 137},
