@@ -2711,15 +2711,15 @@
                      "name":"",
                      "objects":[
                             {
-                             "height":102,
+                             "height":96,
                              "id":1,
                              "name":"",
                              "rotation":0,
                              "type":"",
                              "visible":true,
-                             "width":25,
-                             "x":54,
-                             "y":35
+                             "width":24,
+                             "x":50,
+                             "y":41
                             }, 
                             {
                              "ellipse":true,
