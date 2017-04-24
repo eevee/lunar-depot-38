@@ -127,7 +127,9 @@ function BaseAngel:damage(amount, kind, source)
 
         -- Destroy us
         self.state = 'dead'
-        worldscene:remove_actor(self)
+        self.sprite:set_pose('die', function()
+            worldscene:remove_actor(self)
+        end)
         play_positional_sound(game.resource_manager:get('assets/sfx/angedestroyed.ogg'), self)
     end
 

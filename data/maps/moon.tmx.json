@@ -1090,7 +1090,7 @@
                  "y":428
                 }, 
                 {
-                 "gid":217,
+                 "gid":247,
                  "height":128,
                  "id":32,
                  "name":"",
@@ -1102,7 +1102,7 @@
                  "y":424
                 }, 
                 {
-                 "gid":218,
+                 "gid":248,
                  "height":52,
                  "id":33,
                  "name":"",
@@ -1114,7 +1114,7 @@
                  "y":410
                 }, 
                 {
-                 "gid":255,
+                 "gid":285,
                  "height":47,
                  "id":34,
                  "name":"",
@@ -1126,7 +1126,7 @@
                  "y":445
                 }, 
                 {
-                 "gid":256,
+                 "gid":286,
                  "height":68,
                  "id":35,
                  "name":"",
@@ -1138,7 +1138,7 @@
                  "y":146
                 }, 
                 {
-                 "gid":287,
+                 "gid":317,
                  "height":80,
                  "id":38,
                  "name":"",
@@ -1150,7 +1150,7 @@
                  "y":398
                 }, 
                 {
-                 "gid":288,
+                 "gid":318,
                  "height":64,
                  "id":40,
                  "name":"",
@@ -1181,7 +1181,7 @@
                  "y":425
                 }, 
                 {
-                 "gid":337,
+                 "gid":367,
                  "height":32,
                  "id":42,
                  "name":"",
@@ -1931,15 +1931,15 @@
          "tilewidth":36
         }, 
         {
-         "columns":14,
+         "columns":19,
          "firstgid":83,
          "image":"..\/..\/assets\/images\/eyeangel1.png",
          "imageheight":80,
-         "imagewidth":1120,
+         "imagewidth":1520,
          "margin":0,
          "name":"eyeangel1",
          "spacing":0,
-         "tilecount":14,
+         "tilecount":19,
          "tileheight":80,
          "tileproperties":
             {
@@ -1959,6 +1959,11 @@
              "13":
                 {
                  "sprite name":"eye angel 1\/jump"
+                },
+             "15":
+                {
+                 "animation stops":true,
+                 "sprite name":"eye angel 1\/die"
                 },
              "4":
                 {
@@ -1987,6 +1992,11 @@
                 },
              "13":
                 {
+                 "sprite name":"string"
+                },
+             "15":
+                {
+                 "animation stops":"bool",
                  "sprite name":"string"
                 },
              "4":
@@ -2052,6 +2062,26 @@
                          "tileid":12
                         }]
                 },
+             "15":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":15
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":16
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":17
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":18
+                        }]
+                },
              "4":
                 {
                  "animation":[
@@ -2088,15 +2118,15 @@
          "tilewidth":80
         }, 
         {
-         "columns":20,
-         "firstgid":97,
+         "columns":26,
+         "firstgid":102,
          "image":"..\/..\/assets\/images\/eyeangel2.png",
          "imageheight":92,
-         "imagewidth":1840,
+         "imagewidth":2392,
          "margin":0,
          "name":"eyeangel2",
          "spacing":0,
-         "tilecount":20,
+         "tilecount":26,
          "tileheight":92,
          "tileproperties":
             {
@@ -2117,6 +2147,11 @@
                 {
                  "animation stops":true,
                  "sprite name":"eye angel 2\/attack"
+                },
+             "21":
+                {
+                 "animation stops":true,
+                 "sprite name":"eye angel 2\/die"
                 },
              "5":
                 {
@@ -2143,6 +2178,11 @@
                  "sprite name":"string"
                 },
              "17":
+                {
+                 "animation stops":"bool",
+                 "sprite name":"string"
+                },
+             "21":
                 {
                  "animation stops":"bool",
                  "sprite name":"string"
@@ -2245,6 +2285,30 @@
                          "tileid":19
                         }]
                 },
+             "21":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":21
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":22
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":23
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":24
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":25
+                        }]
+                },
              "5":
                 {
                  "animation":[
@@ -2277,15 +2341,15 @@
          "tilewidth":92
         }, 
         {
-         "columns":31,
-         "firstgid":117,
+         "columns":38,
+         "firstgid":128,
          "image":"..\/..\/assets\/images\/eyeangel3.png",
          "imageheight":120,
-         "imagewidth":3720,
+         "imagewidth":4560,
          "margin":0,
          "name":"eyeangel3",
          "spacing":0,
-         "tilecount":31,
+         "tilecount":38,
          "tileheight":120,
          "tileproperties":
             {
@@ -2314,6 +2378,11 @@
                 {
                  "animation stops":true,
                  "sprite name":"eye angel 3\/flinch"
+                },
+             "31":
+                {
+                 "animation stops":true,
+                 "sprite name":"eye angel 3\/die"
                 }
             },
          "tilepropertytypes":
@@ -2340,6 +2409,11 @@
                  "sprite name":"string"
                 },
              "27":
+                {
+                 "animation stops":"bool",
+                 "sprite name":"string"
+                },
+             "31":
                 {
                  "animation stops":"bool",
                  "sprite name":"string"
@@ -2453,20 +2527,52 @@
                          "duration":100,
                          "tileid":28
                         }]
+                },
+             "31":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":31
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":32
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":33
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":34
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":35
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":36
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":37
+                        }]
                 }
             },
          "tilewidth":120
         }, 
         {
-         "columns":19,
-         "firstgid":148,
+         "columns":27,
+         "firstgid":166,
          "image":"..\/..\/assets\/images\/eyeangel4.png",
          "imageheight":160,
-         "imagewidth":1520,
+         "imagewidth":2160,
          "margin":0,
          "name":"eyeangel4",
          "spacing":0,
-         "tilecount":19,
+         "tilecount":27,
          "tileheight":160,
          "tileproperties":
             {
@@ -2478,6 +2584,11 @@
              "15":
                 {
                  "sprite name":"eye angel 4\/walk"
+                },
+             "20":
+                {
+                 "animation stops":true,
+                 "sprite name":"eye angel 4\/die"
                 },
              "3":
                 {
@@ -2507,6 +2618,11 @@
                 },
              "15":
                 {
+                 "sprite name":"string"
+                },
+             "20":
+                {
+                 "animation stops":"bool",
                  "sprite name":"string"
                 },
              "3":
@@ -2615,6 +2731,38 @@
                      "y":0
                     }
                 },
+             "20":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":20
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":21
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":22
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":23
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":24
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":25
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":26
+                        }]
+                },
              "4":
                 {
                  "animation":[
@@ -2663,15 +2811,15 @@
          "tilewidth":80
         }, 
         {
-         "columns":45,
-         "firstgid":167,
+         "columns":49,
+         "firstgid":193,
          "image":"..\/..\/assets\/images\/radioangelno3.png",
          "imageheight":142,
-         "imagewidth":5715,
+         "imagewidth":6223,
          "margin":0,
          "name":"radioangelno3",
          "spacing":0,
-         "tilecount":45,
+         "tilecount":49,
          "tileheight":142,
          "tileproperties":
             {
@@ -2706,6 +2854,11 @@
                 {
                  "animation flipped":true,
                  "sprite name":"radio angel 3\/fall"
+                },
+             "46":
+                {
+                 "animation stops":false,
+                 "sprite name":"radio angel 3\/die"
                 }
             },
          "tilepropertytypes":
@@ -2740,6 +2893,11 @@
              "42":
                 {
                  "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "46":
+                {
+                 "animation stops":"bool",
                  "sprite name":"string"
                 }
             },
@@ -2911,13 +3069,29 @@
                          "duration":100,
                          "tileid":44
                         }]
+                },
+             "46":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":46
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":47
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":48
+                        }]
                 }
             },
          "tilewidth":127
         }, 
         {
          "columns":6,
-         "firstgid":212,
+         "firstgid":242,
          "image":"..\/..\/assets\/images\/doorsprite.png",
          "imageheight":128,
          "imagewidth":576,
@@ -3028,7 +3202,7 @@
         }, 
         {
          "columns":37,
-         "firstgid":218,
+         "firstgid":248,
          "image":"..\/..\/assets\/images\/speckle.png",
          "imageheight":52,
          "imagewidth":2590,
@@ -3140,7 +3314,7 @@
         }, 
         {
          "columns":1,
-         "firstgid":255,
+         "firstgid":285,
          "image":"..\/..\/assets\/images\/ladder.png",
          "imageheight":47,
          "imagewidth":37,
@@ -3219,7 +3393,7 @@
         }, 
         {
          "columns":2,
-         "firstgid":256,
+         "firstgid":286,
          "image":"..\/..\/assets\/images\/spaceship.png",
          "imageheight":68,
          "imagewidth":300,
@@ -3299,7 +3473,7 @@
         }, 
         {
          "columns":6,
-         "firstgid":258,
+         "firstgid":288,
          "image":"..\/..\/assets\/images\/andrepainting.png",
          "imageheight":400,
          "imagewidth":768,
@@ -3602,7 +3776,7 @@
         }, 
         {
          "columns":11,
-         "firstgid":288,
+         "firstgid":318,
          "image":"..\/..\/assets\/images\/anise.png",
          "imageheight":64,
          "imagewidth":704,
@@ -3690,7 +3864,7 @@
         }, 
         {
          "columns":4,
-         "firstgid":299,
+         "firstgid":329,
          "image":"..\/..\/assets\/images\/aniseportrait.png",
          "imageheight":320,
          "imagewidth":320,
@@ -3846,7 +4020,7 @@
         }, 
         {
          "columns":4,
-         "firstgid":315,
+         "firstgid":345,
          "image":"..\/..\/assets\/images\/pearlportrait.png",
          "imageheight":240,
          "imagewidth":320,
@@ -3966,7 +4140,7 @@
         }, 
         {
          "columns":3,
-         "firstgid":327,
+         "firstgid":357,
          "image":"..\/..\/assets\/images\/speckleportrait.png",
          "imageheight":160,
          "imagewidth":240,
@@ -4034,7 +4208,7 @@
         }, 
         {
          "columns":4,
-         "firstgid":333,
+         "firstgid":363,
          "image":"..\/..\/assets\/images\/marbleportrait.png",
          "imageheight":80,
          "imagewidth":320,
@@ -4096,7 +4270,7 @@
         }, 
         {
          "columns":3,
-         "firstgid":337,
+         "firstgid":367,
          "image":"..\/..\/assets\/images\/marble.png",
          "imageheight":32,
          "imagewidth":75,
