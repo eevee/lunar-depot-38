@@ -134,7 +134,7 @@ function BaseAngel:damage(amount, kind, source)
 end
 
 function BaseAngel:update(dt)
-    if self.state == 'chase' and math.abs(self.velocity.x) < 2 and self.velocity.y <= 0 then
+    if self.state == 'chase' and math.abs(self.velocity.x) < 2 and self.on_ground then
         self:decide_jump()
     end
 
