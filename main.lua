@@ -32,9 +32,9 @@ game = {
         Gamestate.push(TransitionScene(("Wave %d"):format(self.wave)))
     end,
     wave_complete = function(self)
+        Gamestate.push(TransitionScene(("Wave %d complete"):format(self.wave)))
         self.wave_begun = false
         self.wave = self.wave + 1
-        Gamestate.push(TransitionScene(("Wave %d complete"):format(self.wave)))
 
         -- TODO janky, would be REALLY NICE to emit an event here
         for _, actor in ipairs(worldscene.actors) do
