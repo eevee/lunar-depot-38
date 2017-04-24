@@ -199,7 +199,15 @@ function DialogueScene:init(speakers, script)
                 speaker.background = game.resource_manager:load(actor.dialogue_background)
             end
             if actor.dialogue_chatter_sound then
-                speaker.chatter_sfx = game.resource_manager:get(actor.dialogue_chatter_sound)
+                local paths = actor.dialogue_chatter_sound
+                local sfxs = {}
+                if type(paths) == 'string' then
+                    paths = {paths}
+                end
+                for _, path in ipairs(paths) do
+                    table.insert(sfxs, game.resource_manager:get(path))
+                end
+                speaker.chatter_sfx = sfxs
             end
         end
         self.speakers[name] = speaker
@@ -405,7 +413,8 @@ function DialogueScene:update(dt)
                 self.last_was_space = true
             else
                 if self.last_was_space and self.chatter_enabled and self.phrase_speaker.chatter_sfx then
-                    local sfx = self.phrase_speaker.chatter_sfx:clone()
+                    local sfxs = self.phrase_speaker.chatter_sfx
+                    local sfx = sfxs[math.random(1, #sfxs)]:clone()
                     -- Pitch is exponential, whereas math.random() is linear;
                     -- multiplying two random numbers compensates somewhat by
                     -- adding a significant bias towards the low end
