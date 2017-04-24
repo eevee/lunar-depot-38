@@ -36,13 +36,13 @@ function TransitionScene:enter(previous_scene)
     self.x2 = w
     self.x = self.x0
     self.y = (h - th) / 2
-    self.time = 1
+    self.time = 0.75
 
     self.flux = flux.group()
     self.flux:to(self, self.time, { x = self.x1 })
-        :ease('quadout')
+        :ease('cubicout')
         :after(self.time, { x = self.x2 })
-        :ease('quadin')
+        :ease('cubicin')
         :delay(self.time)
         :oncomplete(function()
             Gamestate.pop()

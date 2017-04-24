@@ -205,6 +205,9 @@ end
 function Marble:update(dt)
     -- FIXME stupid hack to do this cutscene when the world first becomes available
     if self.timer == 0 and dt > 0 then
+        -- Call this FIRST, so the dialogue scene goes on top of it
+        game:wave_begin()
+
         local convo = {
             { "We shall talk of carrots later. Are you ready? The angels are coming to play.", speaker = 'marble' },
             { "Meweow! I'm ready!", speaker = 'purrl' },
