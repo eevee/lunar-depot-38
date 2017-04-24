@@ -157,16 +157,17 @@ function PaintSplatter:on_collide_with(actor, collision)
         end
     end
 
-    -- Deal with hitting something
-    -- FIXME this doesn't end collision, so it can hit multiple things at once!
-    -- same problem with angels, really.  hmm.
+    -- Deal with hitting something.  If we actually inflict damage, we set
+    -- destroyed_state to 2, which makes us ignore all other collisions even in
+    -- this tic; otherwise, we set destroyed_state to 1, which lets us possibly
+    -- collide with other things this tic but gets set to 2 in our next update.
+    -- Thus a paint splatter can only ever damage one thing.
+    -- TODO "stop colliding after this" seems like a common problem
+    self.destroyed_state = 1
     if actor and actor.damage then
-        actor:damage(1000, 'paint', self)
-        self.destroyed_state = 2
-    else
-        -- If we hit geometry, let us keep colliding in case we also hit an
-        -- angel this tic
-        self.destroyed_state = 1
+        if actor:damage(1000, 'paint', self) then
+            self.destroyed_state = 2
+        end
     end
     self.velocity.x = 0
     self.velocity.y = 0

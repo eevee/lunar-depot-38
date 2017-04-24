@@ -17,6 +17,12 @@ game = {
     VERSION = "0.1",
     TILE_SIZE = 32,
 
+    -- Gameplay twiddles
+    time_to_finish_painting = 100,
+    speckle_annoyance_duration = 5,
+    angel_attack_frequency = 1,
+    total_door_health = 500,
+
     input = nil,
 
     progress = {

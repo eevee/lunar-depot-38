@@ -26,6 +26,11 @@ local BaseAngel = actors_base.SentientActor:extend{
 
     is_angel = true,
     is_critter = true,
+    -- chase: trying to move towards its target
+    -- aimless: running around with no particular target
+    -- attack: currently hitting the door
+    -- idle: pausing between attacks
+    -- stunned: stunned, can be hurt
     state = nil,
 }
 
@@ -43,23 +48,30 @@ function BaseAngel:init(...)
             if math.abs(dx) < nearest_target_x then
                 nearest_target_x = math.abs(dx)
                 self.ptrs.target = actor
-                if dx > 0 then
-                    self:decide_walk(1)
-                else
-                    self:decide_walk(-1)
-                end
-                self.state = 'chase'
             end
         end
     end
+
+    self:think()
 end
 
-function BaseAngel:blocks()
-    if self.is_locked then
-        return false
+function BaseAngel:think()
+    if self.ptrs.target then
+        self.state = 'chase'
+        local dx = modular_distance(self.pos.x, self.ptrs.target.pos.x, worldscene.map.width)
+        if dx > 0 then
+            self:decide_walk(1)
+        else
+            self:decide_walk(-1)
+        end
+    else
+        self.state = 'aimless'
+        if math.random() < 0.5 then
+            self:decide_walk(1)
+        else
+            self:decide_walk(-1)
+        end
     end
-
-    return true
 end
 
 function BaseAngel:on_collide_with(actor, ...)
@@ -78,7 +90,7 @@ function BaseAngel:on_collide_with(actor, ...)
             self.sprite:set_pose('stand')
             worldscene.tick:delay(function()
                 -- FIXME ugh this is a clusterfuck; don't want to do this if we were stunned in this window
-                if not self.locked then
+                if self.state == 'idle' then
                     self.state = 'chase'
                 end
             end, 0.5)
@@ -90,34 +102,35 @@ function BaseAngel:on_collide_with(actor, ...)
 end
 
 function BaseAngel:damage(amount, kind, source)
-    if self.is_dead then
+    if self.state == 'dead' then
         return
     end
 
     if kind == 'stun' then
-        if self.is_locked then
-            -- Already stunned
+        if self.state == 'stunned' then
             return
         end
 
         self.is_locked = true
         self.sprite:set_pose('flinch')
+        self.state = 'stunned'
         worldscene.tick:delay(function()
             self.is_locked = false
-            -- FIXME resume whatever we were doing
-            self:decide_walk(1)
+            -- Resume whatever we were doing
+            self:think()
         end, 5)
     elseif kind == 'paint' then
-        if not self.is_locked then
-            -- No effect if not stunned
+        if self.state ~= 'stunned' then
             return
         end
 
         -- Destroy us
-        self.is_dead = true
+        self.state = 'dead'
         worldscene:remove_actor(self)
         play_positional_sound(game.resource_manager:get('assets/sfx/angedestroyed.ogg'), self)
     end
+
+    return true
 end
 
 function BaseAngel:update(dt)

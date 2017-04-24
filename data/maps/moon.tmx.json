@@ -2717,7 +2717,7 @@
                              "rotation":0,
                              "type":"",
                              "visible":true,
-                             "width":16,
+                             "width":25,
                              "x":54,
                              "y":35
                             }, 
@@ -2755,6 +2755,62 @@
                         {
                          "duration":150,
                          "tileid":0
+                        }]
+                },
+             "13":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":8
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":9
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":10
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":11
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":12
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":13
+                        }, 
+                        {
+                         "duration":75,
+                         "tileid":14
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":15
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":16
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":17
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":18
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":19
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":20
                         }]
                 },
              "21":
