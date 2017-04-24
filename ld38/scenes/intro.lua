@@ -70,11 +70,6 @@ local DIALOGUE_PARTS = {
     },
 }
 
---[[
-{ "We shall talk of carrots later. Are you ready? The angels are coming to play.", speaker = 'marble' },
-{ "Meweow! I'm ready!", speaker = 'purrl' },
-]]
-
 
 local IntroScene = BaseScene:extend{
     __tostring = function(self) return "introscene" end,

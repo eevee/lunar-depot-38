@@ -202,6 +202,22 @@ function Marble:init(...)
     self.sprite:set_facing_right(false)
 end
 
+function Marble:update(dt)
+    -- FIXME stupid hack to do this cutscene when the world first becomes available
+    if self.timer == 0 and dt > 0 then
+        local convo = {
+            { "We shall talk of carrots later. Are you ready? The angels are coming to play.", speaker = 'marble' },
+            { "Meweow! I'm ready!", speaker = 'purrl' },
+        }
+        Gamestate.push(DialogueScene({
+            purrl = worldscene.player,
+            marble = self,
+        }, convo))
+    end
+
+    Marble.__super.update(self, dt)
+end
+
 function Marble:on_use(activator)
     local convo = {
         {
