@@ -27,6 +27,7 @@ game = {
     total_door_health = 500,
     -- State
     andre_painting_progress = 0,
+    space_cash = 0,
 
     wave = 1,
     wave_begun = false,

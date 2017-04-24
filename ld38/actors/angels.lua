@@ -22,6 +22,33 @@ local function play_positional_sound(sound, source)
 end
 
 
+local SpaceCash = actors_base.Actor:extend{
+    name = 'space cash',
+    sprite_name = 'space cash',
+
+    speed = 0,
+    acceleration = 8,
+}
+
+function SpaceCash:update(dt)
+    local dx = modular_distance(self.pos.x, worldscene.player.pos.x, worldscene.map.width)
+    local dy = (worldscene.player.pos.y - 16) - self.pos.y
+    local d = Vector(dx, dy)
+    local l = d:len()
+    if l < self.speed then
+        -- ch-ching
+        game.space_cash = game.space_cash + 1
+        worldscene:remove_actor(self)
+        return
+    end
+
+    self.speed = self.speed + self.acceleration * dt
+    self.pos = self.pos + d * (self.speed / l)
+
+    SpaceCash.__super.update(self, dt)
+end
+
+
 local BaseAngel = actors_base.SentientActor:extend{
     max_slope = Vector(16, -1),
 
@@ -141,6 +168,7 @@ function BaseAngel:damage(amount, kind, source)
             self.sprite:set_pose('die', function()
                 worldscene:remove_actor(self)
             end)
+            worldscene:add_actor(SpaceCash(self.pos + Vector(math.random(-8, 8), math.random(-8, 8))))
             play_positional_sound(game.resource_manager:get('assets/sfx/angedestroyed.ogg'), self)
         end
     end
@@ -271,13 +299,13 @@ end
 
 function Spaceship:_schedule_angel_spawn()
     worldscene.tick:delay(function()
-        if game.wave_begun and math.random() < 0.25 then
+        if game.wave_begun and math.random() < 0.125 * game.wave then
             local Angel = ANGELS[math.random(1, game.wave)]
             local x = math.random(0, worldscene.map.width)
             worldscene:add_actor(Angel(self.pos:clone()))
         end
         self:_schedule_angel_spawn()
-    end, 5)
+    end, 1)
 end
 
 function Spaceship:_schedule_exhaust()

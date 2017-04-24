@@ -33,6 +33,8 @@ function FishBall:init(shooter, ...)
     -- spritesheet is arranged, whoops
     self.sprite:set_pose('default')
 
+    self.lifetime = shooter.firing_range / 2
+
     actors_angels.play_positional_sound(
         game.resource_manager:get(self.spawn_sfx_path), self)
 end
@@ -165,12 +167,15 @@ function PaintSplatter:on_collide_with(actor, collision)
         return true
     end
 
-    -- Treat overlaps as collisions, in case we spawned inside something
-    if collision.touchtype >= 0 then
-        local passable = PaintSplatter.__super.on_collide_with(self, actor, collision)
-        if passable then
-            return true
-        end
+    -- Turn overlaps into collisions before consulting super; if we spawned
+    -- inside something then we should hit it immediately, not ignore it
+    if collision.touchtype < 0 then
+        collision.touchtype = 1
+    end
+
+    local passable = FishBall.__super.on_collide_with(self, actor, collision)
+    if passable then
+        return true
     end
 
     -- Deal with hitting something.  If we actually inflict damage, we set
@@ -324,6 +329,8 @@ local Pearl = Player:extend{
     fish_weapon = 'gun',
     paint_weapon = 'bucket',
     spraypaint_anchor = Vector(13, -7),
+    firing_range = 1,
+    firing_speed = 1,
 }
 
 
@@ -363,7 +370,7 @@ function Pearl:update(dt)
             self.can_shoot = false
             worldscene.tick:delay(function()
                 self.can_shoot = true
-            end, 0.5)
+            end, 1 / self.firing_speed)
             self.sprite:set_pose('shoot', function()
                 self.is_shooting = nil
                 local d = Vector(12, -8)

@@ -333,8 +333,15 @@ function MoonWorldScene:draw()
     MoonWorldScene.__super.draw(self)
 
     -- Draw some UI
+    love.graphics.push('all')
     love.graphics.rectangle('line', 8.5, 8.5, 192, 16)
     love.graphics.rectangle('fill', 8.5, 8.5, 192 * game.andre_painting_progress / game.time_to_finish_painting, 16)
+
+    local s = game.sprites['space cash ui']:instantiate()
+    s:draw_at(Vector(24, 600 - 24))
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.print(game.space_cash, 48, 600 - 32 - 3)
+    love.graphics.pop()
 end
 
 function MoonWorldScene:_draw_final_canvas()

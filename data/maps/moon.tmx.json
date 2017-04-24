@@ -4644,6 +4644,111 @@
                 }
             },
          "tilewidth":80
+        }, 
+        {
+         "columns":2,
+         "firstgid":401,
+         "image":"..\/..\/assets\/images\/ui.png",
+         "imageheight":64,
+         "imagewidth":64,
+         "margin":0,
+         "name":"ui",
+         "spacing":0,
+         "tilecount":4,
+         "tileheight":32,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "sprite name":"space cash ui\/default"
+                },
+             "1":
+                {
+                 "sprite name":"space cash\/default"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "sprite name":"string"
+                },
+             "1":
+                {
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":16,
+                             "y":16
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "1":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":16,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":16,
+                             "x":8,
+                             "y":8
+                            }, 
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":16,
+                             "y":16
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                }
+            },
+         "tilewidth":32
         }],
  "tilewidth":32,
  "version":1,

@@ -168,6 +168,11 @@ local DoorPlanks = actors_base.Actor:extend{
     is_angel_target = true,
 }
 
+function DoorPlanks:init(...)
+    DoorPlanks.__super.init(self, ...)
+    self.sprite:set_pose('5')
+end
+
 function DoorPlanks:on_wave_begin()
     self.health = game.total_door_health
     self.sprite:set_pose('5')
@@ -297,6 +302,19 @@ local Anise = actors_base.Actor:extend{
     is_usable = true,
 }
 
+local function _check_space_cash(value)
+    return {
+        jump = 'insufficient space cash',
+        condition = function()
+            if game.space_cash < value then
+                return true
+            else
+                game.space_cash = game.space_cash - value
+            end
+        end,
+    }
+end
+
 function Anise:on_use(activator)
     local convo = {
         {
@@ -326,73 +344,186 @@ function Anise:on_use(activator)
             "Yeah!!  Look at all this stuff I found just lying around on the floor too!!",
             speaker = 'anise',
         },
+        { label = 'menu' },
         {
             speaker = 'anise',
             menu = {
-                { 'big gun', "Bigger fish gun (20 CP)", condition = function() return activator.fish_weapon == 'gun' end },
-                { 'spraypaint', "Spraypaint", condition = function() return activator.paint_weapon == 'bucket' end },
-                { 'big spraypaint', "Bigger spraypaint", condition = function() return activator.paint_weapon == 'spraypaint' end },
-                { 'dummy', "Floor kibble - Increase max HP (5 CP)" },
-                { 'dummy', "Mesh bag - INT +2, CHR +4 (10 CP)" },
+                { 'firing range', "Increase firing range (5 SC)", condition = function() return activator.firing_range == 1 end },
+                { 'firing range 2', "Increase firing range (10 SC)", condition = function() return activator.firing_range == 2 end },
+                { 'firing range 3', "Increase firing range (15 SC)", condition = function() return activator.firing_range == 4 end },
+                { 'firing speed', "Increase firing speed (5 SC)", condition = function() return activator.firing_speed == 1 end },
+                { 'firing speed 2', "Increase firing speed (10 SC)", condition = function() return activator.firing_speed == 2 end },
+                { 'big gun', "Bigger fish gun (10 CP)", condition = function() return activator.fish_weapon == 'gun' end },
+                { 'spraypaint', "Spraypaint (20 CP)", condition = function() return activator.paint_weapon == 'bucket' end },
+                { 'big spraypaint', "Bigger spraypaint (30 CP)", condition = function() return activator.paint_weapon == 'spraypaint' end },
+                { 'floor kibble', "Floor kibble (100000000000000 CP)" },
                 { 'bye', "Never mind" },
             }
         },
 
-        { label = 'dummy' },
-        {
-            "Hey you gotta pay up!!  Gimme that space cash!!",
-            speaker = 'anise',
-        },
-        {
-            "Mewoh no!  I don't have any space cash...",
-            speaker = 'purrl',
-        },
-        {
-            "Oh well too bad!!  I'll have to keep all this amazing stuff to myself!!",
-            speaker = 'anise',
-        },
-        {
-            "Mewwwaaauuughh!",
-            speaker = 'purrl',
-        },
-        { bail = true },
+        { label = 'floor kibble' },
+        { "Hey you gotta pay up if you want my floor kibble!!  Gimme that Space Cash!!", speaker = 'anise' },
+        { "Mewoh no!  I don't have anywhere near enough space cash...", speaker = 'purrl' },
+        { "Oh well too bad!!  I'll have to keep all this floor kibble to myself!!  Fresh off the ground too!!!", speaker = 'anise' },
+        { "Mewwwaaauuughh!", speaker = 'purrl' },
+        { jump = 'menu' },
 
+        { label = 'firing range' },
+        _check_space_cash(5),
         {
-            label = 'big gun',
+            execute = function()
+                activator.firing_range = activator.firing_range * 2
+            end,
+        },
+        { "If you make a big meow like this...", speaker = 'anise' },
+        {
+            "AAAOOOOOWWWRRRRRR!!!!",
+            speaker = 'anise',
+            pose = 'o_o',
+        },
+        {
+            "Then the fish will go further to get away from you!!",
+            speaker = 'anise',
+            pose = 'default',
+        },
+        {
+            "That's the worst thing I ever heard!",
+            "I only meow nicely!",
+            "Mewoo!!",
+            speaker = 'purrl',
+            pose = '>:|',
+        },
+        {
+            speaker = 'purrl',
+            pose = 'default',
+        },
+        { jump = 'menu' },
+
+        { label = 'firing range 2' },
+        _check_space_cash(10),
+        {
+            execute = function()
+                activator.firing_range = activator.firing_range * 2
+            end,
+        },
+        { "Okay so!!  Hot tip number two coming through!!  I hope you're ready.", speaker = 'anise' },
+        { "This better be better than the last one, mewo!", speaker = 'purrl' },
+        { "OK what you do is...", speaker = 'anise' },
+        {
+            "Make a scary face!!  AOOWWRRR!!!!!",
+            speaker = 'anise',
+            pose = 'o_o',
+        },
+        { speaker = 'anise', pose = 'default' },
+        {
+            "That's the same thing as before!!",
+            speaker = 'purrl',
+            pose = '>:|',
+        },
+        {
+            speaker = 'purrl',
+            pose = 'default',
+        },
+        { jump = 'menu' },
+
+        { label = 'firing range 3' },
+        _check_space_cash(15),
+        {
+            execute = function()
+                activator.firing_range = activator.firing_range * 4
+            end,
+        },
+        {
+            "Aw geez I'm running out of advice!!",
+            speaker = 'anise',
+        },
+        {
+            "You didn't have any advice to start with!!",
+            speaker = 'purrl',
+        },
+        {
+            "Have you tried going \"aowr\"?",
+            speaker = 'anise',
+        },
+        {
+            "Hm.  No, I haven't.  I'll give that a shot.",
+            speaker = 'purrl',
+        },
+        { jump = 'menu' },
+
+        { label = 'firing speed' },
+        _check_space_cash(5),
+        {
+            execute = function()
+                activator.firing_speed = activator.firing_speed + 1
+            end,
+        },
+        {
+            "Hey Purrl!!  Did you know if you pull the trigger more, you fire faster??  Try it!!",
+            "You can't buy this kind of sage wisdom in stores, you know!!",
+            speaker = 'anise',
+        },
+        { "Mewoew, but I just did?", speaker = 'purrl' },
+        { "First one's free!!", speaker = 'anise' },
+        { "What??", speaker = 'purrl' },
+        { "AOWWRRR!!", speaker = 'anise', pose = 'o_o' },
+        { speaker = 'anise', pose = 'default' },
+        { jump = 'menu' },
+
+        { label = 'firing speed 2' },
+        _check_space_cash(10),
+        {
+            execute = function()
+                activator.firing_speed = activator.firing_speed + 1
+            end,
+        },
+        { "How's my shooting faster advice going??", speaker = 'anise' },
+        { "Um...  it's dumb, but it works, somehow?  Mewoww...", speaker = 'purrl' },
+        { "Oh!!  In that case, here's some more, on the house!!  Try shooting faster!!", speaker = 'anise' },
+        { "Anise!!", speaker = 'purrl', pose = '>_<' },
+        { speaker = 'purrl', pose = 'default' },
+        { jump = 'menu' },
+
+        { label = 'big gun' },
+        _check_space_cash(10),
+        {
             execute = function()
                 activator.fish_weapon = 'big gun'
             end,
         },
-        {
-            "A fine choice!!  This enhanced gun shoots bigger fish!!",
-            speaker = 'anise',
-        },
-        {
-            "What?!  The fish are bigger?  Not the gun???",
-            speaker = 'purrl',
-        },
-        {
-            "NO REFUNDS!  AOWWWRR!!",
-            speaker = 'anise',
-            pose = 'o_o',
-        },
-        { bail = true },
+        { "A fine choice!!  This enhanced gun shoots bigger fish!!", speaker = 'anise' },
+        { "What?!  The fish are bigger?  Not the gun???", speaker = 'purrl' },
+        { "NO REFUNDS!  AOWWWRR!!", speaker = 'anise', pose = 'o_o' },
+        { jump = 'menu' },
 
+        { label = 'spraypaint' },
+        _check_space_cash(20),
         {
-            label = 'spraypaint',
             execute = function()
                 activator.paint_weapon = 'spraypaint'
             end,
         },
-        { bail = true },
+        { "Hey check this out!!  Now you can paint on the go!!  With Star Anise's patented Spraypaint Thing He Found In The Trash!!", speaker = 'anise' },
+        { "Don't sell me trash!!  It does look much nicer than my bucket, though.", speaker = 'purrl' },
+        { jump = 'menu' },
 
+        { label = 'big spraypaint' },
+        _check_space_cash(30),
         {
-            label = 'big spraypaint',
             execute = function()
                 activator.paint_weapon = 'big spraypaint'
             end,
         },
-        { bail = true },
+        { "With this bigger spraygun, you can graffiti even faster than before!!", speaker = 'anise' },
+        { "I don't want to graffiti!  That's rude!", speaker = 'purrl' },
+        { jump = 'menu' },
+
+        { label = 'insufficient space cash' },
+        {
+            "Sorry Purrl!  Looks like you need some more Space Cash!!  Maybe there's an ATM around here??",
+            speaker = 'anise',
+        },
+        { jump = 'menu' },
 
         { label = 'bye' },
         {
