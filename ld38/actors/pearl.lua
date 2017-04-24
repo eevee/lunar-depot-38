@@ -204,6 +204,18 @@ local Pearl = Player:extend{
     sprite_name = 'pearl: gun',
     jumpvel = actors_base.get_jump_velocity(128),
     max_slope = Vector(2, -1),
+    dialogue_position = 'left',
+    dialogue_color = {64, 129, 135},
+    dialogue_shadow = {155, 192, 174},
+    dialogue_sprites = {
+        { name = 'base', sprite_name = 'pearl portrait', while_talking = { default = 'talking' } },
+        { name = 'eyes', sprite_name = 'pearl portrait - eyes', default = false },
+        { name = 'tail', sprite_name = 'pearl portrait - tail' },
+        default = { eyes = false },
+        [">_<"] = { eyes = '>_<' },
+        [">:|"] = { eyes = '>:|' },
+    },
+    inventory_cursor = 0,
 
     decision_shoot = 0,
 

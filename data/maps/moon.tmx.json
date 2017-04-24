@@ -1148,6 +1148,37 @@
                  "width":128,
                  "x":3026,
                  "y":398
+                }, 
+                {
+                 "gid":288,
+                 "height":64,
+                 "id":40,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":1301,
+                 "y":442
+                }, 
+                {
+                 "height":8,
+                 "id":41,
+                 "name":"",
+                 "properties":
+                    {
+                     "one-way platform":true
+                    },
+                 "propertytypes":
+                    {
+                     "one-way platform":"bool"
+                    },
+                 "rotation":0,
+                 "type":"collision",
+                 "visible":true,
+                 "width":78,
+                 "x":1294,
+                 "y":425
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1156,7 +1187,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":40,
+ "nextobjectid":42,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,
@@ -3556,6 +3587,350 @@
                 }
             },
          "tilewidth":128
+        }, 
+        {
+         "columns":11,
+         "firstgid":288,
+         "image":"..\/..\/assets\/images\/anise.png",
+         "imageheight":64,
+         "imagewidth":704,
+         "margin":0,
+         "name":"anise",
+         "spacing":0,
+         "tilecount":11,
+         "tileheight":64,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "actor":"anise",
+                 "sprite name":"anise\/hawk"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "actor":"string",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "animation":[
+                        {
+                         "duration":125,
+                         "tileid":0
+                        }, 
+                        {
+                         "duration":125,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":125,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":125,
+                         "tileid":3
+                        }],
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "ellipse":true,
+                             "height":0,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"anchor",
+                             "visible":true,
+                             "width":0,
+                             "x":29,
+                             "y":48
+                            }, 
+                            {
+                             "height":27,
+                             "id":2,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":23,
+                             "x":21,
+                             "y":21
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                }
+            },
+         "tilewidth":64
+        }, 
+        {
+         "columns":4,
+         "firstgid":299,
+         "image":"..\/..\/assets\/images\/aniseportrait.png",
+         "imageheight":320,
+         "imagewidth":320,
+         "margin":0,
+         "name":"aniseportrait",
+         "spacing":0,
+         "tilecount":16,
+         "tileheight":80,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "animation flipped":true,
+                 "sprite name":"anise portrait\/default"
+                },
+             "12":
+                {
+                 "animation flipped":true,
+                 "sprite name":"anise portrait - eyes\/o_o"
+                },
+             "13":
+                {
+                 "animation flipped":true,
+                 "sprite name":"anise portrait - eyes\/^_^"
+                },
+             "4":
+                {
+                 "animation flipped":true,
+                 "sprite name":"anise portrait - mouth\/talking"
+                },
+             "8":
+                {
+                 "animation flipped":true,
+                 "sprite name":"anise portrait - tail\/wiggle"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "12":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "13":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "4":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "8":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":3
+                        }]
+                },
+             "4":
+                {
+                 "animation":[
+                        {
+                         "duration":50,
+                         "tileid":4
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":5
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":6
+                        }, 
+                        {
+                         "duration":150,
+                         "tileid":7
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":6
+                        }]
+                },
+             "8":
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":8
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":9
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":10
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":11
+                        }]
+                }
+            },
+         "tilewidth":80
+        }, 
+        {
+         "columns":4,
+         "firstgid":315,
+         "image":"..\/..\/assets\/images\/pearlportrait.png",
+         "imageheight":240,
+         "imagewidth":320,
+         "margin":0,
+         "name":"pearlportrait",
+         "spacing":0,
+         "tilecount":12,
+         "tileheight":80,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl portrait\/default"
+                },
+             "1":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl portrait\/talking"
+                },
+             "4":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl portrait - eyes\/>_<"
+                },
+             "5":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl portrait - eyes\/>:|"
+                },
+             "8":
+                {
+                 "animation flipped":true,
+                 "sprite name":"pearl portrait - tail\/wiggle"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "0":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "1":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "4":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "5":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "8":
+                {
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                }
+            },
+         "tiles":
+            {
+             "1":
+                {
+                 "animation":[
+                        {
+                         "duration":150,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":150,
+                         "tileid":3
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":0
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":2
+                        }]
+                },
+             "8":
+                {
+                 "animation":[
+                        {
+                         "duration":500,
+                         "tileid":8
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":9
+                        }, 
+                        {
+                         "duration":150,
+                         "tileid":10
+                        }, 
+                        {
+                         "duration":50,
+                         "tileid":11
+                        }]
+                }
+            },
+         "tilewidth":80
         }],
  "tilewidth":32,
  "version":1,

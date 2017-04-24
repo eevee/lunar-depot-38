@@ -12,8 +12,8 @@ local SPEAKER_SCALE = 4
 local SCROLL_RATE = 64  -- characters per second
 
 -- Magic rendering numbers
-local TEXT_MARGIN_X = 24
-local TEXT_MARGIN_Y = 16
+local TEXT_MARGIN_X = 16
+local TEXT_MARGIN_Y = 18
 
 
 local function _evaluate_condition(condition)
@@ -138,7 +138,8 @@ end
 
 function StackedSprite:draw_anchorless(pos)
     for _, name in ipairs(self.sprite_order) do
-        if self.sprite_poses[name] then
+        -- FIXME hack to make false => something work
+        if self.sprite_poses[name] or (self.is_talking and self.sprite_talking_map[name][false]) then
             self.sprites[name]:draw_anchorless(pos)
         end
     end
@@ -170,6 +171,8 @@ function DialogueScene:init(speakers, script)
     local boxheight = 120
     local winheight = h
     self.speaker_scale = math.floor((winheight - boxheight) / self.speaker_height)
+    -- TODO ld38
+    self.speaker_scale = 2
 
     -- TODO a good start, but
     self.speakers = {}
@@ -190,7 +193,7 @@ function DialogueScene:init(speakers, script)
             elseif actor.dialogue_sprites then
                 speaker.sprite = StackedSprite(actor.dialogue_sprites)
             else
-                error()
+                error("No dialogue sprite for " .. actor)
             end
             if actor.dialogue_background then
                 speaker.background = game.resource_manager:load(actor.dialogue_background)
@@ -288,6 +291,10 @@ function DialogueScene:init(speakers, script)
 
     -- TODO magic numbers
     self.wraplimit = w - TEXT_MARGIN_X * 2
+    -- TODO ld38, but also it's bad that the above implicitly relies on the width of the box
+    self.wraplimit = 600 - 100 - TEXT_MARGIN_X * 2
+    self.max_lines = math.floor((160 - TEXT_MARGIN_Y * 2) / self.font_height)
+    -- FIXME would be nice if the y margin were deliberately adjusted to center a full textbox vertically
 
     self.script_index = 0
 end
@@ -380,9 +387,8 @@ function DialogueScene:update(dt)
                 end
 
                 -- If we just maxed out the text box, pause before continuing
-                -- FIXME hardcoded max lines
                 -- FIXME this will pause on /every/ extra line; is that right?
-                if self.curline > 3 then
+                if self.curline > self.max_lines then
                     self.state = 'waiting'
                     self.phrase_timer = 0
                     self:_hesitate()
@@ -450,12 +456,11 @@ function DialogueScene:_advance_script()
 
     -- Fill the textbox
     if self.state == 'speaking' then
-        -- FIXME hardcoding max lines again
         local lastline
-        if self.curline > 3 then
+        if self.curline > self.max_lines then
             lastline = self.curline
         else
-            lastline = math.min(3, #self.phrase_lines)
+            lastline = math.min(self.max_lines, #self.phrase_lines)
         end
 
         for l = self.curline, lastline do
@@ -633,10 +638,9 @@ function DialogueScene:_cursor_down()
     for l = self.menu_top + 1, self.menu_cursor do
         relative_row = relative_row + #self.menu_items[l].lines
     end
-    -- FIXME hardcoded the line count
-    relative_row = relative_row + math.min(3, #self.menu_items[self.menu_cursor + 1].lines)
+    relative_row = relative_row + math.min(self.max_lines, #self.menu_items[self.menu_cursor + 1].lines)
 
-    for i = 1, relative_row - 3 do
+    for i = 1, relative_row - self.max_lines do
         self.menu_top_line = self.menu_top_line + 1
         if self.menu_top_line > #self.menu_items[self.menu_top].lines then
             self.menu_top = self.menu_top + 1
@@ -672,6 +676,7 @@ function DialogueScene:draw()
     -- drawing the ends and then repeating the middle bit to fit the screen
     -- size
     local background = self.phrase_speaker.background or self.default_background
+    --[[
     -- TODO this feels rather hardcoded; surely the background should flex to fit the height rather than defining it.
     local boxheight = background:getHeight()
     boxheight = 120
@@ -687,9 +692,20 @@ function DialogueScene:draw()
     love.graphics.draw(background, boxquadm, boxrepeatleft * BOXSCALE, boxtop, 0, (w - background:getWidth() + (boxrepeatright - boxrepeatleft)) / (boxrepeatright - boxrepeatleft), BOXSCALE)
     local boxquadr = love.graphics.newQuad(boxrepeatright, 0, background:getWidth() - boxrepeatright, background:getHeight(), background:getDimensions())
     love.graphics.draw(background, boxquadr, w - (background:getWidth() - boxrepeatright) * BOXSCALE, boxtop, 0, BOXSCALE)
+    ]]
+
+    -- FIXME this is for ld38 -- and, really, all of this should use a more
+    -- sensible bbox object that i can just pass in?  break it out into a ui
+    -- lib even?
+    local w, h = game:getDimensions()
+    local boxwidth = 720
+    local boxheight = 160
+    local boxtop = 40
+    local boxleft = 40
+    local avatar_size = 160
+    love.graphics.draw(background, boxleft - 8, boxtop - 8)
 
     -- Print the text
-    local max_lines = math.floor((boxheight - TEXT_MARGIN_Y * 2) / self.font_height)
     local texts = {}
     if self.state == 'menu' then
         -- FIXME i don't reeeally like this clumsy-ass two separate cases thing
@@ -706,17 +722,19 @@ function DialogueScene:draw()
                 table.insert(texts, item.texts[l])
                 if m == self.menu_cursor then
                     love.graphics.setColor(255, 255, 255, 64)
-                    love.graphics.rectangle('fill', TEXT_MARGIN_X * 3/4, boxtop + TEXT_MARGIN_Y + self.font_height * lines, boxwidth - TEXT_MARGIN_X * 6/4, self.font_height)
+                    -- FIXME ld38
+                    love.graphics.setColor(184, 173, 161, 64)
+                    love.graphics.rectangle('fill', boxleft + avatar_size + TEXT_MARGIN_X * 3/4, boxtop + TEXT_MARGIN_Y + self.font_height * lines --[[ FIXME ld38, looks weird with glip font ]] - 4, boxwidth - TEXT_MARGIN_X * 6/4 - avatar_size, self.font_height)
                 end
                 if m == #self.menu_items and l == #item.lines then
                     is_bottom = true
                 end
                 lines = lines + 1
-                if lines >= max_lines then
+                if lines >= self.max_lines then
                     break
                 end
             end
-            if lines >= max_lines then
+            if lines >= self.max_lines then
                 break
             end
         end
@@ -724,36 +742,38 @@ function DialogueScene:draw()
         -- Draw little triangles to indicate scrollability
         -- FIXME magic numbers here...  should use sprites?  ugh
         love.graphics.setColor(255, 255, 255)
+        -- FIXME ld38
+        love.graphics.setColor(184, 173, 161, 64)
         if not (self.menu_top == 1 and self.menu_top_line == 1) then
-            local x = TEXT_MARGIN_X
+            local x = boxleft + avatar_size + TEXT_MARGIN_X
             local y = boxtop + TEXT_MARGIN_Y
             love.graphics.polygon('fill', x, y - 4, x + 2, y, x - 2, y)
         end
         if not is_bottom then
-            local x = TEXT_MARGIN_X
-            local y = h - TEXT_MARGIN_Y
+            local x = boxleft + avatar_size + TEXT_MARGIN_X
+            local y = boxtop + boxheight - TEXT_MARGIN_Y
             love.graphics.polygon('fill', x, y + 4, x + 2, y, x - 2, y)
         end
     else
         -- There may be more available lines than will fit in the textbox; if
         -- so, only show the last few lines
         -- FIXME should prompt to scroll when we hit the bottom, probably
-        local first_line_offset = math.max(0, #self.phrase_texts - max_lines)
-        for i = 1, max_lines do
+        local first_line_offset = math.max(0, #self.phrase_texts - self.max_lines)
+        for i = 1, self.max_lines do
             texts[i] = self.phrase_texts[i + first_line_offset]
         end
 
         -- Draw a small chevron if we're waiting
         -- FIXME more magic numbers
         if self.state == 'waiting' then
-            local x = boxwidth - TEXT_MARGIN_X
-            local y = math.floor(h - TEXT_MARGIN_Y * 1.5)
+            local x = boxleft + boxwidth - TEXT_MARGIN_X
+            local y = math.floor(boxtop + boxheight - TEXT_MARGIN_Y * 1.5)
             love.graphics.setColor(self.phrase_speaker.color or self.default_color)
             love.graphics.polygon('fill', x, y + 8, x - 4, y, x + 4, y)
         end
     end
 
-    local x, y = TEXT_MARGIN_X, boxtop + TEXT_MARGIN_Y
+    local x, y = boxleft + avatar_size + TEXT_MARGIN_X, boxtop + TEXT_MARGIN_Y
     for _, text in ipairs(texts) do
         -- Draw the text, twice: once for a drop shadow, then the text itself
         love.graphics.setColor(self.phrase_speaker.shadow or self.default_shadow)
@@ -769,6 +789,7 @@ function DialogueScene:draw()
     -- FIXME the draw order differs per run!
     love.graphics.setColor(255, 255, 255)
     for _, speaker in pairs(self.speakers) do
+    if speaker == self.phrase_speaker then
         local sprite = speaker.sprite
         if sprite then
             local sw, sh = sprite:getDimensions()
@@ -783,9 +804,13 @@ function DialogueScene:draw()
                 print("unrecognized speaker position:", speaker.position)
                 x = 0
             end
+
             local pos = Vector(math.floor((boxwidth - sw) * x + 0.5), boxtop - sh)
+            -- TODO ld38
+            pos = Vector(boxleft, boxtop)
             sprite:draw_anchorless(pos)
         end
+    end
     end
 
     love.graphics.pop()

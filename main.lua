@@ -5,6 +5,7 @@ local Gamestate = require 'vendor.hump.gamestate'
 local tick = require 'vendor.tick'
 
 local ResourceManager = require 'klinklang.resources'
+local DialogueScene = require 'klinklang.scenes.dialogue'
 local DebugScene = require 'klinklang.scenes.debug'
 local SpriteSet = require 'klinklang.sprite'
 local tiledmap = require 'klinklang.tiledmap'
@@ -118,12 +119,14 @@ function love.load(args)
         resource_manager:add(path, tileset)
     end
 
+    DialogueScene.default_background = game.resource_manager:load('assets/images/dialoguebackground.png')
+
     -- FIXME probably want a way to specify fonts with named roles
     local fontscale = 2
-    m5x7 = love.graphics.newFont('assets/fonts/m5x7.ttf', 16 * fontscale)
+    m5x7 = love.graphics.newFont('assets/fonts/glip.ttf', 16 * fontscale)
     --m5x7:setLineHeight(0.75)  -- TODO figure this out for sure
     love.graphics.setFont(m5x7)
-    m5x7small = love.graphics.newFont('assets/fonts/m5x7.ttf', 16)
+    m5x7small = love.graphics.newFont('assets/fonts/glip.ttf', 16)
 
     love.joystick.loadGamepadMappings("vendor/gamecontrollerdb.txt")
 

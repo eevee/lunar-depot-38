@@ -1,6 +1,8 @@
+local Gamestate = require 'vendor.hump.gamestate'
 local Vector = require 'vendor.hump.vector'
 
 local actors_base = require 'klinklang.actors.base'
+local DialogueScene = require 'klinklang.scenes.dialogue'
 
 
 local AndrePainting = actors_base.Actor:extend{
@@ -146,4 +148,98 @@ function DoorPlanks:damage(amount, kind, source)
         end
         return true
     end
+end
+
+
+local Anise = actors_base.Actor:extend{
+    name = 'anise',
+    sprite_name = 'anise',
+    dialogue_position = 'right',
+    --dialogue_chatter_sound = 'assets/sounds/chatter-lop.ogg',
+    --dialogue_background = 'assets/images/dialoguebox-lop.png',
+    dialogue_color = {34, 32, 52},
+    dialogue_shadow = {137, 137, 137},
+    dialogue_sprites = {
+        { name = 'base', sprite_name = 'anise portrait' },
+        { name = 'eyes', sprite_name = 'anise portrait - eyes', default = false },
+        { name = 'mouth', sprite_name = 'anise portrait - mouth', default = false, while_talking = { [false] = 'talking' } },
+        { name = 'tail', sprite_name = 'anise portrait - tail' },
+    },
+
+    is_usable = true,
+}
+
+function Anise:on_use(activator)
+    local convo = {
+        {
+            "AOOWWRRR!!",
+            "Welcome to Anise's Moon Emporium!!  Anise's...  Emporimoon!!!  I'm STAR ANISE and--",
+            speaker = 'anise',
+        },
+        {
+            "Mewwo!  I know who you are!",
+            speaker = 'pearl',
+            pose = '>_<',
+        },
+        {
+            speaker = 'pearl',
+            pose = 'default',
+        },
+        {
+            "Hey!  Please don't interrupt!!  It's rude!!",
+            "But yeah hi Purrl!!  Check it out, I'm the only store on this whole moon!!!  I've really hit the big time now!!",
+            speaker = 'anise',
+        },
+        {
+            "Mewwow!",
+            speaker = 'pearl',
+        },
+        {
+            "Yeah!!  Look at all this stuff I found just lying around on the floor too!!",
+            speaker = 'anise',
+        },
+        {
+            speaker = 'anise',
+            menu = {
+                { 'dummy', "Floor kibble - Increase max HP (5 CP)" },
+                { 'dummy', "Mesh bag - INT +2, CHR +4 (10 CP)" },
+                { 'dummy', "Bigger fish gun (20 CP)" },
+                { 'bye', "Never mind" },
+            }
+        },
+
+        { label = 'dummy' },
+        {
+            "Hey you gotta pay up!!  Gimme that space cash!!",
+            speaker = 'anise',
+        },
+        {
+            "Mewoh no!  I don't have any space cash...",
+            speaker = 'pearl',
+        },
+        {
+            "Oh well too bad!!  I'll have to keep all this amazing stuff to myself!!",
+            speaker = 'anise',
+        },
+        {
+            "Mewwwaaauuughh!",
+            speaker = 'pearl',
+        },
+        { bail = true },
+
+        { label = 'bye' },
+        {
+            "I have to go shoot aliens with fish now.",
+            speaker = 'pearl',
+        },
+        {
+            "Oh good luck!!  Come by if you need anything!!!!",
+            speaker = 'anise',
+        },
+        { bail = true },
+    }
+    Gamestate.push(DialogueScene({
+        pearl = activator,
+        anise = self,
+    }, convo))
 end
