@@ -55,6 +55,12 @@ local Speckle = actors_base.Actor:extend{
     name = 'speckle',
     sprite_name = 'speckle',
     dialogue_position = 'right',
+    dialogue_chatter_sound = {
+        'assets/sfx/speckle1.ogg',
+        'assets/sfx/speckle2.ogg',
+        'assets/sfx/speckle3.ogg',
+        'assets/sfx/speckle4.ogg',
+    },
     dialogue_color = {0, 0, 0},
     dialogue_shadow = {192, 192, 192},
     dialogue_sprites = {
@@ -199,7 +205,12 @@ local Marble = actors_base.Actor:extend{
     name = 'marble',
     sprite_name = 'marble',
     dialogue_position = 'right',
-    --dialogue_chatter_sound = 'assets/sounds/chatter-lop.ogg',
+    dialogue_chatter_sound = {
+        'assets/sfx/marble1.ogg',
+        'assets/sfx/marble2.ogg',
+        'assets/sfx/marble3.ogg',
+        'assets/sfx/marble4.ogg',
+    },
     dialogue_color = {0, 0, 0},
     dialogue_shadow = {192, 192, 192},
     dialogue_sprites = {
