@@ -15,6 +15,7 @@ local FishBall = actors_base.MobileActor:extend{
 
     is_projectile = true,
     destroyed_state = 0,
+    lifetime = 0.5,
 
     spawn_sfx_path = 'assets/sfx/fishball1.ogg',
 }
@@ -93,7 +94,7 @@ end
 function FishBall:update(dt)
     FishBall.__super.update(self, dt)
 
-    if self.destroyed_state == 0 and self.timer > 10 then
+    if self.destroyed_state == 0 and self.timer > self.lifetime then
         self:_pop()
     end
 end
@@ -134,7 +135,7 @@ local PaintSplatter = actors_base.MobileActor:extend{
 function PaintSplatter:init(shooter, ...)
     PaintSplatter.__super.init(self, ...)
 
-    local dv = Vector(32, -32)
+    local dv = Vector(32, -64)
     if shooter.facing_left then
         dv.x = -dv.x
     end
@@ -180,7 +181,7 @@ function PaintSplatter:on_collide_with(actor, collision)
     -- TODO "stop colliding after this" seems like a common problem
     self.destroyed_state = 1
     if actor and actor.damage then
-        if actor:damage(1000, 'paint', self) then
+        if actor:damage(1, 'paint', self) then
             self.destroyed_state = 2
         end
     end
@@ -317,6 +318,7 @@ local Pearl = Player:extend{
     decision_shoot = nil,
     last_shot = 1,
     is_shooting = false,
+    can_shoot = true,
 
     is_critter = true,
     fish_weapon = 'gun',
@@ -347,7 +349,7 @@ end
 function Pearl:update(dt)
     local weapon = self.decision_shoot
     self.decision_shoot = nil
-    if weapon and not self.is_shooting then
+    if weapon and not self.is_shooting and self.can_shoot then
         if weapon == 'gun' or weapon == 'big gun' then
             self:set_sprite('pearl: gun')
         elseif weapon == 'bucket' then
@@ -358,9 +360,13 @@ function Pearl:update(dt)
 
         if weapon == 'gun' or weapon == 'big gun' or weapon == 'bucket' then
             self.is_shooting = weapon
+            self.can_shoot = false
+            worldscene.tick:delay(function()
+                self.can_shoot = true
+            end, 0.5)
             self.sprite:set_pose('shoot', function()
                 self.is_shooting = nil
-                local d = Vector(16, -8)
+                local d = Vector(12, -8)
                 if self.facing_left then
                     d.x = -d.x
                 end

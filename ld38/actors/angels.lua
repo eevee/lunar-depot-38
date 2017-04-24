@@ -21,6 +21,7 @@ local function play_positional_sound(sound, source)
     sound:play()
 end
 
+
 local BaseAngel = actors_base.SentientActor:extend{
     max_slope = Vector(16, -1),
 
@@ -33,6 +34,10 @@ local BaseAngel = actors_base.SentientActor:extend{
     -- idle: pausing between attacks
     -- stunned: stunned, can be hurt
     state = nil,
+
+    resist = 1,  -- health before becoming stunned
+    health = 1,  -- health before dying
+    stun_duration = 5,
 }
 
 function BaseAngel:init(...)
@@ -112,25 +117,32 @@ function BaseAngel:damage(amount, kind, source)
             return
         end
 
-        self.is_locked = true
-        self.sprite:set_pose('flinch')
-        self.state = 'stunned'
-        worldscene.tick:delay(function()
-            self.is_locked = false
-            -- Resume whatever we were doing
-            self:think()
-        end, 5)
+        self.resist = math.max(0, self.resist - amount)
+        if self.resist == 0 then
+            self.is_locked = true
+            self.sprite:set_pose('flinch')
+            self.state = 'stunned'
+            worldscene.tick:delay(function()
+                self.is_locked = false
+                self.resist = 1
+                -- Resume whatever we were doing
+                self:think()
+            end, self.stun_duration)
+        end
     elseif kind == 'paint' then
         if self.state ~= 'stunned' then
             return
         end
 
-        -- Destroy us
-        self.state = 'dead'
-        self.sprite:set_pose('die', function()
-            worldscene:remove_actor(self)
-        end)
-        play_positional_sound(game.resource_manager:get('assets/sfx/angedestroyed.ogg'), self)
+        self.health = math.max(0, self.health - amount)
+        if self.health == 0 then
+            -- Destroy us
+            self.state = 'dead'
+            self.sprite:set_pose('die', function()
+                worldscene:remove_actor(self)
+            end)
+            play_positional_sound(game.resource_manager:get('assets/sfx/angedestroyed.ogg'), self)
+        end
     end
 
     return true
@@ -156,8 +168,12 @@ end
 local EyeAngel1 = BaseAngel:extend{
     name = 'eye angel 1',
     sprite_name = 'eye angel 1',
+    xaccel = 512,
+    max_speed = 96,
 
     attack_sfx_path = 'assets/sfx/angelhit1.ogg',
+    resist = 1,
+    health = 1,
 }
 
 local EyeAngel2 = BaseAngel:extend{
@@ -256,7 +272,7 @@ end
 function Spaceship:_schedule_angel_spawn()
     worldscene.tick:delay(function()
         if game.wave_begun and math.random() < 0.25 then
-            local Angel = ANGELS[math.random(1, #ANGELS)]
+            local Angel = ANGELS[math.random(1, game.wave)]
             local x = math.random(0, worldscene.map.width)
             worldscene:add_actor(Angel(self.pos:clone()))
         end

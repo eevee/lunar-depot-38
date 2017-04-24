@@ -21,26 +21,34 @@ game = {
     TILE_SIZE = 32,
 
     -- Gameplay twiddles
-    time_to_finish_painting = 100,
+    time_to_finish_painting = 60,
     speckle_annoyance_duration = 5,
     angel_attack_frequency = 1,
     total_door_health = 500,
+    -- State
+    andre_painting_progress = 0,
 
     wave = 1,
     wave_begun = false,
     wave_begin = function(self)
         self.wave_begun = true
         Gamestate.push(TransitionScene(("Wave %d"):format(self.wave)))
+
+        -- TODO this is the kind of thing i want events for i guess
+        for _, actor in ipairs(worldscene.actors) do
+            if actor.on_wave_begin then
+                actor:on_wave_begin()
+            end
+        end
     end,
     wave_complete = function(self)
         Gamestate.push(TransitionScene(("Wave %d complete"):format(self.wave)))
         self.wave_begun = false
         self.wave = self.wave + 1
 
-        -- TODO janky, would be REALLY NICE to emit an event here
         for _, actor in ipairs(worldscene.actors) do
-            if actor.name == 'door planks' then
-                actor.health = self.total_door_health
+            if actor.on_wave_complete then
+                actor:on_wave_complete()
             end
         end
     end,

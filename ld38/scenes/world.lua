@@ -332,8 +332,9 @@ function MoonWorldScene:draw()
 
     MoonWorldScene.__super.draw(self)
 
-    love.graphics.print(self.turned, 0, 0)
-    love.graphics.print(love.timer.getFPS(), 0, 16)
+    -- Draw some UI
+    love.graphics.rectangle('line', 8.5, 8.5, 192, 16)
+    love.graphics.rectangle('fill', 8.5, 8.5, 192 * game.andre_painting_progress / game.time_to_finish_painting, 16)
 end
 
 function MoonWorldScene:_draw_final_canvas()

@@ -1501,6 +1501,10 @@
                         {
                          "duration":100,
                          "tileid":5
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":4
                         }]
                 },
              "7":
@@ -1684,6 +1688,7 @@
              "16":
                 {
                  "animation flipped":true,
+                 "animation stops":true,
                  "sprite name":"paint splatter\/default"
                 },
              "17":
@@ -1740,6 +1745,7 @@
              "16":
                 {
                  "animation flipped":"bool",
+                 "animation stops":"bool",
                  "sprite name":"string"
                 },
              "17":
@@ -1862,6 +1868,15 @@
                 },
              "16":
                 {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":15
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":16
+                        }],
                  "objectgroup":
                     {
                      "draworder":"index",
@@ -3352,6 +3367,11 @@
                  "animation flipped":true,
                  "sprite name":"speckle\/paint"
                 },
+             "1":
+                {
+                 "animation flipped":true,
+                 "sprite name":"speckle\/idle"
+                },
              "4":
                 {
                  "animation flipped":true,
@@ -3363,6 +3383,11 @@
              "0":
                 {
                  "actor":"string",
+                 "animation flipped":"bool",
+                 "sprite name":"string"
+                },
+             "1":
+                {
                  "animation flipped":"bool",
                  "sprite name":"string"
                 },

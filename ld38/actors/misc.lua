@@ -26,6 +26,7 @@ end
 
 function AndrePainting:paint(dt)
     self.progress = self.progress + dt
+    game.andre_painting_progress = self.progress
     self.stage = math.floor(self.progress / (game.time_to_finish_painting / 5))
     self.sprite:set_pose(("%d-%d"):format(self.wave, self.stage))
     if self.stage == 5 then
@@ -88,6 +89,14 @@ function Speckle:on_enter()
         self.ptrs.painting = painting
         painting.ptrs.painter = self
     end, 0)
+end
+
+function Speckle:on_wave_begin()
+    self.sprite:set_pose('paint')
+end
+
+function Speckle:on_wave_complete()
+    self.sprite:set_pose('idle')
 end
 
 function Speckle:on_use(activator)
@@ -159,8 +168,7 @@ local DoorPlanks = actors_base.Actor:extend{
     is_angel_target = true,
 }
 
-function DoorPlanks:init(...)
-    DoorPlanks.__super.init(self, ...)
+function DoorPlanks:on_wave_begin()
     self.health = game.total_door_health
     self.sprite:set_pose('5')
 end
