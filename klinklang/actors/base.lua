@@ -893,6 +893,7 @@ function SentientActor:update(dt)
     -- logic that would keep critters from walking off of ledges?  or if
     -- the loop were taken out of collider.slide and put in here, so i could
     -- just explicitly slide in a custom direction
+    --[==[
     if was_on_ground and not self.on_ground and
         self.decision_jump_mode == 0 and self.decision_climb == nil and
         self.gravity_multiplier > 0 and self.gravity_multiplier_down > 0
@@ -912,6 +913,7 @@ function SentientActor:update(dt)
         movement = movement + drop_movement
         self:check_for_ground(hits)
     end
+    ]==]
 
     -- Handle our own passive physics
     if self.on_ground then
