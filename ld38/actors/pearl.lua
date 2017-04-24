@@ -15,20 +15,25 @@ local FishBall = actors_base.MobileActor:extend{
 
     is_projectile = true,
     destroyed_state = 0,
+
+    spawn_sfx_path = 'assets/sfx/fishball1.ogg',
 }
 
-function FishBall:init(facing_left, ...)
+function FishBall:init(shooter, ...)
     FishBall.__super.init(self, ...)
 
-    self.facing_left = facing_left
-    self.sprite:set_facing_right(not facing_left)
+    self.facing_left = shooter.facing_left
+    self.sprite:set_facing_right(not self.facing_left)
     self.velocity = Vector(384, 0)
-    if facing_left then
+    if self.facing_left then
         self.velocity.x = -self.velocity.x
     end
+    -- big fishball's default sprite is not default, because of the way the
+    -- spritesheet is arranged, whoops
+    self.sprite:set_pose('default')
 
     actors_angels.play_positional_sound(
-        game.resource_manager:get('assets/sfx/fishball1.ogg'), self)
+        game.resource_manager:get(self.spawn_sfx_path), self)
 end
 
 function FishBall:blocks()
@@ -92,6 +97,15 @@ function FishBall:update(dt)
         self:_pop()
     end
 end
+
+
+local BigFishBall = FishBall:extend{
+    name = 'fishball big',
+    sprite_name = 'fishball big',
+
+    spawn_sfx_path = 'assets/sfx/fishball2.ogg',
+}
+
 
 -- Splash from a paint bucket
 local PaintSplatter = actors_base.MobileActor:extend{
@@ -224,10 +238,13 @@ local Pearl = Player:extend{
     },
     inventory_cursor = 0,
 
-    decision_shoot = 0,
+    decision_shoot = nil,
+    last_shot = 1,
+    is_shooting = false,
 
     is_critter = true,
-    current_weapon = 'gun',
+    fish_weapon = 'gun',
+    paint_weapon = 'bucket',
 }
 
 
@@ -242,42 +259,48 @@ end
 -- Decide to shoot.  TODO unfinished, doesn't apply to everyone, may come with
 -- directions, etc etc...  this is something that direly needs to be
 -- customizable easily
-function Pearl:decide_shoot()
-    if self.decision_shoot == 0 then
-        self.decision_shoot = 1
-    end
+function Pearl:decide_shoot_fish()
+    self.decision_shoot = self.fish_weapon
 end
 
-function Pearl:switch_weapons()
-    if self.decision_shoot > 0 then
-        return
-    end
-
-    if self.current_weapon == 'gun' then
-        self.current_weapon = 'bucket'
-    else
-        self.current_weapon = 'gun'
-    end
-
-    self:set_sprite('pearl: ' .. self.current_weapon)
+function Pearl:decide_shoot_paint()
+    self.decision_shoot = self.paint_weapon
 end
 
-function Pearl:update_pose()
-    if self.decision_shoot == 1 then
-        self.decision_shoot = 2
+function Pearl:update(dt)
+    if self.decision_shoot and not self.is_shooting then
+        self.is_shooting = self.decision_shoot
+        local weapon = self.decision_shoot
+        if weapon == 'gun' or weapon == 'big gun' then
+            self:set_sprite('pearl: gun')
+        else
+            self:set_sprite('pearl: bucket')
+        end
         self.sprite:set_pose('shoot', function()
-            self.decision_shoot = 0
+            self.is_shooting = false
             local d = Vector(16, -8)
             if self.facing_left then
                 d.x = -d.x
             end
-            if self.current_weapon == 'gun' then
-                worldscene:add_actor(FishBall(self.facing_left, self.pos + d))
-            elseif self.current_weapon == 'bucket' then
-                worldscene:add_actor(PaintSplatter(self, self.pos + d))
+            local Projectile
+            if weapon == 'gun' then
+                Projectile = FishBall
+            elseif weapon == 'big gun' then
+                Projectile = BigFishBall
+            elseif weapon == 'bucket' then
+                Projectile = PaintSplatter
             end
+            worldscene:add_actor(Projectile(self, self.pos + d))
         end)
-    elseif self.decision_shoot == 2 then
+    end
+    self.decision_shoot = nil
+
+    Pearl.__super.update(self, dt)
+end
+
+function Pearl:update_pose()
+    if self.is_shooting then
+        -- TODO could do the shooty jump sprites here
     else
         Pearl.__super.update_pose(self)
     end

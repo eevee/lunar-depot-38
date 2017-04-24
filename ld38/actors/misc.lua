@@ -323,7 +323,7 @@ function Anise:on_use(activator)
             menu = {
                 { 'dummy', "Floor kibble - Increase max HP (5 CP)" },
                 { 'dummy', "Mesh bag - INT +2, CHR +4 (10 CP)" },
-                { 'dummy', "Bigger fish gun (20 CP)" },
+                { 'big gun', "Bigger fish gun (20 CP)", condition = function() return activator.fish_weapon == 'gun' end },
                 { 'bye', "Never mind" },
             }
         },
@@ -344,6 +344,27 @@ function Anise:on_use(activator)
         {
             "Mewwwaaauuughh!",
             speaker = 'purrl',
+        },
+        { bail = true },
+
+        {
+            label = 'big gun',
+            execute = function()
+                activator.fish_weapon = 'big gun'
+            end,
+        },
+        {
+            "A fine choice!!  This enhanced gun shoots bigger fish!!",
+            speaker = 'anise',
+        },
+        {
+            "What?!  The fish are bigger?  Not the gun???",
+            speaker = 'purrl',
+        },
+        {
+            "NO REFUNDS!  AOWWWRR!!",
+            speaker = 'anise',
+            pose = 'o_o',
         },
         { bail = true },
 

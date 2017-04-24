@@ -167,8 +167,8 @@ function love.load(args)
         down = {'key:down', 'axis:lefty+', 'button:dpdown'},
         jump = {'key:space', 'button:a'},
         use = {'sc:e', 'button:x'},
-        shoot = {'sc:f', 'button:b'},
-        switch_weapon = {'sc:q', 'button:y'},
+        shoot_fish = {'sc:f', 'button:b'},
+        shoot_paint = {'sc:d', 'button:y'},
 
         accept = {'sc:e', 'sc:space', 'button:a'},
     }
