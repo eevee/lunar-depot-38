@@ -39,9 +39,11 @@ function MoonWorldScene:init(...)
 
     -- Shader used for drawing the ground texture bent into a circle
     self.polar_shader = love.graphics.newShader[[
-        extern float rotation;
+        extern float rotation;  // 0 to 1!
         extern float radius;
         extern float visible;
+
+        const float TAU = 6.283185307179586;
 
         vec4 effect(vec4 color, Image texture, vec2 tex_coords, vec2 screen_coords) {
             // FIXME this should probably not be based purely on the screen coordinates...?  right?  but what does it even mean to move the moon elsewhere?
@@ -49,16 +51,16 @@ function MoonWorldScene:init(...)
             float dx = screen_coords.x - center.x;
             float dy = screen_coords.y - center.y;
 
-            float dist = length(vec2(dx, dy));
+            highp float dist = length(vec2(dx, dy));
             if (dist > radius) {
                 return vec4(0.0, 0.0, 0.0, 0.0);
             }
             // Note that x and y are switched because we want the angle from
             // the vertical, not horizontal!
-            float angle = mod(rotation + atan(dx, -dy), 6.283);
+            highp float angle = mod(rotation + atan(dx, -dy) / TAU, 1.0);
 
-            vec2 new_coords = vec2(
-                angle / 6.283,
+            highp vec2 new_coords = vec2(
+                angle,
                 (radius - dist) / visible);
             vec4 tex_color = Texel(texture, new_coords);
             return tex_color * color;
@@ -68,12 +70,15 @@ function MoonWorldScene:init(...)
     self.polar_shader:send('radius', radius)
     self.polar_shader:send('visible', visible)
 
-    -- Shader used for drawing the ground texture bent into a circle
+    -- Shader used for drawing the sky, which transitions from flat at the top
+    -- of the screen to curved where it touches the surface of the moon
     self.polar_background_shader = love.graphics.newShader[[
-        extern float rotation;
+        extern float rotation;  // 0 to 1!
         extern float radius;
         extern float visible;
         extern float surface;
+
+        const float TAU = 6.283185307179586;
 
         // Background layers
         // base sky -- this is the texture passed in
@@ -152,17 +157,16 @@ function MoonWorldScene:init(...)
             float dist = length(vec2(dx, dy));
             // Note that x and y are switched because we want the angle from
             // the vertical, not horizontal!
-            float angle = rotation + atan(dx, -dy);
+            float angle = rotation + atan(dx, -dy) / TAU;
 
             vec2 new_coords = vec2(
-                angle / 6.283,
+                angle,
                 1.0 - (dist - (radius - visible)) / love_ScreenSize.y);
             if (dist > (radius - surface)) {
-                vec2 orig_coords = vec2(rotation / 6.283 + (screen_coords.x / love_ScreenSize.x - 0.5) * 800.0 / 4096.0, screen_coords.y / love_ScreenSize.y);
+                vec2 orig_coords = vec2(rotation + (screen_coords.x / love_ScreenSize.x - 0.5) * 800.0 / 4096.0, screen_coords.y / love_ScreenSize.y);
                 float q = (dist - (radius - surface)) / (love_ScreenSize.y - (visible - surface));
                 new_coords = mix(new_coords, orig_coords, mix(0.75, 1.0, q));
             }
-            //return vec4(new_coords.x, new_coords.x, new_coords.x, 1.0);
             new_coords = mod(new_coords, 1.0);
             vec4 pixel = Texel(texture, new_coords);
 
@@ -316,11 +320,11 @@ function MoonWorldScene:draw()
     love.graphics.clear()
 
     -- Draw complicated ass fucking background
-    self.polar_background_shader:send('rotation', self.turned * TAU)
+    self.polar_background_shader:send('rotation', self.turned)
     love.graphics.setShader(self.polar_background_shader)
     love.graphics.draw(self.background_image_base, 0, 0)
     -- And moon ground thing
-    self.polar_shader:send('rotation', self.turned * TAU)
+    self.polar_shader:send('rotation', self.turned)
     love.graphics.setShader(self.polar_shader)
     love.graphics.draw(self.moon.sprite, 0, h - self.moon.sprite:getHeight() * self.moon.scale, 0, self.moon.scale, self.moon.scale)
     love.graphics.setShader()
