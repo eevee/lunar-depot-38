@@ -243,6 +243,7 @@ local EyeAngel2 = BaseAngel:extend{
 local EyeAngel3 = BaseAngel:extend{
     name = 'eye angel 3',
     sprite_name = 'eye angel 3',
+    max_speed = 128,
 
     attack_sfx_path = 'assets/sfx/angelhit3.ogg',
     resist = 1,
@@ -253,6 +254,7 @@ local EyeAngel3 = BaseAngel:extend{
 local EyeAngel4 = BaseAngel:extend{
     name = 'eye angel 4',
     sprite_name = 'eye angel 4',
+    max_speed = 128,
 
     attack_sfx_path = 'assets/sfx/angelhit4.ogg',
     resist = 1,
@@ -337,13 +339,13 @@ end
 
 function Spaceship:_schedule_angel_spawn()
     worldscene.tick:delay(function()
-        if game.wave_begun and worldscene.angel_count < 20 and math.random() < 0.0625 * game.wave then
+        if game.wave_begun and worldscene.angel_count < 20 and math.random() < 0.125 + 0.03125 * (game.wave - 1) then
             local Angel = ANGELS[math.random(1, game.wave)]
             local x = math.random(0, worldscene.map.width)
             worldscene:add_actor(Angel(self.pos:clone()))
         end
         self:_schedule_angel_spawn()
-    end, 1)
+    end, 2)
 end
 
 function Spaceship:_schedule_exhaust()
