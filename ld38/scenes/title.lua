@@ -37,7 +37,10 @@ function TitleScene:enter(next_scene)
     self.next_scene = next_scene
     self.music:play()
 
-    self.controls_keyboard_text = love.graphics.newText(m5x7, "Move: arrow keys\nJump: space\nInteract: E\nFish: F\nPaint: D\n(gamepads work too!)")
+    self.controls_keyboard_text = love.graphics.newText(m5x7, ("Move: arrow keys\nJump: space\nInteract: %s\nFish: %s\nPaint: %s\n(gamepads work too!)"):format(
+        love.keyboard.getKeyFromScancode('e'):upper(),
+        love.keyboard.getKeyFromScancode('f'):upper(),
+        love.keyboard.getKeyFromScancode('d'):upper()))
     self.controls_gamepad_text = love.graphics.newText(m5x7, "Move: d-pad\nJump: A\nInteract: X\nFish: B\nPaint: Y\n(keyboards work too!)")
 
     self.key_hint_event = tick.delay(function()
