@@ -758,11 +758,10 @@ function DialogueScene:draw()
         -- FIXME magic numbers here...  should use sprites?  ugh
         love.graphics.setColor(255, 255, 255)
         -- FIXME ld38
-        love.graphics.setColor(0, 0, 0, 64)
+        love.graphics.setColor(0, 0, 0, 128)
         if not (self.menu_top == 1 and self.menu_top_line == 1) then
             local x = boxleft + avatar_size + TEXT_MARGIN_X / 2
             local y = boxtop + TEXT_MARGIN_Y
-            print(x, y)
             love.graphics.polygon('fill', x, y - 4, x + 2, y, x - 2, y)
         end
         if not is_bottom then

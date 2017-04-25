@@ -484,7 +484,7 @@ function Box:clone()
 end
 
 function Box:flipx(axis)
-    return Box(axis * 2 - self.x0 - self.width, self.y0, self.width, self.height)
+    return Box(axis - (self.x0 + self.width - axis), self.y0, self.width, self.height)
 end
 
 function Box:_generate_normals()

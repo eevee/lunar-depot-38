@@ -11,10 +11,20 @@ local SpriteSet = require 'klinklang.sprite'
 local tiledmap = require 'klinklang.tiledmap'
 local util = require 'klinklang.util'
 
+local Pearl = require 'ld38.actors.pearl'
+local actors_misc = require 'ld38.actors.misc'
+
 local IntroScene = require 'ld38.scenes.intro'
 local MoonWorldScene = require 'ld38.scenes.world'
 local TransitionScene = require 'ld38.scenes.transition'
 
+
+local _SPEAKERS = {
+    purrl = Pearl,
+    anise = actors_misc.Anise,
+    speckle = actors_misc.Speckle,
+    marble = actors_misc.Marble,
+}
 
 game = {
     VERSION = "0.1",
@@ -24,7 +34,7 @@ game = {
     time_to_finish_painting = 60,
     speckle_annoyance_duration = 5,
     angel_attack_frequency = 1,
-    total_door_health = 500,
+    total_door_health = 200,
     -- State
     andre_painting_progress = 0,
     space_cash = 0,
@@ -44,12 +54,31 @@ game = {
     end,
     wave_complete = function(self)
         Gamestate.push(TransitionScene(("Wave %d complete"):format(self.wave)))
+        Gamestate.push(DialogueScene(_SPEAKERS, {
+            { "Yes, that will do.  I need a moment for this later to dry.", speaker = 'speckle' },
+            { "Well done, Luneko!  I believe I have some time to fix up the door.  Let me know when you're ready for the next wave.", speaker = 'marble' },
+        }))
         self.wave_begun = false
         self.wave = self.wave + 1
 
         for _, actor in ipairs(worldscene.actors) do
             if actor.on_wave_complete then
                 actor:on_wave_complete()
+            end
+        end
+    end,
+    wave_failed = function(self)
+        Gamestate.push(TransitionScene(("Wave %d failed"):format(self.wave)))
+        Gamestate.push(DialogueScene(_SPEAKERS, {
+            { "The door!  It has fallen!  Speckle, help me restore it, urgently!", speaker = 'marble' },
+            { "If I must.  I doubt my mural will survive unattended.", speaker = 'speckle', pose = { eyes = 'annoyed' } },
+            { "Luneko, let us know when you'd like to try again.", speaker = 'marble' },
+        }))
+        self.wave_begun = false
+
+        for _, actor in ipairs(worldscene.actors) do
+            if actor.on_wave_failed then
+                actor:on_wave_failed()
             end
         end
     end,

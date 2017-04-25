@@ -17,7 +17,7 @@ local DIALOGUE_PARTS = {
         { "Ah! How is this possible?!", speaker = 'speckle' },
         { "A Luneko! The culprit, surely!", speaker = 'marble' },
         { "You there, space kitten! Halt, at once!", speaker = 'speckle' },
-        { "It is much too dangerous in there. Return whence you came! ", speaker = 'marble' },
+        { "It is much too dangerous in there. Return whence you came!", speaker = 'marble' },
     },
     {
         { "No!", speaker = 'purrl' },

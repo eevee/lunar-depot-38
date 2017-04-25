@@ -327,7 +327,8 @@ local Pearl = Player:extend{
 
     is_critter = true,
     fish_weapon = 'gun',
-    paint_weapon = 'bucket',
+    --paint_weapon = 'bucket',
+    paint_weapon = 'big spraypaint',
     spraypaint_anchor = Vector(13, -7),
     firing_range = 1,
     firing_speed = 1,
@@ -409,15 +410,20 @@ function Pearl:update(dt)
 
     -- Do this after the main update so it sticks to our new position
     if self.ptrs.spraypaint then
+        local spraypaint = self.ptrs.spraypaint
         if weapon == 'spraypaint' or weapon == 'big spraypaint' then
             local anchor = self.spraypaint_anchor
             if self.facing_left then
                 anchor = Vector(-anchor.x, anchor.y)
             end
-            self.ptrs.spraypaint:move_to(self.pos + anchor)
-            self.ptrs.spraypaint.sprite:set_facing_right(not self.facing_left)
+            spraypaint:move_to(self.pos + anchor)
+            if (spraypaint.sprite.facing == 'left') ~= self.facing_left then
+                spraypaint.sprite:set_facing_right(not self.facing_left)
+                spraypaint.sprite:update(0)
+                spraypaint:set_shape(spraypaint.sprite.shape)
+            end
         else
-            worldscene:remove_actor(self.ptrs.spraypaint)
+            worldscene:remove_actor(spraypaint)
             self.ptrs.spraypaint = nil
         end
     end

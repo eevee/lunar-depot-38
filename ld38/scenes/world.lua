@@ -333,10 +333,26 @@ function MoonWorldScene:draw()
     MoonWorldScene.__super.draw(self)
 
     -- Draw some UI
+    local speckle
+    for _, actor in ipairs(self.actors) do
+        if actor.name == 'speckle' then
+            speckle = actor
+            break
+        end
+    end
     love.graphics.push('all')
-    love.graphics.rectangle('line', 8.5, 8.5, 192, 16)
-    love.graphics.rectangle('fill', 8.5, 8.5, 192 * game.andre_painting_progress / game.time_to_finish_painting, 16)
+    local w, h = 384, 16
+    local x = 800 - w - 16 + 0.5
+    local y = 600 - h - 16 + 0.5
+    if speckle and speckle.annoyance_timer > 0 then
+        love.graphics.setColor(0, 0, 0)
+    else
+        love.graphics.setColor(255, 255, 255)
+    end
+    love.graphics.rectangle('line', x, y, w, h)
+    love.graphics.rectangle('fill', x, y, w * game.andre_painting_progress / game.time_to_finish_painting, h)
 
+    love.graphics.setColor(255, 255, 255)
     local s = game.sprites['space cash ui']:instantiate()
     s:draw_at(Vector(24, 600 - 24))
     love.graphics.setColor(0, 0, 0)

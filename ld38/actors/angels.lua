@@ -88,7 +88,22 @@ function BaseAngel:init(...)
     self:think()
 end
 
+function BaseAngel:on_wave_complete()
+    self.state = 'dead'
+    self.sprite:set_pose('die', function()
+        worldscene:remove_actor(self)
+    end)
+end
+
+function BaseAngel:on_wave_failed()
+    self:on_wave_complete()
+end
+
 function BaseAngel:think()
+    if self.state == 'stunned' or self.state == 'dead' then
+        return
+    end
+
     if self.ptrs.target then
         self.state = 'chase'
         local dx = modular_distance(self.pos.x, self.ptrs.target.pos.x, worldscene.map.width)
@@ -118,16 +133,23 @@ function BaseAngel:on_collide_with(actor, ...)
         if self.ptrs.target.damage then
             self.ptrs.target:damage(1, 'angel', self)
         end
-        self.sprite:set_pose('attack', function()
-            self.state = 'idle'
-            self.sprite:set_pose('stand')
-            worldscene.tick:delay(function()
-                -- FIXME ugh this is a clusterfuck; don't want to do this if we were stunned in this window
-                if self.state == 'idle' then
-                    self.state = 'chase'
+        -- AUGH, geez.  That damage can cause us to die, if we dealt the final
+        -- blow to the door!
+        if self.state == 'attack' then
+            self.sprite:set_pose('attack', function()
+                if self.state ~= 'attack' then
+                    return
                 end
-            end, 0.5)
-        end)
+                self.state = 'idle'
+                self.sprite:set_pose('stand')
+                worldscene.tick:delay(function()
+                    -- FIXME ugh this is a clusterfuck; don't want to do this if we were stunned in this window
+                    if self.state == 'idle' then
+                        self.state = 'chase'
+                    end
+                end, 0.5)
+            end)
+        end
         play_positional_sound(game.resource_manager:get(self.attack_sfx_path), self)
     end
 
@@ -150,6 +172,9 @@ function BaseAngel:damage(amount, kind, source)
             self.sprite:set_pose('flinch')
             self.state = 'stunned'
             worldscene.tick:delay(function()
+                if self.state ~= 'stunned' then
+                    return
+                end
                 self.is_locked = false
                 self.resist = 1
                 -- Resume whatever we were doing
@@ -185,7 +210,7 @@ function BaseAngel:update(dt)
 end
 
 function BaseAngel:update_pose()
-    if self.state == 'attack' then
+    if self.state == 'attack' or self.state == 'dead' then
         return
     end
 
@@ -299,7 +324,7 @@ end
 
 function Spaceship:_schedule_angel_spawn()
     worldscene.tick:delay(function()
-        if game.wave_begun and math.random() < 0.125 * game.wave then
+        if game.wave_begun and worldscene.angel_count < 20 and math.random() < 0.125 * game.wave then
             local Angel = ANGELS[math.random(1, game.wave)]
             local x = math.random(0, worldscene.map.width)
             worldscene:add_actor(Angel(self.pos:clone()))

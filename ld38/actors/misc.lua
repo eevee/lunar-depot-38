@@ -4,6 +4,8 @@ local Vector = require 'vendor.hump.vector'
 local actors_base = require 'klinklang.actors.base'
 local DialogueScene = require 'klinklang.scenes.dialogue'
 
+local actors_angels = require 'ld38.actors.angels'
+
 
 local AndrePainting = actors_base.Actor:extend{
     name = 'andre painting',
@@ -24,16 +26,30 @@ function AndrePainting:damage(amount, kind, source)
     end
 end
 
+function AndrePainting:update_pose()
+    self.sprite:set_pose(("%d-%d"):format(game.wave, self.stage))
+end
+
+function AndrePainting:on_wave_complete()
+    self.stage = 0
+    self.progress = 0
+    game.andre_painting_progress = 0
+    self:update_pose()
+end
+
+function AndrePainting:on_wave_failed()
+    self.stage = 0
+    self.progress = 0
+    game.andre_painting_progress = 0
+    self:update_pose()
+end
+
 function AndrePainting:paint(dt)
     self.progress = self.progress + dt
     game.andre_painting_progress = self.progress
     self.stage = math.floor(self.progress / (game.time_to_finish_painting / 5))
-    self.sprite:set_pose(("%d-%d"):format(self.wave, self.stage))
+    self:update_pose()
     if self.stage == 5 then
-        -- FIXME this would be nice to have happen at the beginning of a wave or something
-        self.wave = self.wave + 1
-        self.stage = 0
-        self.progress = 0
         game:wave_complete()
     end
 end
@@ -103,6 +119,12 @@ end
 
 function Speckle:on_wave_complete()
     self.sprite:set_pose('idle')
+    self.annoyance_timer = 0
+end
+
+function Speckle:on_wave_failed()
+    self.sprite:set_pose('idle')
+    self.annoyance_timer = 0
 end
 
 function Speckle:on_use(activator)
@@ -112,7 +134,7 @@ function Speckle:on_use(activator)
             condition = function() return self.annoyance_timer > 0 end,
         },
         {
-            "Paint paint paint.",
+            "Please do not disturb me whilst I paint.",
             speaker = 'speckle',
         },
         { bail = true },
@@ -184,6 +206,16 @@ function DoorPlanks:on_wave_begin()
     self.sprite:set_pose('5')
 end
 
+function DoorPlanks:on_wave_complete()
+    self.health = game.total_door_health
+    self.sprite:set_pose('5')
+end
+
+function DoorPlanks:on_wave_failed()
+    self.health = game.total_door_health
+    self.sprite:set_pose('5')
+end
+
 function DoorPlanks:damage(amount, kind, source)
     if kind == 'angel' then
         local old_planks = math.ceil(self.health / (game.total_door_health / 5))
@@ -191,9 +223,11 @@ function DoorPlanks:damage(amount, kind, source)
         local new_planks = math.ceil(self.health / (game.total_door_health / 5))
         if new_planks ~= old_planks then
             self.sprite:set_pose('' .. new_planks)
+            self.sprite:update(0)  -- so they redraw even if we immediately do a cutscene
+            actors_angels.play_positional_sound(
+                game.resource_manager:get('assets/sfx/plank.ogg'), self)
             if new_planks == 0 then
-                -- FIXME obviously.
-                error("you lose!!")
+                game:wave_failed()
             end
         end
         return true
@@ -328,8 +362,10 @@ end
 
 function Anise:on_use(activator)
     local convo = {
+        { "AOOWWRRR!!", speaker = 'anise' },
+        { jump = 'menu', condition = 'seen anise intro' },
+        { set = 'seen anise intro' },
         {
-            "AOOWWRRR!!",
             "Welcome to Anise's Moon Emporium!!  Anise's...  Emporimoon!!!  I'm STAR ANISE and--",
             speaker = 'anise',
         },
