@@ -65,6 +65,7 @@ local BaseAngel = actors_base.SentientActor:extend{
     resist = 1,  -- health before becoming stunned
     health = 1,  -- health before dying
     stun_duration = 5,
+    damage_inflicted = 1,
 }
 
 function BaseAngel:init(...)
@@ -131,7 +132,7 @@ function BaseAngel:on_collide_with(actor, ...)
         self.state = 'attack'
         self:decide_walk(0)
         if self.ptrs.target.damage then
-            self.ptrs.target:damage(1, 'angel', self)
+            self.ptrs.target:damage(self.damage_inflicted, 'angel', self)
         end
         -- AUGH, geez.  That damage can cause us to die, if we dealt the final
         -- blow to the door!
@@ -232,8 +233,11 @@ local EyeAngel1 = BaseAngel:extend{
 local EyeAngel2 = BaseAngel:extend{
     name = 'eye angel 2',
     sprite_name = 'eye angel 2',
+    max_speed = 256,
 
     attack_sfx_path = 'assets/sfx/angelhit2.ogg',
+    resist = 2,
+    health = 1,
 }
 
 local EyeAngel3 = BaseAngel:extend{
@@ -241,6 +245,9 @@ local EyeAngel3 = BaseAngel:extend{
     sprite_name = 'eye angel 3',
 
     attack_sfx_path = 'assets/sfx/angelhit3.ogg',
+    resist = 1,
+    health = 2,
+    stun_duration = 1,
 }
 
 local EyeAngel4 = BaseAngel:extend{
@@ -248,13 +255,19 @@ local EyeAngel4 = BaseAngel:extend{
     sprite_name = 'eye angel 4',
 
     attack_sfx_path = 'assets/sfx/angelhit4.ogg',
+    resist = 1,
+    health = 4,
 }
 
 local RadioAngel3 = BaseAngel:extend{
     name = 'radio angel 3',
     sprite_name = 'radio angel 3',
+    max_speed = 64,
 
     attack_sfx_path = 'assets/sfx/angelhit5.ogg',
+    resist = 5,
+    health = 5,
+    damage_inflicted = 5,
 }
 
 
@@ -324,7 +337,7 @@ end
 
 function Spaceship:_schedule_angel_spawn()
     worldscene.tick:delay(function()
-        if game.wave_begun and worldscene.angel_count < 20 and math.random() < 0.125 * game.wave then
+        if game.wave_begun and worldscene.angel_count < 20 and math.random() < 0.0625 * game.wave then
             local Angel = ANGELS[math.random(1, game.wave)]
             local x = math.random(0, worldscene.map.width)
             worldscene:add_actor(Angel(self.pos:clone()))

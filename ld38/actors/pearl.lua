@@ -16,6 +16,7 @@ local FishBall = actors_base.MobileActor:extend{
     is_projectile = true,
     destroyed_state = 0,
     lifetime = 0.5,
+    damage_inflicted = 1,
 
     spawn_sfx_path = 'assets/sfx/fishball1.ogg',
 }
@@ -71,7 +72,7 @@ function FishBall:on_collide_with(actor, collision)
 
     -- Deal with hitting something
     if actor and actor.damage then
-        actor:damage(1, 'stun', self)
+        actor:damage(self.damage_inflicted, 'stun', self)
     end
     self:_pop()
     return false
@@ -107,6 +108,7 @@ local BigFishBall = FishBall:extend{
     sprite_name = 'fishball big',
 
     spawn_sfx_path = 'assets/sfx/fishball2.ogg',
+    damage_inflicted = 2,
 }
 
 
@@ -227,7 +229,7 @@ local PaintSpray = actors_base.MobileActor:extend{
     gravity_multiplier = 0,
 
     dt = 0,
-    damage_rate = 1,
+    damage_rate = 4,
     paint_current = 1,
     paint_next = 2,
     paint_progress = 0,
@@ -291,7 +293,7 @@ local BigPaintSpray = PaintSpray:extend{
     name = 'spraypaint big',
     sprite_name = 'spraypaint big',
 
-    damage_rate = 2,
+    damage_rate = 8,
 }
 
 
