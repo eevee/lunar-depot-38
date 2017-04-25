@@ -61,6 +61,7 @@ end
 
 function EndingScene:enter(next_scene)
     self.next_scene = next_scene
+    love.audio.stop()  -- XXX fixes spraypaint or whatever
     self.music:play()
 end
 
