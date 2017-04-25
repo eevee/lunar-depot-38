@@ -3,6 +3,7 @@ local Gamestate = require 'vendor.hump.gamestate'
 
 local BaseScene = require 'klinklang.scenes.base'
 local DialogueScene = require 'klinklang.scenes.dialogue'
+local SceneFader = require 'klinklang.scenes.fader'
 
 local Pearl = require 'ld38.actors.pearl'
 local actors_misc = require 'ld38.actors.misc'
@@ -83,6 +84,9 @@ function IntroScene:init(text)
         self.images[i] = love.graphics.newImage(("assets/images/intro%d.png"):format(i))
     end
 
+    self.music = love.audio.newSource('assets/music/intro.ogg', 'stream')
+    self.music:setLooping(true)
+
     self.part = 0
 end
 
@@ -90,6 +94,11 @@ end
 -- hump.gamestate hooks
 
 function IntroScene:enter(previous_scene)
+    self.next_scene = previous_scene
+    self:_advance()
+end
+
+function IntroScene:resume()
     self:_advance()
 end
 
@@ -100,7 +109,8 @@ end
 function IntroScene:_advance()
     self.part = self.part + 1
     if self.part > 7 then
-        Gamestate.pop()
+        self.part = 7
+        Gamestate.switch(SceneFader(self.next_scene, true, 1.0, {0, 0, 0}))
     else
         Gamestate.push(DialogueScene({
             purrl = Pearl,

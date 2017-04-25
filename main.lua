@@ -17,6 +17,7 @@ local actors_misc = require 'ld38.actors.misc'
 local IntroScene = require 'ld38.scenes.intro'
 local MoonWorldScene = require 'ld38.scenes.world'
 local TransitionScene = require 'ld38.scenes.transition'
+local TitleScene = require 'ld38.scenes.title'
 
 
 local _SPEAKERS = {
@@ -218,6 +219,7 @@ function love.load(args)
     Gamestate.registerEvents()
     Gamestate.switch(worldscene)
     Gamestate.push(IntroScene())
+    Gamestate.push(TitleScene())
 end
 
 function love.update(dt)
