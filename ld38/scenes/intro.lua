@@ -39,6 +39,10 @@ local DIALOGUE_PARTS = {
         { "Did someone say...", speaker = 'anise', pose = 'mysterious' },
     },
     {
+        { execute = function()
+            game.resource_manager:get('assets/sfx/anisefanfare.ogg'):play()
+        end,
+        },
         { "ANISE?", speaker = 'anise', pose = { 'default', 'o_o' } },
         { "No! Nobody did! Why are you on my moon, Star Anise!", speaker = 'purrl' },
         { "AOOOORRRWWWW!! If I don't run the shop, who will?!", speaker = 'anise', pose = 'default' },
