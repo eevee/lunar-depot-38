@@ -224,6 +224,7 @@ end
 local PaintSpray = actors_base.MobileActor:extend{
     name = 'spraypaint',
     sprite_name = 'spraypaint',
+    z = 9999,
 
     -- TODO this should be immune to /all/ outside forces
     gravity_multiplier = 0,
