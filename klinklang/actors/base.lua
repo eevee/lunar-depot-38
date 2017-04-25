@@ -826,10 +826,12 @@ function SentientActor:update(dt)
             -- TODO maybe jump away from the ground, not always up?  then could
             -- allow jumping off of steep slopes
             local jumped
-            if self.too_steep then
+            -- XXX disabling this for ld38; it's annoying and doesn't actually
+            -- prevent getting somewhere you're not supposed to anyway
+            --[[if self.too_steep then
                 self.velocity = self.jumpvel * self.ground_normal
                 jumped = true
-            elseif self.velocity.y > -self.jumpvel then
+            else]]if self.velocity.y > -self.jumpvel then
                 self.velocity.y = -self.jumpvel
                 jumped = true
             end
