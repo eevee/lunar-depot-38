@@ -4,7 +4,7 @@ This is a little shooty platformer made for [Ludum Dare 38](https://ldjam.com/ev
 
 It requires [LÖVE](https://love2d.org/) 0.10.2 and nothing else.
 
-Made with [glip](http://glitchedpuppet.com/), who made the music, sounds, art, story, setting, and [universe](http://floraverse.com/).  Really, all I did was make it go.
+Made with [glip](http://glitchedpuppet.com/), who made the [music](https://floraverse.bandcamp.com/album/lunar-depot-38-ost), sounds, art, story, setting, and [universe](http://floraverse.com/).  Really, all I did was make it go.
 
 
 ## Running
