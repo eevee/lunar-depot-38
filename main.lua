@@ -18,6 +18,7 @@ local IntroScene = require 'ld38.scenes.intro'
 local MoonWorldScene = require 'ld38.scenes.world'
 local TransitionScene = require 'ld38.scenes.transition'
 local TitleScene = require 'ld38.scenes.title'
+local EndingScene = require 'ld38.scenes.ending'
 
 
 local _SPEAKERS = {
@@ -25,6 +26,14 @@ local _SPEAKERS = {
     anise = actors_misc.Anise,
     speckle = actors_misc.Speckle,
     marble = actors_misc.Marble,
+}
+
+local WAVE_TRACKS = {
+    'assets/music/eminorthing_2.ogg',
+    'assets/music/angelbeattwoWAVE2.ogg',
+    'assets/music/angelbeat.ogg',
+    'assets/music/angelbeattwoWAVE4.ogg',
+    'assets/music/alienmonster_2.ogg',
 }
 
 game = {
@@ -43,6 +52,10 @@ game = {
     wave = 1,
     wave_begun = false,
     wave_begin = function(self)
+        self.wave_music = love.audio.newSource(WAVE_TRACKS[self.wave], 'stream')
+        self.wave_music:setLooping(true)
+        self.wave_music:play()
+
         self.wave_begun = true
         Gamestate.push(TransitionScene(("Wave %d"):format(self.wave)))
 
@@ -54,6 +67,11 @@ game = {
         end
     end,
     wave_complete = function(self)
+        self.wave_music:stop()
+        if self.wave == 5 then
+            Gamestate.switch(EndingScene())
+            return
+        end
         Gamestate.push(TransitionScene(("Wave %d complete"):format(self.wave)))
         Gamestate.push(DialogueScene(_SPEAKERS, {
             { "Yes, that will do.  I need a moment for this later to dry.", speaker = 'speckle' },
@@ -69,6 +87,7 @@ game = {
         end
     end,
     wave_failed = function(self)
+        self.wave_music:stop()
         Gamestate.push(TransitionScene(("Wave %d failed"):format(self.wave)))
         Gamestate.push(DialogueScene(_SPEAKERS, {
             { "The door!  It has fallen!  Speckle, help me restore it, urgently!", speaker = 'marble' },
@@ -117,29 +136,6 @@ game = {
         return math.ceil(love.graphics.getWidth() / self.scale), math.ceil(love.graphics.getHeight() / self.scale)
     end,
 }
-
-local BareActor = require('klinklang.actors.base').BareActor
-local Vector = require 'vendor.hump.vector'
-local whammo_shapes = require 'klinklang.whammo.shapes'
-
-local DummyActor = BareActor:extend{}
-
-function DummyActor:init(pos)
-    self.pos = pos
-    self:set_shape(whammo_shapes.Box(-8, -8, 16, 16))
-end
-
-function DummyActor:blocks()
-    return true
-end
-
-function DummyActor:draw()
-    local x0, y0, x1, y1 = self.shape:bbox()
-    love.graphics.push('all')
-    love.graphics.setColor(255, 0, 0)
-    love.graphics.rectangle('fill', x0, y0, x1 - x0, y1 - y0)
-    love.graphics.pop()
-end
 
 
 --------------------------------------------------------------------------------
