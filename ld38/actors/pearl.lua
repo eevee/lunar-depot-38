@@ -420,7 +420,7 @@ function Pearl:update(dt)
             if (spraypaint.sprite.facing == 'left') ~= self.facing_left then
                 spraypaint.sprite:set_facing_right(not self.facing_left)
                 spraypaint.sprite:update(0)
-                spraypaint:set_shape(spraypaint.sprite.shape)
+                spraypaint:set_shape(spraypaint.sprite.shape:clone())
             end
         else
             worldscene:remove_actor(spraypaint)
