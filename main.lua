@@ -42,9 +42,10 @@ game = {
 
     -- Gameplay twiddles
     time_to_finish_painting = 60,
-    speckle_annoyance_duration = 5,
+    speckle_annoyance_duration = 10,
     angel_attack_frequency = 1,
     total_door_health = 200,
+    max_angels = 20,
     -- State
     andre_painting_progress = 0,
     space_cash = 0,

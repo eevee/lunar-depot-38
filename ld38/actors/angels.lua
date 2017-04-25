@@ -352,7 +352,13 @@ end
 
 function Spaceship:_schedule_angel_spawn()
     worldscene.tick:delay(function()
-        if game.wave_begun and worldscene.angel_count < 20 and math.random() < 4/32 + 1.5/32 * (game.wave - 1) then
+        if
+            game.wave_begun and
+            worldscene.angel_count < game.max_angels and
+            -- This is 20% for wave 1 and scales up to 40% at wave 5, which
+            -- gives an average of 6 angels up to 12 angels
+            math.random() < 0.05 * (game.wave + 3)
+        then
             local Angel = ANGELS[math.random(1, game.wave)]
             local x = math.random(0, worldscene.map.width)
             worldscene:add_actor(Angel(self.pos:clone()))

@@ -249,7 +249,7 @@ function MoonWorldScene:_update_angel_count(delta)
         self.angel_proportion_timer:stop()
         self.angel_proportion_timer = nil
     end
-    local new_proportion = self.angel_count / (self.angel_count + 9)
+    local new_proportion = self.angel_count / game.max_angels
     local t = math.abs(new_proportion - self.angel_proportion) / ANGEL_PROPORTION_SPEED
     self.angel_proportion_timer = self.fluct
         :to(self, t, { angel_proportion = new_proportion })
