@@ -74,7 +74,7 @@ game = {
         end
         Gamestate.push(TransitionScene(("Wave %d complete"):format(self.wave)))
         Gamestate.push(DialogueScene(_SPEAKERS, {
-            { "Yes, that will do.  I need a moment for this later to dry.", speaker = 'speckle' },
+            { "Yes, that will do.  I need a moment for this layer to dry.", speaker = 'speckle' },
             { "Well done, Luneko!  I believe I have some time to fix up the door.  Let me know when you're ready for the next wave.", speaker = 'marble' },
         }))
         self.wave_begun = false
@@ -256,6 +256,12 @@ function love.keypressed(key, scancode, isrepeat)
         if Gamestate.current() ~= game.debug_scene then
             Gamestate.push(game.debug_scene)
         end
+    elseif scancode == 'q' and not isrepeat and game.debug then
+        game:wave_complete()
+    elseif scancode == 'w' and not isrepeat and game.debug then
+        game:wave_failed()
+    elseif scancode == 'c' and not isrepeat and game.debug then
+        game.space_cash = game.space_cash + 10
     end
 end
 

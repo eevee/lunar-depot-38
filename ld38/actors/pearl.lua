@@ -327,8 +327,7 @@ local Pearl = Player:extend{
 
     is_critter = true,
     fish_weapon = 'gun',
-    --paint_weapon = 'bucket',
-    paint_weapon = 'big spraypaint',
+    paint_weapon = 'bucket',
     spraypaint_anchor = Vector(13, -7),
     firing_range = 1,
     firing_speed = 1,
