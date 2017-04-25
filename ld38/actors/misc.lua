@@ -400,7 +400,7 @@ function Anise:on_use(activator)
                 { 'firing range 3', "Increase firing range (15 SC)", condition = function() return activator.firing_range == 4 end },
                 { 'firing speed', "Increase firing speed (5 SC)", condition = function() return activator.firing_speed == 1 end },
                 { 'firing speed 2', "Increase firing speed (10 SC)", condition = function() return activator.firing_speed == 2 end },
-                { 'big gun', "Bigger fish gun (10 SC)", condition = function() return activator.fish_weapon == 'gun' end },
+                { 'big gun', "Bigger fish gun (30 SC)", condition = function() return activator.fish_weapon == 'gun' end },
                 { 'spraypaint', "Spraypaint (20 SC)", condition = function() return activator.paint_weapon == 'bucket' end },
                 { 'big spraypaint', "Bigger spraypaint (30 SC)", condition = function() return activator.paint_weapon == 'spraypaint' end },
                 { 'floor kibble', "Floor kibble (100000000000000 SC)" },
@@ -532,7 +532,7 @@ function Anise:on_use(activator)
         { jump = 'menu' },
 
         { label = 'big gun' },
-        _check_space_cash(10),
+        _check_space_cash(30),
         {
             execute = function()
                 activator.fish_weapon = 'big gun'

@@ -66,6 +66,7 @@ local BaseAngel = actors_base.SentientActor:extend{
     health = 1,  -- health before dying
     stun_duration = 5,
     damage_inflicted = 1,
+    dropped_cash = 1,
 }
 
 function BaseAngel:init(...)
@@ -194,7 +195,9 @@ function BaseAngel:damage(amount, kind, source)
             self.sprite:set_pose('die', function()
                 worldscene:remove_actor(self)
             end)
-            worldscene:add_actor(SpaceCash(self.pos + Vector(math.random(-8, 8), math.random(-8, 8))))
+            for i = 1, self.dropped_cash do
+                worldscene:add_actor(SpaceCash(self.pos + Vector(math.random(-8, 8), math.random(-8, 8))))
+            end
             play_positional_sound(game.resource_manager:get('assets/sfx/angedestroyed.ogg'), self)
         end
     end
@@ -238,6 +241,8 @@ local EyeAngel2 = BaseAngel:extend{
     attack_sfx_path = 'assets/sfx/angelhit2.ogg',
     resist = 2,
     health = 1,
+    stun_duration = 3,
+    dropped_cash = 2,
 }
 
 local EyeAngel3 = BaseAngel:extend{
@@ -249,6 +254,7 @@ local EyeAngel3 = BaseAngel:extend{
     resist = 1,
     health = 2,
     stun_duration = 1,
+    dropped_cash = 2,
 }
 
 local EyeAngel4 = BaseAngel:extend{
@@ -259,6 +265,7 @@ local EyeAngel4 = BaseAngel:extend{
     attack_sfx_path = 'assets/sfx/angelhit4.ogg',
     resist = 1,
     health = 4,
+    dropped_cash = 3,
 }
 
 local RadioAngel3 = BaseAngel:extend{
@@ -270,6 +277,7 @@ local RadioAngel3 = BaseAngel:extend{
     resist = 5,
     health = 5,
     damage_inflicted = 5,
+    dropped_cash = 3,
 }
 
 
