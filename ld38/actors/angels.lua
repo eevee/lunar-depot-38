@@ -345,6 +345,11 @@ function Spaceship:blocks()
     return false
 end
 
+function Spaceship:on_collide_with(actor, collision)
+    -- Spaceship cannot be blocked by anything
+    return true
+end
+
 function Spaceship:_schedule_angel_spawn()
     worldscene.tick:delay(function()
         if game.wave_begun and worldscene.angel_count < 20 and math.random() < 4/32 + 1.5/32 * (game.wave - 1) then
