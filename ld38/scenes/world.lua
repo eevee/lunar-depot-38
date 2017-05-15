@@ -57,7 +57,9 @@ function MoonWorldScene:init(...)
             }
             // Note that x and y are switched because we want the angle from
             // the vertical, not horizontal!
-            highp float angle = mod(rotation + atan(dx, -dy) / TAU, 1.0);
+            // Avoid unary negation here due to a Mac driver bug:
+            // https://bugs.chromium.org/p/chromium/issues/detail?id=308366
+            highp float angle = mod(rotation + atan(dx, 0.0 - dy) / TAU, 1.0);
 
             highp vec2 new_coords = vec2(
                 angle,
@@ -157,7 +159,7 @@ function MoonWorldScene:init(...)
             float dist = length(vec2(dx, dy));
             // Note that x and y are switched because we want the angle from
             // the vertical, not horizontal!
-            float angle = rotation + atan(dx, -dy) / TAU;
+            float angle = rotation + atan(dx, 0.0 - dy) / TAU;
 
             vec2 new_coords = vec2(
                 angle,
