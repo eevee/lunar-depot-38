@@ -42,6 +42,7 @@ function MoonWorldScene:init(...)
         extern float rotation;  // 0 to 1!
         extern float radius;
         extern float visible;
+        extern Image moon;
 
         const float TAU = 6.283185307179586;
 
@@ -64,13 +65,14 @@ function MoonWorldScene:init(...)
             highp vec2 new_coords = vec2(
                 angle,
                 (radius - dist) / visible);
-            vec4 tex_color = Texel(texture, new_coords);
+            vec4 tex_color = Texel(moon, new_coords);
             return tex_color * color;
         }
     ]]
     self.polar_shader:send('rotation', 0)
     self.polar_shader:send('radius', radius)
     self.polar_shader:send('visible', visible)
+    self.polar_shader:send('moon', self.moon.sprite)
 
     -- Shader used for drawing the sky, which transitions from flat at the top
     -- of the screen to curved where it touches the surface of the moon
@@ -328,7 +330,7 @@ function MoonWorldScene:draw()
     -- And moon ground thing
     self.polar_shader:send('rotation', self.turned)
     love.graphics.setShader(self.polar_shader)
-    love.graphics.draw(self.moon.sprite, 0, h - self.moon.sprite:getHeight() * self.moon.scale, 0, self.moon.scale, self.moon.scale)
+    love.graphics.rectangle('fill', 0, h - self.moon.visible, w, self.moon.visible)
     love.graphics.setShader()
     love.graphics.setCanvas()
 
