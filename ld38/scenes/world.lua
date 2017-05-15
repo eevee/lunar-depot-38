@@ -48,9 +48,8 @@ function MoonWorldScene:init(...)
 
         vec4 effect(vec4 color, Image texture, vec2 tex_coords, vec2 screen_coords) {
             // FIXME this should probably not be based purely on the screen coordinates...?  right?  but what does it even mean to move the moon elsewhere?
-            vec2 center = vec2(love_ScreenSize.x / 2.0, love_ScreenSize.y - visible + radius);
-            float dx = screen_coords.x - center.x;
-            float dy = screen_coords.y - center.y;
+            float dx = screen_coords.x - love_ScreenSize.x / 2.0;
+            float dy = screen_coords.y - love_ScreenSize.y + visible - radius;
 
             highp float dist = length(vec2(dx, dy));
             if (dist > radius) {
@@ -154,9 +153,8 @@ function MoonWorldScene:init(...)
 
         vec4 effect(vec4 color, Image texture, vec2 tex_coords, vec2 screen_coords) {
             // FIXME this should probably not be based purely on the screen coordinates...?  right?  but what does it even mean to move the moon elsewhere?
-            vec2 center = vec2(love_ScreenSize.x / 2.0, love_ScreenSize.y - visible + radius);
-            float dx = screen_coords.x - center.x;
-            float dy = screen_coords.y - center.y;
+            float dx = screen_coords.x - love_ScreenSize.x / 2.0;
+            float dy = screen_coords.y - love_ScreenSize.y + visible - radius;
 
             float dist = length(vec2(dx, dy));
             // Note that x and y are switched because we want the angle from
